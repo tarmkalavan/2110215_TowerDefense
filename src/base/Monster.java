@@ -2,26 +2,33 @@ package base;
 
 public abstract class Monster {
 
-	protected int health;
+	protected int currentHealth;
+	protected int maxHealth;
 	protected int speed;
 	protected int reward;
 	protected int armor;
+	protected int penalty;
 	protected boolean isDead;
 
-	public Monster(int health, int armor, int speed, int reward) {
-		setHealth(health);
+	public Monster(int maxHealth, int armor, int speed, int reward) {
+		setHealth(maxHealth);
+		setMaxHealth(maxHealth);
+		setDead(false);
 		setReward(reward);
 		setSpeed(speed);
 		setArmor(armor);
-		this.isDead = false;
 	}
 
-	public abstract int takeDamage(int damage);
+	public abstract int takeDamage(int incomingDamage);
 
 	public int getHealth() {
-		return health;
+		return currentHealth;
 	}
 
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+	
 	public int getSpeed() {
 		return speed;
 	}
@@ -35,17 +42,15 @@ public abstract class Monster {
 	}
 
 	public void setHealth(int health) {
-		if (health < 0) {
-			health = 0;
-		}
-		this.health = health;
+		this.currentHealth = Math.max(health, 0);
+	}
+	
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = Math.max(maxHealth, 0);
 	}
 
 	public void setSpeed(int speed) {
-		if (speed < 0) {
-			speed = 0;
-		}
-		this.speed = speed;
+		this.speed = Math.max(speed, 0);
 	}
 
 	public void setDead(boolean isDead) {
@@ -53,10 +58,7 @@ public abstract class Monster {
 	}
 
 	public void setReward(int reward) {
-		if (reward < 0) {
-			reward = 0;
-		}
-		this.reward = reward;
+		this.reward = Math.max(0, reward);
 	}
 
 	public int getArmor() {
@@ -64,10 +66,7 @@ public abstract class Monster {
 	}
 
 	public void setArmor(int armor) {
-		if (armor < 0) {
-			armor = 0;
-		}
-		this.armor = armor;
+		this.armor = Math.max(0,armor);
 	}
 
 }
