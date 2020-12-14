@@ -1,14 +1,17 @@
 package base;
 
 public class Ammo {
-	protected int damage;
-	protected String damageType; // ??
-	protected String debuff; // ??
-	protected int splashRadius;
+	private int damage;
+	private int splashRadius;
+	//protected String damageType; // ??
+	private String buffStat;
+	private double buffRatio;
 
-	public Ammo(int damage, int splashRadius) {
+	public Ammo(int damage, int splashRadius, String buffStat, double buffRatio) {
 		setDamage(damage);
 		setSplashRadius(splashRadius);
+		setBuffStat(buffStat);
+		setBuffRatio(buffRatio);
 	}
 
 	public void setDamage(int damage) {
@@ -18,7 +21,15 @@ public class Ammo {
 	public void setSplashRadius(int splashRadius) {
 		this.splashRadius = Math.max(0, splashRadius);
 	}
+	
+	public void setBuffRatio(double buffRatio) {
+		this.buffRatio = Math.max(buffRatio, 0);
+	}
 
+	public void setBuffStat(String buffStat) {
+		this.buffStat = buffStat;
+	}
+	
 	public int getDamage() {
 		return damage;
 	}
@@ -26,4 +37,14 @@ public class Ammo {
 	public int getSplashRadius() {
 		return splashRadius;
 	}
+
+	public String getBuffStat() {
+		return buffStat;
+	}
+
+	public double getBuffRatio() {
+		return buffRatio;
+	}
+
+
 }
