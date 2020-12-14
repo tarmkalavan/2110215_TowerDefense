@@ -11,8 +11,8 @@ public class BossMonster extends Monster{
 	
 	public int takeDamage(int incomingDamage) {
 		int damageTaken = incomingDamage - armor;
-		setHealth(getHealth() - damageTaken);
-		if(getHealth() == 0) { //monster slained
+		setCurrentHealth(getCurrentHealth() - damageTaken);
+		if(getCurrentHealth() == 0) { //monster slained
 			setDead(true);
 			//dropCoin(); //*****
 		}

@@ -51,7 +51,7 @@ public abstract class Tower implements Effectable{
 	public int revertChange(Effectable e) {
 		int finalStat = 0;
 		boolean ratioIsInt = false;
-		if(e instanceof Tower) { //tower buffed by tower
+		if(e instanceof Tower) { //revert (tower buffed by tower)
 			Ammo receivedAmmo = ((Tower) e).getAmmo();
 			String statAffected = receivedAmmo.getBuffStat();
 			ratioIsInt = (receivedAmmo.getBuffRatio() == (int) receivedAmmo.getBuffRatio());

@@ -1,6 +1,6 @@
 package base;
 
-public abstract class Monster {
+public abstract class Monster implements Effectable{
 
 	protected int currentHealth;
 	protected int maxHealth;
@@ -11,17 +11,92 @@ public abstract class Monster {
 	protected boolean isDead;
 
 	public Monster(int maxHealth, int armor, int speed, int reward) {
-		setHealth(maxHealth);
+		setCurrentHealth(maxHealth);
 		setMaxHealth(maxHealth);
-		setDead(false);
 		setReward(reward);
 		setSpeed(speed);
 		setArmor(armor);
+		setDead(false);
+		setPenalty(1);
+	}
+	public abstract int takeDamage(int incomingDamage);
+	
+	//Effectable//
+	public int effect(Effectable e) {
+		int finalStat = 0;
+		if(e instanceof Tower) { //monster debuffed by tower
+			Ammo receivedAmmo = ((Tower) e).getAmmo();
+			String statAffected = receivedAmmo.getBuffStat();
+			switch(statAffected) {
+			case "armor":
+				finalStat = (int) (this.getArmor() * receivedAmmo.getBuffRatio());
+				this.setArmor(finalStat);
+				break;
+			case "speed":
+				finalStat = (int) (this.getSpeed() * receivedAmmo.getBuffRatio());
+				this.setSpeed(finalStat);
+				break;
+			}
+		}
+		return finalStat;
+	}
+	public int revertChange(Effectable e) {
+		int finalStat = 0;
+		boolean ratioIsInt = false;
+		if(e instanceof Tower) { //revert (monster debuffed by tower)
+			Ammo receivedAmmo = ((Tower) e).getAmmo();
+			String statAffected = receivedAmmo.getBuffStat();
+			ratioIsInt = (receivedAmmo.getBuffRatio() == (int) receivedAmmo.getBuffRatio());
+			switch(statAffected) {
+			case "armor":
+				finalStat = (int) (this.getArmor() / receivedAmmo.getBuffRatio());
+				if(!ratioIsInt) finalStat++;
+				this.setArmor(finalStat);
+				break;
+			case "speed":
+				finalStat = (int) (this.getSpeed() / receivedAmmo.getBuffRatio());
+				if(!ratioIsInt) finalStat++;
+				this.setSpeed(finalStat);
+				break;
+			}
+		}
+		return finalStat;
+	}
+	
+	//SETTER//
+	public void setPenalty(int penalty) {
+		this.penalty = Math.max(penalty, 0);
+	}
+	public void setCurrentHealth(int health) {
+		this.currentHealth = Math.max(health, 0);
+	}
+	
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = Math.max(maxHealth, 0);
 	}
 
-	public abstract int takeDamage(int incomingDamage);
+	public void setSpeed(int speed) {
+		this.speed = Math.max(speed, 0);
+	}
 
-	public int getHealth() {
+	public void setDead(boolean isDead) {
+		this.isDead = isDead;
+	}
+
+	public void setReward(int reward) {
+		this.reward = Math.max(0, reward);
+	}
+	
+	public void setArmor(int armor) {
+		this.armor = Math.max(0,armor);
+	}
+	
+	//GETTER//
+	public int getPenalty() {
+		return penalty;
+	}
+
+	public int getCurrentHealth() {
 		return currentHealth;
 	}
 
@@ -41,32 +116,10 @@ public abstract class Monster {
 		return reward;
 	}
 
-	public void setHealth(int health) {
-		this.currentHealth = Math.max(health, 0);
-	}
-	
-	public void setMaxHealth(int maxHealth) {
-		this.maxHealth = Math.max(maxHealth, 0);
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = Math.max(speed, 0);
-	}
-
-	public void setDead(boolean isDead) {
-		this.isDead = isDead;
-	}
-
-	public void setReward(int reward) {
-		this.reward = Math.max(0, reward);
-	}
-
 	public int getArmor() {
 		return armor;
 	}
 
-	public void setArmor(int armor) {
-		this.armor = Math.max(0,armor);
-	}
+
 
 }
