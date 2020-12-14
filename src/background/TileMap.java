@@ -4,7 +4,7 @@ import javafx.scene.image.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class TileMap extends ImageView{
+public class TileMap extends ImageView {
 
 	private final String TILEMAP_64 = "res/map/Dirt-Grass-Path-64bit.png";
 
@@ -33,7 +33,7 @@ public class TileMap extends ImageView{
 		} else {
 			OFFSET_X_FLAG = true;
 		}
-		
+
 		if (OFFSET_Y == 0) {
 			OFFSET_Y_FLAG = false;
 		} else {
@@ -45,75 +45,67 @@ public class TileMap extends ImageView{
 	}
 
 	private int[][] generateMapArray() {
-		int[][] map = new int[][] 
-				{ 
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 7 , 1 , 1 , 1 , 1 , 6 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 },
-					{0 , 0 , 8 , 2 , 2 , 2 , 2 , 9 , 2 , 2 , 2 , 2 , 9 , 2 , 2 , 2 , 2 , 5 , 0 , 0 },
-					{0 , 0 , 0 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-					{0 , 0 , 0 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-					{0 , 0 , 0 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-					{0 , 0 , 0 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-					{0 , 0 , 7 , 1 , 1 , 1 , 1 , 9 , 1 , 1 , 1 , 1 , 9 , 1 , 1 , 1 , 1 , 6 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 },
-					{0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 , 0 , 0 , 3 , 0 , 0 , 0 , 0 , 4 , 0 , 0 },
-					{0 , 0 , 8 , 2 , 2 , 2 , 2 , 5 , 0 , 0 , 0 , 0 , 8 , 2 , 2 , 2 , 2 , 5 , 0 , 0 },
-					{0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-					{0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 }
-				};
+		int[][] map = new int[][] { 
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 7, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 4, 2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 4, 5, 5, 5, 5, 5, 5 },
+				{ 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 4, 5, 5, 5, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } 
+			};
 		return map;
 	}
-	
+
 	public void repaint() {
 		Image tileMap = new Image(TILEMAP_64);
 		byte[] buffer = new byte[64 * 64 * 4];
-        WritablePixelFormat<ByteBuffer> picFormat = WritablePixelFormat.getByteBgraInstance();
-        WritableImage paintedMap = new WritableImage(RESOLUTION_WIDTH , RESOLUTION_HEIGHT);
-        PixelWriter tileWriter = paintedMap.getPixelWriter();
-        
-        for(int x = 0; x < TILE_LENGTH_X; x++){
-            for(int y = 0; y < TILE_LENGTH_Y; y++ ){
-                switch(map[y][x]){
-                    case 0:
-                    	tileMap.getPixelReader().getPixels(384 , 64 , 64 , 64 , picFormat , buffer , 0 , 256);
-                        break;
-                    case 1:
-                    	tileMap.getPixelReader().getPixels(384 , 192 , 64 , 64 , picFormat , buffer , 0 , 256);
-                        break;
-                    case 2:
-                    	tileMap.getPixelReader().getPixels(448 , 128 , 64 , 64 , picFormat , buffer , 0 , 256);
-                        break;
-                    case 3:
-                    	tileMap.getPixelReader().getPixels(256 , 192 , 64 , 64 , picFormat , buffer , 0 , 256);
-                        break;
-                    case 4:
-                    	tileMap.getPixelReader().getPixels(192 , 192 , 64 , 64 , picFormat , buffer , 0 , 256);
-                        break;
-                    case 5:
-                    	tileMap.getPixelReader().getPixels(192 , 128 , 64 , 64 , picFormat , buffer , 0 , 256);
-                        break;
-                    case 6:
-                    	tileMap.getPixelReader().getPixels(256 , 128 , 64 , 64 , picFormat , buffer , 0 , 256);
-                        break;
-                    case 7:
-                    	tileMap.getPixelReader().getPixels(384 , 512 , 64 , 64 , picFormat , buffer , 0 , 256);
-                        break;
-                }
-                if(y == TILE_LENGTH_Y - 1 & OFFSET_Y_FLAG){
-                    tileWriter.setPixels(x * 64 , y * 64, 64 , OFFSET_Y , picFormat , buffer , 0 , 256);
-                }
-                else{
-                    tileWriter.setPixels(x * 64 , y * 64, 64 , 64 , picFormat , buffer , 0 , 256);
-                }
-            }
-        };
-        this.setImage(paintedMap);
+		WritablePixelFormat<ByteBuffer> picFormat = WritablePixelFormat.getByteBgraInstance();
+		WritableImage paintedMap = new WritableImage(RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
+		PixelWriter tileWriter = paintedMap.getPixelWriter();
+
+		for (int x = 0; x < TILE_LENGTH_X; x++) {
+			for (int y = 0; y < TILE_LENGTH_Y; y++) {
+				switch (map[y][x]) {
+				case 0:
+					tileMap.getPixelReader().getPixels(0, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 1:
+					tileMap.getPixelReader().getPixels(64, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 2:
+					tileMap.getPixelReader().getPixels(128, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 3:
+					tileMap.getPixelReader().getPixels(192, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 4:
+					tileMap.getPixelReader().getPixels(256, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 5:
+					tileMap.getPixelReader().getPixels(320, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 6:
+					tileMap.getPixelReader().getPixels(384, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 7:
+					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				}
+				if (y == TILE_LENGTH_Y - 1 & OFFSET_Y_FLAG) {
+					tileWriter.setPixels(x * 64, y * 64, 64, OFFSET_Y, picFormat, buffer, 0, 256);
+				} else {
+					tileWriter.setPixels(x * 64, y * 64, 64, 64, picFormat, buffer, 0, 256);
+				}
+			}
+		}
+		;
+		this.setImage(paintedMap);
 	}
 }
