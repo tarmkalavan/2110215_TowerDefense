@@ -1,9 +1,8 @@
 package base;
 
-public abstract class Tower {
-	
-	protected int attackDamage;
-	protected double attackSpeed;
+public abstract class Tower implements Effectable{
+
+	protected int attackSpeed;
 	protected int range;
 	protected int upgradeCost;
 	protected int sellCost;
@@ -11,83 +10,135 @@ public abstract class Tower {
 	protected int level;
 	protected double upgradeBonus;
 	protected Ammo ammo;
-	
+
 	public abstract void upgradeTower();
 
-	public Tower(int attackDamage, double attackSpeed, int range,
-			   int upgradeCost, int sellCost, int level, double upgradeBonus, 
-			   Ammo ammo, int splashRadius) {
+	public Tower(int attackSpeed, int range, int upgradeCost, int sellCost, int level, double upgradeBonus,
+			Ammo ammo) {
 		setAttackSpeed(attackSpeed);
 		setRange(range);
 		setUpgradeCost(upgradeCost);
 		setSellCost(sellCost);
 		setLevel(level);
 		setUpgradeBonus(upgradeBonus);
-		ammo = new Ammo(attackDamage, splashRadius);
+		setAmmo(ammo);
 	}
 	
-	public int getAttackDamage() {
-		return attackDamage;
+	//Effectable//
+	public int effect(Effectable e) {
+		int finalStat = 0;
+		if(e instanceof Tower) { //tower buffed by tower
+			Ammo receivedAmmo = ((Tower) e).getAmmo();
+			String statAffected = receivedAmmo.getBuffStat();
+			switch(statAffected) {
+			case "damage":
+				finalStat = (int) (receivedAmmo.getDamage() * receivedAmmo.getBuffRatio());
+				this.getAmmo().setDamage(finalStat);
+				break;
+			case "range":
+				finalStat = (int) (this.getRange() * receivedAmmo.getBuffRatio());
+				this.setRange(finalStat);
+				break;
+			case "attackSpeed":
+				finalStat = (int) (this.getAttackSpeed() * receivedAmmo.getBuffRatio());
+				this.setAttackSpeed(finalStat);
+				break;
+			}
+		}
+		return finalStat;
 	}
-
-	public void setAttackDamage(int attackDamage) {
-		this.attackDamage = Math.max(attackDamage, 0);
+	
+	public int revertChange(Effectable e) {
+		int finalStat = 0;
+		boolean ratioIsInt = false;
+		if(e instanceof Tower) { //tower buffed by tower
+			Ammo receivedAmmo = ((Tower) e).getAmmo();
+			String statAffected = receivedAmmo.getBuffStat();
+			ratioIsInt = (receivedAmmo.getBuffRatio() == (int) receivedAmmo.getBuffRatio());
+			switch(statAffected) {
+			case "damage":
+				finalStat = (int) (this.getAmmo().getDamage() / receivedAmmo.getBuffRatio());
+				if(!ratioIsInt) finalStat++;
+				this.getAmmo().setDamage(finalStat);
+				break;
+			case "range":
+				finalStat = (int) (this.getRange() / receivedAmmo.getBuffRatio());
+				if(!ratioIsInt) finalStat++;
+				this.setRange(finalStat);
+				break;
+			case "attackSpeed":
+				finalStat = (int) (this.getAttackSpeed() / receivedAmmo.getBuffRatio());
+				if(!ratioIsInt) finalStat++;
+				this.setAttackSpeed(finalStat);
+				break;
+			}
+		}
+		return finalStat;
 	}
-
-	public double getAttackSpeed() {
-		return attackSpeed;
-	}
-
-	public void setAttackSpeed(double attackSpeed) {
-		this.attackSpeed = Math.max(attackSpeed,0.0);
-	}
-
-	public int getRange() {
-		return range;
+	
+	//SETTER//
+	public void setAttackSpeed(int attackSpeed) {
+		this.attackSpeed = Math.max(attackSpeed, 0);
 	}
 
 	public void setRange(int range) {
 		this.range = Math.max(range, 0);
 	}
 
-	public int getUpgradeCost() {
-		return upgradeCost;
-	}
-
 	public void setUpgradeCost(int upgradeCost) {
 		this.upgradeCost = Math.max(upgradeCost, 0);
-	}
-
-	public int getSellCost() {
-		return sellCost;
 	}
 
 	public void setSellCost(int sellCost) {
 		this.sellCost = Math.max(sellCost, 0);
 	}
 
-	public int getBuyCost() {
-		return buyCost;
-	}
-
 	public void setBuyCost(int buyCost) {
 		this.buyCost = Math.max(sellCost, 0);
-	}
-
-	public int getLevel() {
-		return level;
 	}
 
 	public void setLevel(int level) {
 		this.level = Math.max(level, 0);
 	}
 
-	public double getUpgradeBonus() {
-		return upgradeBonus;
-	}
-
 	public void setUpgradeBonus(double upgradeBonus) {
 		this.upgradeBonus = Math.max(upgradeBonus, 0.0);
+	}
+	
+	public void setAmmo(Ammo ammo) {
+		this.ammo.setDamage(ammo.getDamage());
+		this.ammo.setBuffRatio(ammo.getBuffRatio());
+		this.ammo.setBuffStat(ammo.getBuffStat());
+		this.ammo.setSplashRadius(ammo.getSplashRadius());
+	}
+	
+	//GETTER//
+	public int getAttackSpeed() {
+		return attackSpeed;
+	}
+
+	public int getRange() {
+		return range;
+	}
+
+	public int getUpgradeCost() {
+		return upgradeCost;
+	}
+
+	public int getSellCost() {
+		return sellCost;
+	}
+
+	public int getBuyCost() {
+		return buyCost;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public double getUpgradeBonus() {
+		return upgradeBonus;
 	}
 
 	public Ammo getAmmo() {
