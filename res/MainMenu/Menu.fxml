@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-image: url('/GameMap/MainMenu.png');" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainMenuController">
    <children>
       <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -28,8 +27,8 @@
             <VBox prefHeight="200.0" prefWidth="256.0" />
             <HBox alignment="BOTTOM_RIGHT" prefHeight="800.0" prefWidth="256.0" spacing="25.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" text="Mute" />
-                  <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" text="Exit" />
+                  <Button fx:id="muteButton" mnemonicParsing="false" onAction="#muteSound" prefHeight="64.0" prefWidth="64.0" text="Mute" />
+                  <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitTheGame" prefHeight="64.0" prefWidth="64.0" text="Exit" />
                </children>
                <padding>
                   <Insets bottom="25.0" right="25.0" />
