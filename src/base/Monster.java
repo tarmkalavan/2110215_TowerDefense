@@ -17,44 +17,42 @@ public abstract class Monster implements Effectable{
 		setSpeed(speed);
 		setArmor(armor);
 		setDead(false);
-		setPenalty(1);
+		setPenalty(penalty);
 	}
 	public abstract int takeDamage(int incomingDamage);
 	
 	//Effectable//
-	public int effect(Effectable e) {
+	public int effect(Castable e) {
 		int finalStat = 0;
 		if(e instanceof Tower) { //monster debuffed by tower
-			Ammo receivedAmmo = ((Tower) e).getAmmo();
-			String statAffected = receivedAmmo.getBuffStat();
+			String statAffected = ((Tower) e).getBuffStat();
 			switch(statAffected) {
 			case "armor":
-				finalStat = (int) (this.getArmor() * receivedAmmo.getBuffRatio());
+				finalStat = (int) (this.getArmor() * ((Tower) e).getBuffRatio());
 				this.setArmor(finalStat);
 				break;
 			case "speed":
-				finalStat = (int) (this.getSpeed() * receivedAmmo.getBuffRatio());
+				finalStat = (int) (this.getSpeed() * ((Tower) e).getBuffRatio());
 				this.setSpeed(finalStat);
 				break;
 			}
 		}
 		return finalStat;
 	}
-	public int revertChange(Effectable e) {
+	public int revertChange(Castable e) {
 		int finalStat = 0;
 		boolean ratioIsInt = false;
 		if(e instanceof Tower) { //revert (monster debuffed by tower)
-			Ammo receivedAmmo = ((Tower) e).getAmmo();
-			String statAffected = receivedAmmo.getBuffStat();
-			ratioIsInt = (receivedAmmo.getBuffRatio() == (int) receivedAmmo.getBuffRatio());
+			String statAffected = ((Tower) e).getBuffStat();
+			ratioIsInt = (((Tower) e).getBuffRatio() == (int) ((Tower) e).getBuffRatio());
 			switch(statAffected) {
 			case "armor":
-				finalStat = (int) (this.getArmor() / receivedAmmo.getBuffRatio());
+				finalStat = (int) (this.getArmor() / ((Tower) e).getBuffRatio());
 				if(!ratioIsInt) finalStat++;
 				this.setArmor(finalStat);
 				break;
 			case "speed":
-				finalStat = (int) (this.getSpeed() / receivedAmmo.getBuffRatio());
+				finalStat = (int) (this.getSpeed() / ((Tower) e).getBuffRatio());
 				if(!ratioIsInt) finalStat++;
 				this.setSpeed(finalStat);
 				break;

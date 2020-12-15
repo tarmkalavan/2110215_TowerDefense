@@ -3,13 +3,19 @@ package monster;
 import base.Monster;
 
 public class BossMonster extends Monster{
+	private int barrier;
 	
-	public BossMonster(int maxHealth, int armor, int speed, int reward) {
+	public BossMonster(int maxHealth, int armor, int speed, int reward, int barrier) {
 		super(maxHealth,armor,speed,reward);
-		penalty = 5;
+		setPenalty(5);
+		setBarrier(barrier);
 	}
 	
 	public int takeDamage(int incomingDamage) {
+		if(barrier > 0) { //barrier must be broken before damaging the boss
+			barrier--;
+			return 0;
+		}
 		int damageTaken = incomingDamage - armor;
 		setCurrentHealth(getCurrentHealth() - damageTaken);
 		if(getCurrentHealth() == 0) { //monster slained
@@ -18,4 +24,14 @@ public class BossMonster extends Monster{
 		}
 		return damageTaken;
 	}
+	
+	public int getBarrier() {
+		return barrier;
+	}
+
+	public void setBarrier(int barrier) {
+		this.barrier = Math.max(barrier, 0);
+	}
+
+
 }

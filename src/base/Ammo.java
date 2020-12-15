@@ -1,15 +1,17 @@
 package base;
 
+
+// ******** UNUSED ***********//
 public class Ammo {
 	private int damage;
 	private int splashRadius;
-	//protected String damageType; // ??
+	protected String damageType; // ??
 	private String buffStat;
 	private double buffRatio;
 
-	public Ammo(int damage, int splashRadius, String buffStat, double buffRatio) {
+	public Ammo(int damage, String buffStat, double buffRatio) {
 		setDamage(damage);
-		setSplashRadius(splashRadius);
+		//setSplashRadius(splashRadius);
 		setBuffStat(buffStat);
 		setBuffRatio(buffRatio);
 	}

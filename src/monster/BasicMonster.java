@@ -6,7 +6,7 @@ public class BasicMonster extends Monster{
 
 	public BasicMonster(int health, int armor, int speed, int reward) {
 		super(health,armor,speed,reward);
-		penalty = 1;
+		setPenalty(1);
 	}
 	
 	public int takeDamage(int incomingDamage) {
