@@ -1,12 +1,12 @@
 package monster;
 
 import base.*;
+import logic.GameLogic;
 
 public class BasicMonster extends Monster{
 
 	public BasicMonster(int health, int armor, int speed, int reward) {
 		super(health,armor,speed,reward);
-		setPenalty(1);
 	}
 	
 	public int takeDamage(int incomingDamage) {
@@ -14,7 +14,7 @@ public class BasicMonster extends Monster{
 		setCurrentHealth(getCurrentHealth() - damageTaken);
 		if(getCurrentHealth() == 0) { //monster was slained
 			setDead(true);
-			//dropCoin(); //*****
+			GameLogic.dropCoin(this);
 		}
 		return damageTaken;
 	}

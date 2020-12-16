@@ -1,5 +1,11 @@
 package base;
 
+import java.util.ArrayList;
+
+import logic.GameLogic;
+import monster.BasicMonster;
+import tower.BombardTower;
+
 public abstract class Tower implements Effectable {
 
 	protected int damage;
@@ -29,6 +35,36 @@ public abstract class Tower implements Effectable {
 
 	public abstract void upgradeTower();
 	
+	public ArrayList<Effectable> findTarget(){
+		//for all coords of monster, find the first monster within range
+		//add the first monster to ArrayList
+		ArrayList<Effectable> targetList = new ArrayList<>();
+		return targetList;
+	}
+	
+	public Effectable shoot() { //return the target
+		//search for target, can be either tower or monster
+		Monster target = new BasicMonster(100, 10, 10, 15); //health, armor, speed, reward
+		//create projectile
+		//deal damage (when projectile reached target)
+		if(target instanceof Monster) {
+			target.takeDamage(this.getDamage());
+			if(!target.isDead()) { //if survive
+				if(this instanceof Castable) { //if tower is a castable tower
+					target.effect((Castable) this);
+					//after delay
+					target.revertChange((Castable) this);
+				}
+				if(this instanceof BombardTower) {
+					((BombardTower) this).explode();
+				}
+			}
+		}
+		//remove if monster is slained
+		//apply buff/debuff/explode
+		return target;
+	}
+	
 	// Effectable//
 	public int effect(Castable e) {
 		int finalStat = 0;
@@ -55,7 +91,7 @@ public abstract class Tower implements Effectable {
 	public int revertChange(Castable e) {
 		int finalStat = 0;
 		boolean ratioIsInt = false;
-		if (e instanceof Tower) { // revert (this tower buffed by tower)
+		if (e instanceof Tower) { // revert changes from (this tower buffed by tower)
 			String statAffected = ((Tower) e).getBuffStat();
 			ratioIsInt = (((Tower) e).getBuffRatio() == (int) ((Tower) e).getBuffRatio());
 			switch (statAffected) {

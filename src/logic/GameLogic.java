@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.ArrayList;
+
 import base.*;
 
 public class GameLogic {
@@ -7,12 +9,26 @@ public class GameLogic {
 	private static int lives = 20; //20 = starting lives
 	private static boolean isGameOver = false;
 	private static final int TOWER_LEVEL_CAP = 3; 
+	private static ArrayList<Monster> monsterList = new ArrayList<>();
+	private static ArrayList<Tower> towerList = new ArrayList<>();
 	
 	//method 1
 	//if monster reach the end, decrease live -->(note) no need for penalty, check if boss/basic monster
+	public int aliveMonsterCount() {
+		int count = 0;
+		for (Monster monster : monsterList) {
+			if (!monster.isDead()) {
+				count++;
+			}
+		}
+		return count;
+	}
 	
 	//method 2
 	//check game state; playing, win, lose 
+	public boolean hasWon() {
+		return (lives > 0) && (isGameOver);
+	}
 	
 	public void buyTower(Tower tower) {
 		if(tower.getBuyCost() > money) return; //not enough money
@@ -26,6 +42,10 @@ public class GameLogic {
 		money -= tower.getUpgradeCost();
 		tower.upgradeTower();
 		if(tower.getLevel() < TOWER_LEVEL_CAP ) tower.setLevel(tower.getLevel() + 1);
+	}
+	
+	public static void dropCoin(Monster monster) {
+		money += monster.getReward();
 	}
 	
 	//GETTER

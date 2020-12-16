@@ -1,5 +1,7 @@
 package tower;
 
+import java.util.ArrayList;
+
 import base.*;
 
 public class ArcaneTower extends Tower implements Castable{
@@ -17,6 +19,14 @@ public class ArcaneTower extends Tower implements Castable{
 		// TODO Auto-generated method stub
 		setBuffRatio(buffRatio + 0.15);
 		setRange((int) (range * upgradeBonus));
+	}
+	
+	@Override
+	public ArrayList<Effectable> findTarget(){
+		//for all coords of "tower" within range
+		//and them all
+		ArrayList<Effectable> targetList = new ArrayList<>();
+		return targetList;
 	}
 
 	//SETTER//

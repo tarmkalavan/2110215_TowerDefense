@@ -7,7 +7,6 @@ public class BossMonster extends Monster{
 	
 	public BossMonster(int maxHealth, int armor, int speed, int reward, int barrier) {
 		super(maxHealth,armor,speed,reward);
-		setPenalty(5);
 		setBarrier(barrier);
 	}
 	

@@ -7,7 +7,6 @@ public abstract class Monster implements Effectable{
 	protected int speed;
 	protected int reward;
 	protected int armor;
-	protected int penalty;
 	protected boolean isDead;
 
 	public Monster(int maxHealth, int armor, int speed, int reward) {
@@ -17,7 +16,6 @@ public abstract class Monster implements Effectable{
 		setSpeed(speed);
 		setArmor(armor);
 		setDead(false);
-		setPenalty(penalty);
 	}
 	public abstract int takeDamage(int incomingDamage);
 	
@@ -62,9 +60,6 @@ public abstract class Monster implements Effectable{
 	}
 	
 	//SETTER//
-	public void setPenalty(int penalty) {
-		this.penalty = Math.max(penalty, 0);
-	}
 	public void setCurrentHealth(int health) {
 		this.currentHealth = Math.max(health, 0);
 	}
@@ -90,10 +85,6 @@ public abstract class Monster implements Effectable{
 	}
 	
 	//GETTER//
-	public int getPenalty() {
-		return penalty;
-	}
-
 	public int getCurrentHealth() {
 		return currentHealth;
 	}

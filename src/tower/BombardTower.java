@@ -8,12 +8,13 @@ public class BombardTower extends Tower{
 	
 	public BombardTower() {
 		super(40,3,10,120,50,250,1.5);
-		setSplashDamage((int) (damage/5));
+		setSplashDamage((int) (damage/3));
 		setSplashRadius(1);
 	}
 	
 	public void explode() {
 		//deal damage to monsters in splashRadius
+		//for monster within range, takedamage(splash damage)
 	}
 
 	public void upgradeTower() {
