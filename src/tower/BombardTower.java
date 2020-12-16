@@ -5,11 +5,13 @@ import base.*;
 public class BombardTower extends Tower{
 	private int splashDamage;
 	private int splashRadius;
+	private final double UPGRADE_BONUS;
 	
 	public BombardTower() {
-		super(40,3,10,120,50,250,1.5);
+		super(40,3,10,120,50,250);
 		setSplashDamage((int) (damage/3));
 		setSplashRadius(1);
+		UPGRADE_BONUS = 1.5;
 	}
 	
 	public void explode() {
@@ -18,7 +20,7 @@ public class BombardTower extends Tower{
 	}
 
 	public void upgradeTower() {
-		setDamage((int) (damage * upgradeBonus));
+		setDamage((int) (damage * UPGRADE_BONUS));
 		setSplashDamage((int) damage / 4);
 	}
 

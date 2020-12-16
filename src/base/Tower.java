@@ -15,13 +15,12 @@ public abstract class Tower implements Effectable {
 	protected int sellCost;
 	protected int buyCost;
 	protected int level;
-	protected double upgradeBonus;
+	//protected double upgradeBonus;
 	// protected Ammo ammo;
 
 
 
-	public Tower(int damage, int attackSpeed, int range, int buyCost, int sellCost, int upgradeCost,
-			double upgradeBonus) {
+	public Tower(int damage, int attackSpeed, int range, int buyCost, int sellCost, int upgradeCost) {
 		setDamage(damage);
 		setAttackSpeed(attackSpeed);
 		setRange(range);
@@ -29,7 +28,7 @@ public abstract class Tower implements Effectable {
 		setBuyCost(buyCost);
 		setSellCost(sellCost);
 		setLevel(1);
-		setUpgradeBonus(upgradeBonus);
+		//setUpgradeBonus(upgradeBonus);
 		// setAmmo(ammo);
 	}
 
@@ -69,18 +68,18 @@ public abstract class Tower implements Effectable {
 	public int effect(Castable e) {
 		int finalStat = 0;
 		if (e instanceof Tower) { // this tower buffed by tower
-			String statAffected = ((Tower) e).getBuffStat();
+			String statAffected = ((Tower) e).getBUFF_STAT();
 			switch (statAffected) {
 			case "damage":
-				finalStat = (int) (this.getDamage() * ((Tower) e).getBuffRatio());
+				finalStat = (int) (this.getDamage() * ((Tower) e).getBUFF_RATIO());
 				this.setDamage(finalStat);
 				break;
 			case "range":
-				finalStat = (int) (this.getRange() * ((Tower) e).getBuffRatio());
+				finalStat = (int) (this.getRange() * ((Tower) e).getBUFF_RATIO());
 				this.setRange(finalStat);
 				break;
 			case "attackSpeed":
-				finalStat = (int) (this.getAttackSpeed() * ((Tower) e).getBuffRatio());
+				finalStat = (int) (this.getAttackSpeed() * ((Tower) e).getBUFF_RATIO());
 				this.setAttackSpeed(finalStat);
 				break;
 			}
@@ -92,19 +91,19 @@ public abstract class Tower implements Effectable {
 		int finalStat = 0;
 		boolean ratioIsInt = false;
 		if (e instanceof Tower) { // revert changes from (this tower buffed by tower)
-			String statAffected = ((Tower) e).getBuffStat();
-			ratioIsInt = (((Tower) e).getBuffRatio() == (int) ((Tower) e).getBuffRatio());
+			String statAffected = ((Tower) e).getBUFF_STAT();
+			ratioIsInt = (((Tower) e).getBUFF_RATIO() == (int) ((Tower) e).getBUFF_RATIO());
 			switch (statAffected) {
 			case "damage":
-				finalStat = (int) (this.getDamage() / ((Tower) e).getBuffRatio());
+				finalStat = (int) (this.getDamage() / ((Tower) e).getBUFF_RATIO());
 				this.setDamage(finalStat);
 				break;
 			case "range":
-				finalStat = (int) (this.getRange() / ((Tower) e).getBuffRatio());
+				finalStat = (int) (this.getRange() / ((Tower) e).getBUFF_RATIO());
 				this.setRange(finalStat);
 				break;
 			case "attackSpeed":
-				finalStat = (int) (this.getAttackSpeed() / ((Tower) e).getBuffRatio());
+				finalStat = (int) (this.getAttackSpeed() / ((Tower) e).getBUFF_RATIO());
 				this.setAttackSpeed(finalStat);
 				break;
 			}
@@ -144,9 +143,9 @@ public abstract class Tower implements Effectable {
 		this.level = Math.max(level, 0);
 	}
 
-	public void setUpgradeBonus(double upgradeBonus) {
-		this.upgradeBonus = Math.max(upgradeBonus, 0.0);
-	}
+//	public void setUpgradeBonus(double upgradeBonus) {
+//		this.upgradeBonus = Math.max(upgradeBonus, 0.0);
+//	}
 
 //	public void setAmmo(Ammo ammo) {
 //		this.ammo.setDamage(ammo.getDamage());
@@ -184,15 +183,15 @@ public abstract class Tower implements Effectable {
 		return level;
 	}
 
-	public double getUpgradeBonus() {
-		return upgradeBonus;
-	}
+//	public double getUpgradeBonus() {
+//		return upgradeBonus;
+//	}
 
-	public String getBuffStat() {
+	public String getBUFF_STAT() {
 		return "";
 	}
 	
-	public double getBuffRatio() {
+	public double getBUFF_RATIO() {
 		return 1.0;
 	}
 //	public Ammo getAmmo() {

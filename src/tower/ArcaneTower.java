@@ -5,20 +5,24 @@ import java.util.ArrayList;
 import base.*;
 
 public class ArcaneTower extends Tower implements Castable{
-	private final String buffStat;
+	private final String BUFF_STAT;
 	private double buffRatio;
+	private final double RANGE_BONUS;
+	private final double RATIO_BONUS;
 	
 	public ArcaneTower() {
-		super(0,3,10,150,50,340,2);
-		buffStat = "attackSpeed";
+		super(0,3,10,150,50,340);
+		BUFF_STAT = "attackSpeed";
 		buffRatio = 1.2;
+		RANGE_BONUS = 2;
+		RATIO_BONUS = 0.15;
 	}
 
 	@Override
 	public void upgradeTower() {
 		// TODO Auto-generated method stub
-		setBuffRatio(buffRatio + 0.15);
-		setRange((int) (range * upgradeBonus));
+		setBuffRatio(buffRatio + RATIO_BONUS);
+		setRange((int) (range * RANGE_BONUS));
 	}
 	
 	@Override
@@ -34,15 +38,12 @@ public class ArcaneTower extends Tower implements Castable{
 		this.buffRatio = buffRatio;
 	}
 	
+	//GETTER//
 	public double getBuffRatio() {
 		return buffRatio;
 	}
 
-	@Override
-	public void cast() {
-		// TODO Auto-generated method stub
-		
+	public String getBUFF_STAT() {
+		return BUFF_STAT;
 	}
-
-
 }

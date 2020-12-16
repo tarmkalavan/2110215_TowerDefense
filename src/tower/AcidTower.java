@@ -5,19 +5,21 @@ import java.util.ArrayList;
 import base.*;
 
 public class AcidTower extends Tower implements Castable{
-	private final String buffStat;
+	private final String BUFF_STAT;
 	private double buffRatio;
+	private final double UPGRADE_BONUS;
 	
 	public AcidTower() {
-		super(10,3,8,120,100,300,0.9);
-		buffStat = "armor";
+		super(10,3,8,120,100,300);
+		BUFF_STAT = "armor";
 		buffRatio = 0.8;
+		UPGRADE_BONUS = 2;
 	}
 
 	@Override
 	public void upgradeTower() {
 		// TODO Auto-generated method stub
-		double newBuffRatio = buffRatio * upgradeBonus;
+		double newBuffRatio = buffRatio * UPGRADE_BONUS;
 		newBuffRatio = Math.round(newBuffRatio * 100.0) / 100.0; //round to 2dp.
 		setBuffRatio(newBuffRatio);
 	}
@@ -35,17 +37,16 @@ public class AcidTower extends Tower implements Castable{
 	}
 	
 	//GETTER//
+	public String getBUFF_STAT() {
+		return BUFF_STAT;
+	}
+
+	public double getUPGRADE_BONUS() {
+		return UPGRADE_BONUS;
+	}
+
 	public double getBuffRatio() {
 		return buffRatio;
 	}
-
-	public String getBuffStat() {
-		return buffStat;
-	}
-
-	@Override
-	public void cast() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
