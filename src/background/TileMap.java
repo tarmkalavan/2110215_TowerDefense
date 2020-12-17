@@ -64,7 +64,8 @@ public class TileMap extends ImageView {
 	}
 
 	public void repaint() {
-		Image tileMap = new Image(TILEMAP_64);
+		
+		Image tileMap = new Image(ClassLoader.getSystemResource("GameMap/Dirt-Grass-Path-64bit.png").toString());
 		byte[] buffer = new byte[64 * 64 * 4];
 		WritablePixelFormat<ByteBuffer> picFormat = WritablePixelFormat.getByteBgraInstance();
 		WritableImage paintedMap = new WritableImage(RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
