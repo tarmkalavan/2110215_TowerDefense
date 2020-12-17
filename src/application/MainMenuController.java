@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 
+import background.GameManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,17 +20,20 @@ public class MainMenuController {
 	
 	@FXML
 	private Button creditsButton;
+	
+	@FXML
+	private Button startButton;
 
+	public void exitTheGame() {
+		System.exit(1);
+	}
+	
 	public void muteSound() {
 		if (Main.sound.isPlaying()) {
 			Main.sound.stop();
 		} else {
 			Main.sound.play();
 		}
-	}
-
-	public void exitTheGame() {
-		System.exit(1);
 	}
 
 	public void showCredits() {
@@ -44,5 +48,10 @@ public class MainMenuController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void startGame() {
+		GameManager manager = new GameManager();
+		manager.createGameMap();
 	}
 }

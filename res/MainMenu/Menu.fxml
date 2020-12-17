@@ -15,7 +15,7 @@
             <VBox prefHeight="200.0" prefWidth="256.0" />
             <VBox alignment="BOTTOM_CENTER" prefHeight="800.0" prefWidth="256.0" spacing="16.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="85.0" prefWidth="256.0" style="-fx-background-image: url('/GameMap/Button.png');" text="Start" textFill="#eaff2f">
+                  <Button fx:id="startButton" mnemonicParsing="false" onAction="#startGame" prefHeight="85.0" prefWidth="256.0" style="-fx-background-image: url('/GameMap/Button.png');" text="Start" textFill="#eaff2f">
                      <font>
                         <Font name="System Bold" size="40.0" />
                      </font></Button>

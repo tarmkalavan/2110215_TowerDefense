@@ -9,8 +9,7 @@ import javafx.scene.media.AudioClip;
 
 public class Main extends Application {
 
-	public static AudioClip sound = new AudioClip(
-			ClassLoader.getSystemResource("GameMap/Wild Boar's Inn.mp3").toString());
+	public static AudioClip sound = new AudioClip(ClassLoader.getSystemResource("GameMap/Wild Boar's Inn.mp3").toString());
 
 	@Override
 	public void start(Stage stage) {
