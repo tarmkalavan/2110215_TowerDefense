@@ -14,14 +14,36 @@ public class GameLogic {
 	
 	//method 1
 	//if monster reach the end, decrease live -->(note) no need for penalty, check if boss/basic monster
-	public int aliveMonsterCount() {
-		int count = 0;
-		for (Monster monster : monsterList) {
-			if (!monster.isDead()) {
-				count++;
-			}
+	
+	
+	public static ArrayList<Tower> towersInRange(Tower attackingTower){
+		ArrayList<Tower> targetList = new ArrayList<>();
+		int towerMinRangeX = attackingTower.getX() - attackingTower.getRange();
+		int towerMinRangeY = attackingTower.getY() - attackingTower.getRange();
+		int towerMaxRangeX = attackingTower.getX() + attackingTower.getRange();
+		int towerMaxRangeY = attackingTower.getY() + attackingTower.getRange();
+		for(Tower targetMonster : towerList) {
+			if(targetMonster.getX() > towerMinRangeX && targetMonster.getX() < towerMaxRangeX
+				&& targetMonster.getY() > towerMinRangeY && targetMonster.getY() < towerMaxRangeY){
+					targetList.add(targetMonster);
+				}
 		}
-		return count;
+		return targetList;
+	}
+	
+	public static ArrayList<Monster> monstersInRange(Tower attackingTower){
+		ArrayList<Monster> targetList = new ArrayList<>();
+		int towerMinRangeX = attackingTower.getX() - attackingTower.getRange();
+		int towerMinRangeY = attackingTower.getY() - attackingTower.getRange();
+		int towerMaxRangeX = attackingTower.getX() + attackingTower.getRange();
+		int towerMaxRangeY = attackingTower.getY() + attackingTower.getRange();
+		for(Monster targetMonster : monsterList) {
+			if(targetMonster.getX() > towerMinRangeX && targetMonster.getX() < towerMaxRangeX
+					&& targetMonster.getY() > towerMinRangeY && targetMonster.getY() < towerMaxRangeY){
+						targetList.add(targetMonster);
+					}
+			}
+		return targetList;
 	}
 	
 	//method 2
@@ -33,9 +55,13 @@ public class GameLogic {
 	public void buyTower(Tower tower) {
 		if(tower.getBuyCost() > money) return; //not enough money
 		money -= tower.getBuyCost();
-		//add tower to arraylist or something
+		addTower(tower);
 	}
 	
+	public void sellTower(Tower tower) {
+		money += tower.getSellCost();
+		removeTower(tower);
+	}
 	
 	public void upgradeTower(Tower tower) {
 		if(tower.getUpgradeCost() > money) return; //not enough money
@@ -47,6 +73,26 @@ public class GameLogic {
 	public static void dropCoin(Monster monster) {
 		money += monster.getReward();
 	}
+
+	public static boolean isGameOver() {
+		return isGameOver;
+	}
+		
+	public static void addMonster(Monster monster) {
+		monsterList.add(monster);
+	}
+	
+	public static void addTower(Tower tower) {
+		towerList.add(tower);
+	}
+	
+	public static void removeMonster(Monster monster) {
+		monsterList.remove(money);
+	}
+	
+	public static void removeTower(Tower tower) {
+		towerList.remove(tower);
+	}
 	
 	//GETTER
 	public static int getMoney() {
@@ -57,15 +103,11 @@ public class GameLogic {
 		return lives;
 	}
 
-	public static boolean isGameOver() {
-		return isGameOver;
-	}
-
 	public static int getTowerLevelCap() {
 		return TOWER_LEVEL_CAP;
 	}
-
-	public void sellTower(Tower tower) {
-		money += tower.getSellCost();
+	
+	public static ArrayList<Monster> getMonsterList(){
+		return monsterList;
 	}
 } 
