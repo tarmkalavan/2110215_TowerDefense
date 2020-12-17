@@ -34,6 +34,7 @@ public class MainMenuController {
 		} else {
 			Main.sound.play();
 		}
+		System.out.println("A");
 	}
 
 	public void showCredits() {
