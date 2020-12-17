@@ -8,8 +8,9 @@ public class ArcticTower extends Tower implements Castable{
 	private final double RANGE_BONUS;
 	private final double RATIO_BONUS;
 	
-	public ArcticTower() {
+	public ArcticTower(int x, int y) {
 		super(30, 7, 5, 70, 40, 150);
+		setCoord(x, y);
 		BUFF_STAT = "speed";
 		buffRatio = 0.5;
 		RATIO_BONUS = 0.1;

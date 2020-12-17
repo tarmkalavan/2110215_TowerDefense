@@ -2,12 +2,15 @@ package base;
 
 import java.util.ArrayList;
 
+import background.Coordinate;
 import logic.GameLogic;
 import monster.BasicMonster;
 import tower.BombardTower;
 
 public abstract class Tower implements Effectable {
 
+	protected Coordinate coords;
+	
 	protected int damage;
 	protected int attackSpeed;
 	protected int range;
@@ -28,6 +31,7 @@ public abstract class Tower implements Effectable {
 		setBuyCost(buyCost);
 		setSellCost(sellCost);
 		setLevel(1);
+		setCoord(0, 0);
 		//setUpgradeBonus(upgradeBonus);
 		// setAmmo(ammo);
 	}
@@ -35,33 +39,32 @@ public abstract class Tower implements Effectable {
 	public abstract void upgradeTower();
 	
 	public ArrayList<Effectable> findTarget(){
-		//for all coords of monster, find the first monster within range
-		//add the first monster to ArrayList
+		//add only the first monster to targetList
 		ArrayList<Effectable> targetList = new ArrayList<>();
+		targetList.add(GameLogic.monstersInRange(this).get(0)); //only the first monster
 		return targetList;
 	}
 	
-	public Effectable shoot() { //return the target
-		//search for target, can be either tower or monster
-		Monster target = new BasicMonster(100, 10, 10, 15); //health, armor, speed, reward
+	public void shoot() { 
+		Monster target = (Monster) findTarget().get(0);
 		//create projectile
 		//deal damage (when projectile reached target)
-		if(target instanceof Monster) {
-			target.takeDamage(this.getDamage());
-			if(!target.isDead()) { //if survive
-				if(this instanceof Castable) { //if tower is a castable tower
-					target.effect((Castable) this);
-					//after delay
-					target.revertChange((Castable) this);
-				}
-				if(this instanceof BombardTower) {
-					((BombardTower) this).explode();
-				}
+		target.takeDamage(this.getDamage());
+		if(!target.isDead()) { //if survive
+			if(this instanceof Castable) { //if tower is a castable tower
+				target.effect((Castable) this);
+				//after delay
+				target.revertChange((Castable) this);
 			}
+			if(this instanceof BombardTower) {
+				((BombardTower) this).explode(target);
+			}
+		} else {
+			
 		}
 		//remove if monster is slained
 		//apply buff/debuff/explode
-		return target;
+		//return target;
 	}
 	
 	// Effectable//
@@ -142,6 +145,10 @@ public abstract class Tower implements Effectable {
 	public void setLevel(int level) {
 		this.level = Math.max(level, 0);
 	}
+	
+	public void setCoord(int x, int y) {
+		this.coords = new Coordinate(x,y);
+	}
 
 //	public void setUpgradeBonus(double upgradeBonus) {
 //		this.upgradeBonus = Math.max(upgradeBonus, 0.0);
@@ -183,10 +190,6 @@ public abstract class Tower implements Effectable {
 		return level;
 	}
 
-//	public double getUpgradeBonus() {
-//		return upgradeBonus;
-//	}
-
 	public String getBUFF_STAT() {
 		return "";
 	}
@@ -194,6 +197,19 @@ public abstract class Tower implements Effectable {
 	public double getBUFF_RATIO() {
 		return 1.0;
 	}
+	
+	public int getX() {
+		return coords.getExactX();
+	}
+	
+	public int getY() {
+		return coords.getExactY();
+	}
+//	public double getUpgradeBonus() {
+//		return upgradeBonus;
+//	}
+
+
 //	public Ammo getAmmo() {
 //		return ammo;
 //	}

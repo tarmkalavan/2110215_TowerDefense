@@ -3,14 +3,16 @@ package tower;
 import java.util.ArrayList;
 
 import base.*;
+import logic.GameLogic;
 
 public class AcidTower extends Tower implements Castable{
 	private final String BUFF_STAT;
 	private double buffRatio;
 	private final double UPGRADE_BONUS;
 	
-	public AcidTower() {
+	public AcidTower(int x, int y) {
 		super(10,3,8,120,100,300);
+		setCoord(x, y);
 		BUFF_STAT = "armor";
 		buffRatio = 0.8;
 		UPGRADE_BONUS = 2;
@@ -26,10 +28,25 @@ public class AcidTower extends Tower implements Castable{
 	
 	@Override
 	public ArrayList<Effectable> findTarget(){
-		//for all monster in range
-		//and them all
 		ArrayList<Effectable> targetList = new ArrayList<>();
+		ArrayList<Monster> monsterInRange = GameLogic.monstersInRange(this);
+		for(Monster monster : monsterInRange) {
+			targetList.add(monster);
+		}
 		return targetList;
+	}
+	
+	@Override
+	public void shoot() {
+		for(Effectable monsterTarget : findTarget()) {
+			Monster target = (Monster) monsterTarget;
+			target.takeDamage(this.getDamage());
+			if(!target.isDead()) { //if survive
+					target.effect((Castable) this);
+					//after delay
+					target.revertChange((Castable) this);
+				}			
+		}
 	}
 	//SETTER//
 	public void setBuffRatio(double buffRatio) {

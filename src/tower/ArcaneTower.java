@@ -3,6 +3,7 @@ package tower;
 import java.util.ArrayList;
 
 import base.*;
+import logic.GameLogic;
 
 public class ArcaneTower extends Tower implements Castable{
 	private final String BUFF_STAT;
@@ -10,8 +11,9 @@ public class ArcaneTower extends Tower implements Castable{
 	private final double RANGE_BONUS;
 	private final double RATIO_BONUS;
 	
-	public ArcaneTower() {
+	public ArcaneTower(int x, int y) {
 		super(0,3,10,150,50,340);
+		setCoord(x, y);
 		BUFF_STAT = "attackSpeed";
 		buffRatio = 1.2;
 		RANGE_BONUS = 2;
@@ -27,10 +29,22 @@ public class ArcaneTower extends Tower implements Castable{
 	
 	@Override
 	public ArrayList<Effectable> findTarget(){
-		//for all coords of "tower" within range
-		//and them all
 		ArrayList<Effectable> targetList = new ArrayList<>();
+		ArrayList<Tower> towerInRange = GameLogic.towersInRange(this);
+		for(Tower tower : towerInRange) {
+			targetList.add(tower);
+		}
 		return targetList;
+	}
+	
+	@Override
+	public void shoot() {
+		for(Effectable towerTarget : findTarget()) {
+			Tower target = (Tower) towerTarget;
+			target.effect((Castable) this);
+			//after delay
+			target.revertChange((Castable) this);			
+		}
 	}
 
 	//SETTER//

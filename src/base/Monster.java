@@ -1,5 +1,7 @@
 package base;
 
+import background.Coordinate;
+
 public abstract class Monster implements Effectable{
 
 	protected int currentHealth;
@@ -8,8 +10,10 @@ public abstract class Monster implements Effectable{
 	protected int reward;
 	protected int armor;
 	protected boolean isDead;
+	protected Coordinate coords;
 
 	public Monster(int maxHealth, int armor, int speed, int reward) {
+		setCoords(0, 0);
 		setCurrentHealth(maxHealth);
 		setMaxHealth(maxHealth);
 		setReward(reward);
@@ -84,6 +88,10 @@ public abstract class Monster implements Effectable{
 		this.armor = Math.max(0,armor);
 	}
 	
+	public void setCoords(int x, int y) {
+		this.coords = new Coordinate(x,y);
+	}
+	
 	//GETTER//
 	public int getCurrentHealth() {
 		return currentHealth;
@@ -108,7 +116,13 @@ public abstract class Monster implements Effectable{
 	public int getArmor() {
 		return armor;
 	}
+	
+	public int getX() {
+		return coords.getExactX();
+	}
 
-
+	public int getY() {
+		return coords.getExactY();
+	}
 
 }
