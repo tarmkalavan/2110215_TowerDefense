@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 public class TileMap extends ImageView {
 
-	private final String TILEMAP_64 = "res/map/Dirt-Grass-Path-64bit.png";
-
 	private int[][] map;
 	private final int RESOLUTION_WIDTH;
 	private final int RESOLUTION_HEIGHT;
@@ -45,26 +43,24 @@ public class TileMap extends ImageView {
 	}
 
 	private int[][] generateMapArray() {
-		int[][] map = new int[][] { 
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+		int[][] map = new int[][] { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 3, 0, 0, 0, 7, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 3, 0, 0, 0, 4, 2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 4, 5, 5, 5, 5, 5, 5 },
-				{ 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 4, 5, 5, 5, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 8, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 8, 1, 1, 1, 2 },
+				{ 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 4 },
+				{ 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 4, 5, 5, 5, 6, 0, 0, 0, 0 },
+				{ 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 4, 5, 5, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } 
-			};
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 		return map;
 	}
 
 	public void repaint() {
-		
+
 		Image tileMap = new Image(ClassLoader.getSystemResource("GameMap/Dirt-Grass-Path-64bit.png").toString());
 		byte[] buffer = new byte[64 * 64 * 4];
 		WritablePixelFormat<ByteBuffer> picFormat = WritablePixelFormat.getByteBgraInstance();
@@ -95,10 +91,14 @@ public class TileMap extends ImageView {
 				case 6:
 					tileMap.getPixelReader().getPixels(384, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
-				case 7:
+				case 7: // Tower
+					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 8:
 					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				}
+
 				if (y == TILE_LENGTH_Y - 1 & OFFSET_Y_FLAG) {
 					tileWriter.setPixels(x * 64, y * 64, 64, OFFSET_Y, picFormat, buffer, 0, 256);
 				} else {
@@ -109,4 +109,53 @@ public class TileMap extends ImageView {
 		;
 		this.setImage(paintedMap);
 	}
+
+	public boolean isNodeOpen(int x, int y) {
+		if (map[y][x] != 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public void setNewNode(int x, int y, int value) {
+		map[y][x] = value;
+		repaint();
+	}
+
+	public ArrayList<Coordinate> getPath() {
+		ArrayList<Coordinate> path = new ArrayList<Coordinate>();
+		boolean isXAxis = false;
+		int prevY = 0;
+		int prevX = 0;
+
+		for (int y = 0; !isXAxis; y++) {
+			if (map[y][0] > 0) {
+				path.add(new Coordinate(0, y));
+				isXAxis = true;
+				prevY = y;
+			}
+		}
+
+		for (int x = 0; isXAxis; x++) {
+			if (x == TILE_LENGTH_X) {
+				path.add(new Coordinate(x - 1, prevY));
+				break;
+			}
+
+			if (map[prevY][x] != 0 & ((map[prevY][x] % 2) == 0) & x != prevX) {
+				path.add(new Coordinate(x, prevY));
+				isXAxis = false;
+				prevX = x;
+			}
+			for (int y = 0; !isXAxis; y++) {
+				if (map[y][x] != 0 & ((map[y][x] % 2) == 1) & y != prevY) {
+					path.add(new Coordinate(x, y));
+					isXAxis = true;
+					prevY = y;
+				}
+			}
+		}
+		return path;
+	}
+
 }
