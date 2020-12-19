@@ -54,6 +54,7 @@ public class GameController {
 	public void updateLabels(int timer){
         GameController.updateLabels(
         	Integer.toString(GameLogic.getLevel()) ,
+            Integer.toString(GameLogic.getLevel()) ,
             Integer.toString(GameLogic.getLives()) ,
             Integer.toString(GameLogic.getMoney()) ,
             Integer.toString(timer)

@@ -21,7 +21,7 @@ public abstract class Monster implements Effectable{
 	protected ImageView view;
 
 	public Monster(int maxHealth, int armor, int speed, int reward) {
-		setCoords(5,5);
+		setCoords(0,0);
 		setCurrentHealth(maxHealth);
 		setMaxHealth(maxHealth);
 		setReward(reward);
@@ -32,6 +32,8 @@ public abstract class Monster implements Effectable{
         moveX = true;
         nodeDirection = 1;
 		this.view = new ImageView("MainMenu/Shield.png");
+		view.setX(path.get(0).getExactX()-32);
+		view.setY(path.get(0).getExactY()-32);
 	}
 	public abstract int takeDamage(int incomingDamage);
 	
@@ -41,7 +43,7 @@ public abstract class Monster implements Effectable{
         if(moveX){
             view.setX(view.getX() + distance);
             // Reached a changing point in path , switch direction
-            if(view.getX() == path.get(nodeDirection).getExactX()){
+            if(view.getX() == path.get(nodeDirection).getExactX()-32){
                 moveX = false;
                 nodeDirection++;
                 // Traversed all changing points, path ended
@@ -53,14 +55,14 @@ public abstract class Monster implements Effectable{
         }
         // Move along the y axis
         else{
-            if(view.getY() < path.get(nodeDirection).getExactY()) {
+            if(view.getY() < path.get(nodeDirection).getExactY()-32) {
                 view.setY(view.getY() + distance);
             }
             else{
                 view.setY(view.getY() - distance);
             }
             // Reach changing point , switch direction
-            if(view.getY() == path.get(nodeDirection).getExactY()){
+            if(view.getY() == path.get(nodeDirection).getExactY()-32){
                 moveX = true;
                 nodeDirection++;
                 if(nodeDirection == path.size()){
