@@ -1,6 +1,7 @@
 package base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import background.Coordinate;
 import javafx.scene.image.ImageView;
@@ -123,7 +124,13 @@ public abstract class Monster implements Effectable{
 	}
 
 	public void setSpeed(int speed) {
-		this.speed = Math.max(speed, 0);
+		ArrayList<Integer> acceptedSpeed = new ArrayList<Integer>(Arrays.asList(1, 2, 4, 8, 16, 32));
+		if(acceptedSpeed.contains(speed)) {
+			this.speed = Math.max(speed, 1);
+		} else {
+			this.speed = 1;
+		}
+		
 	}
 
 	public void setDead(boolean isDead) {
