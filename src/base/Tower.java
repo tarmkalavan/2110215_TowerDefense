@@ -18,10 +18,6 @@ public abstract class Tower implements Effectable {
 	protected int sellCost;
 	protected int buyCost;
 	protected int level;
-	//protected double upgradeBonus;
-	// protected Ammo ammo;
-
-
 
 	public Tower(int damage, int attackCooldown, int range, int buyCost, int sellCost, int upgradeCost) {
 		setDamage(damage);
@@ -32,10 +28,10 @@ public abstract class Tower implements Effectable {
 		setSellCost(sellCost);
 		setLevel(1);
 		setCoord(0, 0);
-		//setUpgradeBonus(upgradeBonus);
-		// setAmmo(ammo);
 	}
 
+	public abstract int getSymbol();
+	
 	public abstract void upgradeTower();
 	
 	public ArrayList<Effectable> findTarget(){
@@ -47,8 +43,8 @@ public abstract class Tower implements Effectable {
 	
 	public void shoot() { 
 		Monster target = (Monster) findTarget().get(0);
-		//create projectile
-		//deal damage (when projectile reached target)
+		GameLogic.addProjectile(target,this);
+		/*
 		target.takeDamage(this.getDamage());
 		if(!target.isDead()) { //if survive
 			if(this instanceof Castable) { //if tower is a castable tower
@@ -64,17 +60,36 @@ public abstract class Tower implements Effectable {
 					
 				});
 				effectThread.start();
-				//target.effect((Castable) this);
-				//after delay
-				//target.revertChange((Castable) this);
 			}
 			if(this instanceof BombardTower) {
 				((BombardTower) this).explode(target);
 			}
 		}
-		//remove if monster is slained
-		//apply buff/debuff/explode
-		//return target;
+		*/
+	}
+	
+	public void projectileHit(Effectable target, Tower shootingTower) {
+		
+		((Monster) target).takeDamage(this.getDamage());
+		if(!((Monster) target).isDead()) { //if survive
+			if(this instanceof Castable) { //if tower is a castable tower
+				Thread effectThread = new Thread(() -> {
+					try {
+						target.effect((Castable) this);
+						Thread.sleep(3000);
+						target.revertChange((Castable) this);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				});
+				effectThread.start();
+			}
+			if(this instanceof BombardTower) {
+				((BombardTower) this).explode((Monster) target);
+			}
+		}
 	}
 	
 	// Effectable//

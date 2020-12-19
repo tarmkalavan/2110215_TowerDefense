@@ -220,7 +220,7 @@ public class GameLogic {
 	
 	
 	public static void addProjectile(Effectable target, Tower shootingTower) {
-		projectileList.add(new Projectile(target, shootingTower.getX(), shootingTower.getY()));
+		projectileList.add(new Projectile(target, shootingTower));
 	}
 	
 	public static void createProjectile() {
@@ -241,6 +241,8 @@ public class GameLogic {
                     finishedProjectile.setVisible(false);
                     monsterLayer.getChildren().remove(finishedProjectile);
 
+                    //apply damage and effects
+                    
                     // Remove monster if they are dead
                     if(finishedProjectile.getTarget() instanceof Monster) {
 	                    if(((Monster) finishedProjectile.getTarget()).isDead()){

@@ -5,14 +5,12 @@ import javafx.scene.shape.Circle;
 
 public class Projectile extends ImageView{
 	private Effectable target; //can be both tower & monster
-	private final int startX;
-	private final int startY;
+	private Tower shootingTower;
 	private ImageView view;
 	
-	public Projectile(Effectable target, int towerX, int towerY) {
+	public Projectile(Effectable target, Tower shootingTower) {
 		this.target = target;
-		this.startX = towerX;
-		this.startY = towerY;
+		this.shootingTower = shootingTower;
 		view = new ImageView("MainMenu/Shield.png");
 	}
 	
@@ -41,10 +39,10 @@ public class Projectile extends ImageView{
 	}
 
 	public int getStartX() {
-		return startX;
+		return shootingTower.getX();
 	}
 
 	public int getStartY() {
-		return startY;
+		return shootingTower.getY();
 	}
 }
