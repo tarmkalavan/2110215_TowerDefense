@@ -9,7 +9,7 @@ import javafx.scene.media.AudioClip;
 
 public class Main extends Application {
 
-	public static AudioClip sound = new AudioClip(ClassLoader.getSystemResource("GameMap/Wild Boar's Inn.mp3").toString());
+	public static AudioClip sound = new AudioClip(ClassLoader.getSystemResource("MainMenu/Wild Boar's Inn.mp3").toString());
 
 	@Override
 	public void start(Stage stage) {
@@ -20,6 +20,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root, 1280, 800);
 			stage.setScene(scene);
 			stage.setResizable(false);
+			MenuNavigator.setStage(stage);
 			stage.show();
 
 		} catch (Exception e) {

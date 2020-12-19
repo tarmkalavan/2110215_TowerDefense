@@ -84,6 +84,8 @@ public class GameLogic {
 		if(tower.getLevel() < TOWER_LEVEL_CAP ) tower.setLevel(tower.getLevel() + 1);
 	}
 	
+	
+	
 	public static void dropCoin(Monster monster) {
 		money += monster.getReward();
 	}
