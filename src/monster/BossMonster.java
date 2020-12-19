@@ -1,6 +1,7 @@
 package monster;
 
 import base.Monster;
+import logic.GameLogic;
 
 public class BossMonster extends Monster{
 	private int barrier;
@@ -24,7 +25,8 @@ public class BossMonster extends Monster{
 		setCurrentHealth(getCurrentHealth() - damageTaken);
 		if(getCurrentHealth() == 0) { //monster slained
 			setDead(true);
-			//dropCoin(); //*****
+			GameLogic.dropCoin(this);
+			GameLogic.removeMonster(this);
 		}
 		return damageTaken;
 	}

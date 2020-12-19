@@ -66,18 +66,18 @@ public class GameLogic {
 	
 	
 	
-	public void buyTower(Tower tower) {
+	public static void buyTower(Tower tower) {
 		if(tower.getBuyCost() > money) return; //not enough money
 		money -= tower.getBuyCost();
 		addTower(tower);
 	}
 	
-	public void sellTower(Tower tower) {
+	public static void sellTower(Tower tower) {
 		money += tower.getSellCost();
 		removeTower(tower);
 	}
 	
-	public void upgradeTower(Tower tower) {
+	public static void upgradeTower(Tower tower) {
 		if(tower.getUpgradeCost() > money) return; //not enough money
 		money -= tower.getUpgradeCost();
 		tower.upgradeTower();

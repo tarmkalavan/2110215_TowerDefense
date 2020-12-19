@@ -14,7 +14,7 @@ public class ArcaneTower extends Tower implements Castable{
 	public ArcaneTower(int x, int y) {
 		super(0,3,10,150,50,340);
 		setCoord(x, y);
-		BUFF_STAT = "attackSpeed";
+		BUFF_STAT = "damage";
 		buffRatio = 1.2;
 		RANGE_BONUS = 2;
 		RATIO_BONUS = 0.15;

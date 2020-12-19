@@ -60,7 +60,7 @@ public class AcidTower extends Tower implements Castable{
 	}
 	//SETTER//
 	public void setBuffRatio(double buffRatio) {
-		this.buffRatio = buffRatio;
+		this.buffRatio = Math.max(buffRatio,0.0);
 	}
 	
 	//GETTER//

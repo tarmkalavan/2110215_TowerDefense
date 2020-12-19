@@ -6,7 +6,7 @@ public class SniperTower extends Tower{
 	private final double UPGRADE_BONUS;
 	
 	public SniperTower(int x, int y) {
-		super(100,1,15,200,100,300);
+		super(100,8,15,200,100,300);
 		setCoord(x, y);
 		UPGRADE_BONUS = 2.0;
 	}
@@ -15,6 +15,6 @@ public class SniperTower extends Tower{
 	public void upgradeTower() {
 		// TODO Auto-generated method stub
 		setDamage((int) (damage * UPGRADE_BONUS));
-		setAttackSpeed(attackSpeed + 1);
+		setAttackCooldown(attackCooldown - 1);
 	}
 }

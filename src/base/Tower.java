@@ -12,7 +12,7 @@ public abstract class Tower implements Effectable {
 	protected Coordinate coords;
 	
 	protected int damage;
-	protected int attackSpeed;
+	protected int attackCooldown;
 	protected int range;
 	protected int upgradeCost;
 	protected int sellCost;
@@ -23,9 +23,9 @@ public abstract class Tower implements Effectable {
 
 
 
-	public Tower(int damage, int attackSpeed, int range, int buyCost, int sellCost, int upgradeCost) {
+	public Tower(int damage, int attackCooldown, int range, int buyCost, int sellCost, int upgradeCost) {
 		setDamage(damage);
-		setAttackSpeed(attackSpeed);
+		setAttackCooldown(attackCooldown);
 		setRange(range);
 		setUpgradeCost(upgradeCost);
 		setBuyCost(buyCost);
@@ -64,9 +64,9 @@ public abstract class Tower implements Effectable {
 					
 				});
 				effectThread.start();
-				target.effect((Castable) this);
+				//target.effect((Castable) this);
 				//after delay
-				target.revertChange((Castable) this);
+				//target.revertChange((Castable) this);
 			}
 			if(this instanceof BombardTower) {
 				((BombardTower) this).explode(target);
@@ -91,9 +91,9 @@ public abstract class Tower implements Effectable {
 				finalStat = (int) (this.getRange() * ((Tower) caster).getBUFF_RATIO());
 				this.setRange(finalStat);
 				break;
-			case "attackSpeed":
-				finalStat = (int) (this.getAttackSpeed() * ((Tower) caster).getBUFF_RATIO());
-				this.setAttackSpeed(finalStat);
+			case "attackCooldown":
+				finalStat = (int) (this.getAttackCooldown() * ((Tower) caster).getBUFF_RATIO());
+				this.setAttackCooldown(finalStat);
 				break;
 			}
 		}
@@ -115,9 +115,9 @@ public abstract class Tower implements Effectable {
 				finalStat = (int) (this.getRange() / ((Tower) caster).getBUFF_RATIO());
 				this.setRange(finalStat);
 				break;
-			case "attackSpeed":
-				finalStat = (int) (this.getAttackSpeed() / ((Tower) caster).getBUFF_RATIO());
-				this.setAttackSpeed(finalStat);
+			case "attackCooldown":
+				finalStat = (int) (this.getAttackCooldown() / ((Tower) caster).getBUFF_RATIO());
+				this.setAttackCooldown(finalStat);
 				break;
 			}
 			if(!ratioIsInt) {
@@ -132,8 +132,8 @@ public abstract class Tower implements Effectable {
 		this.damage = damage;
 	}
 
-	public void setAttackSpeed(int attackSpeed) {
-		this.attackSpeed = Math.max(attackSpeed, 0);
+	public void setAttackCooldown(int attackCooldown) {
+		this.attackCooldown = Math.max(attackCooldown, 0);
 	}
 
 	public void setRange(int range) {
@@ -176,8 +176,8 @@ public abstract class Tower implements Effectable {
 		return damage;
 	}
 
-	public int getAttackSpeed() {
-		return attackSpeed;
+	public int getAttackCooldown() {
+		return attackCooldown;
 	}
 
 	public int getRange() {

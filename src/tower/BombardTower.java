@@ -44,7 +44,7 @@ public class BombardTower extends Tower{
 
 	public void upgradeTower() {
 		setDamage((int) (damage * UPGRADE_BONUS));
-		setSplashDamage((int) damage / 4);
+		setSplashDamage((int) damage / 3);
 	}
 
 	//SETTER//

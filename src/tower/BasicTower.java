@@ -6,7 +6,7 @@ public class BasicTower extends Tower {
 	private final double UPGRADE_BONUS;
 
 	public BasicTower(int x, int y) {
-		super(20, 10, 5, 50, 30, 100);
+		super(20, 2, 5, 50, 30, 100);
 		setCoord(x, y);
 		// damage, attack speed, range, buyCost, sellCost, 
 		//upgradeCost, upgradeBonus

@@ -15,7 +15,7 @@ public class BasicMonster extends Monster{
 	}
 	
 	public int takeDamage(int incomingDamage) {
-		int damageTaken = incomingDamage - armor;
+		int damageTaken = Math.max(incomingDamage - armor, 0);
 		setCurrentHealth(getCurrentHealth() - damageTaken);
 		if(getCurrentHealth() == 0) { //monster was slained
 			setDead(true);
