@@ -47,7 +47,7 @@ public abstract class Monster implements Effectable{
                 moveX = false;
                 nodeDirection++;
                 // Traversed all changing points, path ended
-                if(nodeDirection == path.size() - 1){
+                if(nodeDirection == path.size()){
                     pathFinished = true;
                     isDead = true;
                 }

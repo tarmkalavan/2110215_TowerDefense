@@ -148,6 +148,22 @@ public class GameLogic {
 		getMonsterList().add(new BasicMonster(health,1,1,1));
         monsterLayer.getChildren().add(getMonsterList().get(getMonsterList().size() - 1).getView());
     }
+	
+    private synchronized void removeMonster(Monster monster){
+        // Punish player
+        if (monster.isPathFinished()){
+            setLives((getLives()) - 1);
+        }
+        // Reward player
+        else{
+            setMoney((getMoney()) + monster.getReward());
+        }
+
+        // Remove monsters graphic and reference
+        monster.getView().setVisible(false);
+        getMonsterList().remove(monster);
+
+    }
 
 	
 	
@@ -230,10 +246,6 @@ public class GameLogic {
 	
 	public static void addTower(Tower tower) {
 		towerList.add(tower);
-	}
-	
-	public static void removeMonster(Monster monster) {
-		monsterList.remove(money);
 	}
 	
 	public static void removeTower(Tower tower) {
