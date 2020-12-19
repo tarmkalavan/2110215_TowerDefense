@@ -2,13 +2,13 @@ package application;
 
 import java.io.IOException;
 
-import background.GameManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import logic.GameLogic;
 
 public class MainMenuController {
 
@@ -51,7 +51,7 @@ public class MainMenuController {
 	}
 	
 	public void startGame() {
-		GameManager manager = new GameManager();
+		GameLogic manager = new GameLogic();
 		manager.createGameMap();
 	}
 }

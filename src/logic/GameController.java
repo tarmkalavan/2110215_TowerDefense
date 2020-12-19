@@ -1,4 +1,4 @@
-package background;
+package logic;
 
 import application.Main;
 import javafx.fxml.FXML;
@@ -24,15 +24,15 @@ public class GameController {
     @FXML
     private Button exit;
 	@FXML
-    private Label currentScore;
+    private static Label currentScore;
     @FXML
-    private Label currentResources;
+    private static Label currentResources;
     @FXML
-    private Label currentLevel;
+    private static Label currentLevel;
     @FXML
-    private Label currentLives;
+    private static Label currentLives;
     @FXML
-    private Label timeLabel;
+    private static Label timeLabel;
     
     public void muteSound() {
 		if (Main.sound.isPlaying()) {
@@ -46,12 +46,12 @@ public class GameController {
 		System.exit(1);
 	}
     
-    public void updateLabels(String currentLevel , String currentLives , String currentResources , String currentScore , String timeLabel){
-        this.currentLevel.setText(currentLevel);
-        this.currentLives.setText(currentLives);
-        this.currentResources.setText(currentResources);
-        this.currentScore.setText(currentScore);
-        this.timeLabel.setText(timeLabel);
+    public static void updateLabels(String currentLevel1 , String currentLives1 , String currentResources1 , String currentScore1 , String timeLabel1){
+        currentLevel.setText(currentLevel1);
+        currentLives.setText(currentLives1);
+        currentResources.setText(currentResources1);
+        currentScore.setText(currentScore1);
+        timeLabel.setText(timeLabel1);
     }
     
 }
