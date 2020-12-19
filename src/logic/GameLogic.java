@@ -8,7 +8,6 @@ import application.MenuNavigator;
 import background.TileMap;
 import base.*;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.fxml.FXMLLoader;
@@ -142,7 +141,7 @@ public class GameLogic {
         monsterLayer.getChildren().add(getMonsterList().get(getMonsterList().size() - 1).getView());
     }
 	
-    private synchronized void removeMonster(Monster monster){
+    public synchronized static void removeMonster(Monster monster){
         // Punish player
         if (monster.isPathFinished()){
             setLives((getLives()) - 1);
