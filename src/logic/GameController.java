@@ -61,18 +61,24 @@ public class GameController {
         this.gameLogic = gameLogic;
     }
 	
+	public void buyTower(){
+		System.out.println("here2");
+        gameLogic.getGameScene().setOnMouseClicked(new buyTower());
+        System.out.println("here3");
+    }
+	
 	class buyTower implements EventHandler<MouseEvent> {
         public void handle(MouseEvent me) {
-        	int xTile = (int)(me.getX() / 64);
-            int yTile = (int)(me.getY() / 64);
+        	System.out.println("here1");
+        	int xTile = (int)(me.getX());
+            int yTile = (int)(me.getY());
             gameLogic.buyTower(xTile,yTile,new AcidTower(xTile,yTile));
             }
     }
 	
-	public void buyTower(){
-        gameLogic.getGameScene().setOnMouseClicked(new buyTower());
-    }
 
+
+	/*
 	public void updateLabels(int timer){
         GameController.updateLabels(
             Integer.toString(GameLogic.getLevel()) ,
@@ -81,6 +87,6 @@ public class GameController {
             Integer.toString(timer)
         	);
 	}
-
+*/
 
 }

@@ -152,7 +152,7 @@ public class GameLogic {
                 }
                 fpstimer.set(timestamp / 10000000);
                 secondUpdate.set(timestamp / 1000000000);
-                if(level == 7) {
+                if(level == 8) {
                 	System.out.println("game end");
                 	if(monsterList.isEmpty()) {
                 		this.stop();
@@ -242,7 +242,7 @@ public class GameLogic {
                     monsterLayer.getChildren().remove(finishedProjectile);
 
                     //apply damage and effects
-                    
+                    projectile.getShootingTower().projectileHit(projectile.getTarget(),projectile.getShootingTower());
                     // Remove monster if they are dead
                     if(finishedProjectile.getTarget() instanceof Monster) {
 	                    if(((Monster) finishedProjectile.getTarget()).isDead()){

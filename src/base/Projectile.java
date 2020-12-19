@@ -18,6 +18,9 @@ public class Projectile extends ImageView{
 		return target;
 	}
 
+	public Tower getShootingTower() {
+		return shootingTower;
+	}
 	public int getTargetX() {
 		if (target instanceof Monster) {
 			return ((Monster) target).getX();
