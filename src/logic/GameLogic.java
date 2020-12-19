@@ -19,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -26,6 +27,7 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import monster.BasicMonster;
 import monster.BossMonster;
+import tower.BasicTower;
 
 public class GameLogic {
 	private static int money = 200; //200 = starting money
@@ -36,11 +38,19 @@ public class GameLogic {
 	private static ArrayList<Monster> monsterList = new ArrayList<>();
 	private static ArrayList<Tower> towerList = new ArrayList<>();
 	private static ArrayList<Projectile> projectileList = new ArrayList<>();
-	private  TileMap tileMap;
+	private static  TileMap tileMap;
     private static  Group monsterLayer;
-    private  Scene gameScene;
+    private  static Scene gameScene;
     private  AnimationTimer loop;
     private  GameController gameController;
+    private static Button selectedButton;
+    
+    public static void setSelectedButton(Button selectedButton) {
+		GameLogic.selectedButton = selectedButton;
+	}
+    public static Button getSelectedButton() {
+		return selectedButton;
+	}
 	
 	public static ArrayList<Tower> towersInRange(Tower attackingTower){
 		ArrayList<Tower> targetList = new ArrayList<>();
@@ -353,7 +363,7 @@ public class GameLogic {
 		return monsterLayer;
 	}
 
-	public Scene getGameScene() {
+	public static Scene getGameScene() {
 		return gameScene;
 	}
 
@@ -394,16 +404,32 @@ public class GameLogic {
 	}
 
 	public void setMonsterLayer(Group monsterLayer) {
-		this.monsterLayer = monsterLayer;
+		GameLogic.monsterLayer = monsterLayer;
 	}
 
-	public void setGameScene(Scene gameScene) {
-		this.gameScene = gameScene;
+	public static void setGameScene(Scene gameScene) {
+		GameLogic.gameScene = gameScene;
 	}
 
 	public void setLoop(AnimationTimer loop) {
 		this.loop = loop;
 	}
-	
-	
+
+	public static void buyTower(double x, double y) {
+        int xTile = (int)(x / 64);
+        int yTile = (int)(y / 64);
+
+        // Verify the node is not occupied
+        if(tileMap.isNodeOpen(xTile,yTile)){
+            // Verify the user can afford the tower
+            if(getMoney() > 0) {
+                addTower(new BasicTower(xTile, yTile));
+                setMoney(getMoney() - 0);
+                tileMap.setNewNode(xTile, yTile, 7);
+            }
+        }
+    }
+		
 }
+	
+	

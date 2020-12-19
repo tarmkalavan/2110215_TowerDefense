@@ -1,6 +1,7 @@
 package logic;
 
 import application.Main;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -39,8 +40,6 @@ public class GameController {
 	private Label currentLives;
 	@FXML
 	private Label timeLabel;
-
-	private GameLogic gameLogic;
 	
 	public void muteSound() {
 		if (Main.sound.isPlaying()) {
@@ -61,22 +60,19 @@ public class GameController {
 		this.timeLabel.setText(timeLabel1);
 	}
 	
-
-    public void setGameManager(GameLogic gameLogic){
-        this.gameLogic = gameLogic;
-    }
-	
     public void buyBasicTower(){
-        gameLogic.getGameScene().setOnMouseClicked(new basicTower());
+    	GameLogic.getGameScene().setOnMousePressed(new EventHandler<MouseEvent>() {
+    		@Override
+    		public void handle(MouseEvent t) {
+    		 
+    		double x = t.getX();
+    		double y = t.getY();
+    		 
+    		GameLogic.buyTower(x, y);
+    		}
+    	});
     }
-	class basicTower implements EventHandler<MouseEvent> {
-        public void handle(MouseEvent me) {
-        	int xTile = (int)(me.getX() / 64);
-            int yTile = (int)(me.getY() / 64);
-            gameLogic.buyTower(xTile,yTile,new BasicTower(xTile,yTile));
-            }
-    }
-	
+/*	
     public void buyAcidTower(){
         gameLogic.getGameScene().setOnMouseClicked(new acidTower());
     }
@@ -133,8 +129,8 @@ public class GameController {
     }
 	
 	
-
-	public void updateLabels(int timer){
+*/
+/*	public void updateLabels(int timer){
         GameController.updateLabels(
             Integer.toString(GameLogic.getLevel()) ,
             Integer.toString(GameLogic.getLives()) ,
@@ -142,6 +138,6 @@ public class GameController {
             Integer.toString(timer)
         	);
 	}
-
+*/
 
 }
