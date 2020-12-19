@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import base.*;
 import logic.GameLogic;
+import logic.Sprites;
 
 public class ArcaneTower extends Tower implements Castable{
 	private final String BUFF_STAT;
@@ -20,6 +21,12 @@ public class ArcaneTower extends Tower implements Castable{
 		RATIO_BONUS = 0.15;
 	}
 
+	@Override
+	public int getSymbol() {
+		// TODO Auto-generated method stub
+		return Sprites.ARCANE_TOWER;
+	}
+	
 	@Override
 	public void upgradeTower() {
 		// TODO Auto-generated method stub

@@ -1,6 +1,7 @@
 package tower;
 
 import base.Tower;
+import logic.Sprites;
 
 public class SniperTower extends Tower{
 	private final double UPGRADE_BONUS;
@@ -10,7 +11,13 @@ public class SniperTower extends Tower{
 		setCoord(x, y);
 		UPGRADE_BONUS = 2.0;
 	}
-
+	
+	@Override
+	public int getSymbol() {
+		// TODO Auto-generated method stub
+		return Sprites.SNIPER_TOWER;
+	}
+	
 	@Override
 	public void upgradeTower() {
 		// TODO Auto-generated method stub

@@ -1,6 +1,7 @@
 package tower;
 
 import base.*;
+import logic.Sprites;
 
 public class ArcticTower extends Tower implements Castable{
 	private final String BUFF_STAT;
@@ -15,6 +16,11 @@ public class ArcticTower extends Tower implements Castable{
 		UPGRADE_BONUS = 1.5;
 	}
 
+	@Override
+	public int getSymbol() {
+		// TODO Auto-generated method stub
+		return Sprites.ARCTIC_TOWER;
+	}
 	
 	@Override
 	public void upgradeTower() {
@@ -37,4 +43,6 @@ public class ArcticTower extends Tower implements Castable{
 	public double getBuffRatio() {
 		return buffRatio;
 	}
+
+
 }

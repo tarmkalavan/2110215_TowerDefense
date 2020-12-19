@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import base.*;
 import logic.GameLogic;
+import logic.Sprites;
 
 public class BombardTower extends Tower{
 	private int splashDamage;
@@ -41,7 +42,14 @@ public class BombardTower extends Tower{
 			affectedMonster.takeDamage(splashDamage);
 		}
 	}
-
+	
+	@Override
+	public int getSymbol() {
+		// TODO Auto-generated method stub
+		return Sprites.BOMBARD_TOWER;
+	}
+	
+	@Override
 	public void upgradeTower() {
 		setDamage((int) (damage * UPGRADE_BONUS));
 		setSplashDamage((int) damage / 3);

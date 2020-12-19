@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import base.*;
 import logic.GameLogic;
+import logic.Sprites;
 
 public class AcidTower extends Tower implements Castable{
 	private final String BUFF_STAT;
@@ -18,6 +19,12 @@ public class AcidTower extends Tower implements Castable{
 		UPGRADE_BONUS = 2;
 	}
 
+	@Override
+	public int getSymbol() {
+		// TODO Auto-generated method stub
+		return Sprites.ACID_TOWER;
+	}
+	
 	@Override
 	public void upgradeTower() {
 		// TODO Auto-generated method stub
