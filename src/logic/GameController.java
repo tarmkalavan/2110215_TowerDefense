@@ -1,9 +1,12 @@
 package logic;
 
 import application.Main;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import tower.AcidTower;
 
 public class GameController {
 
@@ -32,6 +35,8 @@ public class GameController {
 	@FXML
 	private Label timeLabel;
 
+	private GameLogic gameLogic;
+	
 	public void muteSound() {
 		if (Main.sound.isPlaying()) {
 			Main.sound.stop();
@@ -51,13 +56,20 @@ public class GameController {
 		this.timeLabel.setText(timeLabel1);
 	}
 	
-	public void updateLabels(int timer){
-        GameController.updateLabels(
-            Integer.toString(GameLogic.getLevel()) ,
-            Integer.toString(GameLogic.getLives()) ,
-            Integer.toString(GameLogic.getMoney()) ,
-            Integer.toString(timer)
-        	);
-	}
+    public void setGameManager(GameLogic gameLogic){
+        this.gameLogic = gameLogic;
+    }
+	
+	class buyTower implements EventHandler<MouseEvent> {
+        public void handle(MouseEvent me) {
+        	int xTile = (int)(me.getX() / 64);
+            int yTile = (int)(me.getY() / 64);
+            gameLogic.buyTower(xTile,yTile,new AcidTower(xTile,yTile));
+            }
+    }
+	
+	public void buyTower(){
+        gameLogic.getGameScene().setOnMouseClicked(new buyTower());
+    }
 
 }

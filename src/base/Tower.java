@@ -156,7 +156,7 @@ public abstract class Tower implements Effectable {
 		this.level = Math.max(level, 0);
 	}
 	
-	public void setCoord(int x, int y) {
+	public void setCoord(double x, double y) {
 		this.coords = new Coordinate(x,y);
 	}
 

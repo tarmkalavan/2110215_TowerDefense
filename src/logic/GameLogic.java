@@ -31,6 +31,7 @@ public class GameLogic {
     private  Group monsterLayer;
     private  Scene gameScene;
     private  AnimationTimer loop;
+    private  GameController gameController;
 	
 	//method 1
 	//if monster reach the end, decrease live -->(note) no need for penalty, check if boss/basic monster
@@ -115,11 +116,20 @@ public class GameLogic {
                 }
                 fpstimer.set(timestamp / 10000000);
                 secondUpdate.set(timestamp / 1000000000);
-				//updateLabels(timer);
+				updateLabels(timer);
             }
         };
         loop = timer;
         timer.start();
+	}
+	
+	public void updateLabels(int timer){
+        gameController.updateLabels(
+            Integer.toString(GameLogic.getLevel()) ,
+            Integer.toString(GameLogic.getLives()) ,
+            Integer.toString(GameLogic.getMoney()) ,
+            Integer.toString(timer)
+        	);
 	}
 	
 	private void updateLocations(){
@@ -128,7 +138,7 @@ public class GameLogic {
             Monster monster;
             while(monsters.hasNext()) {
                 monster = monsters.next();
-                monster.updateLocation(1);
+                monster.updateLocation(2);
                 if(monster.isPathFinished()){
                     removeMonster(monster);
                 }
@@ -184,6 +194,17 @@ public class GameLogic {
 		money -= tower.getBuyCost();
 		addTower(tower);
 	}
+	
+	public void buyTower(int xTile , int yTile,Tower t){
+
+        if(tileMap.isNodeOpen(xTile,yTile)){
+        	if(t.getBuyCost() > money) return;
+    		money -= t.getBuyCost();
+    		addTower(t);
+            tileMap.setNewNode(xTile, yTile, 9);
+            
+        }
+    }
 	
 	public static void sellTower(Tower tower) {
 		money += tower.getSellCost();

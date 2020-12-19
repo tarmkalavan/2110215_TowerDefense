@@ -31,7 +31,7 @@ public abstract class Monster implements Effectable {
 		pathFinished = false;
 		moveX = true;
 		nodeDirection = 1;
-		this.view = new ImageView("MainMenu/Shield.png");
+		this.view = new ImageView("MainMenu/Button.png");
 		view.setX(path.get(0).getExactX() - 32);
 		view.setY(path.get(0).getExactY() - 32);
 	}

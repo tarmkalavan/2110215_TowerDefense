@@ -93,10 +93,25 @@ public class TileMap extends ImageView {
 				case 6:
 					tileMap.getPixelReader().getPixels(384, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
-				case 7: // Tower
+				case 7: // BasicTower
 					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 8:
+					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 9: // AcidTower
+					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 10: // AracaneTower
+					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 11: //ArcticTower
+					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 12: // BombardTower
+					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					break;
+				case 13://SniperTower
 					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				}
