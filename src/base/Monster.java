@@ -21,13 +21,17 @@ public abstract class Monster implements Effectable{
 	protected ImageView view;
 
 	public Monster(int maxHealth, int armor, int speed, int reward) {
-		setCoords(0, 0);
+		setCoords(5,5);
 		setCurrentHealth(maxHealth);
 		setMaxHealth(maxHealth);
 		setReward(reward);
 		setSpeed(speed);
 		setArmor(armor);
 		setDead(false);
+		pathFinished = false;
+        moveX = true;
+        nodeDirection = 1;
+		this.view = new ImageView("MainMenu/Shield.png");
 	}
 	public abstract int takeDamage(int incomingDamage);
 	
@@ -201,5 +205,12 @@ public abstract class Monster implements Effectable{
 	public static ArrayList<Coordinate> getPath() {
 		return path;
 	}
+	public ImageView getView() {
+		return view;
+	}
+	public void setView(ImageView view) {
+		this.view = view;
+	}
 
+	
 }
