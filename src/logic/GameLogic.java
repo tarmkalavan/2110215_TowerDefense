@@ -8,6 +8,7 @@ import application.MenuNavigator;
 import background.TileMap;
 import base.*;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import monster.BasicMonster;
 
 public class GameLogic {
 	private static int money = 200; //200 = starting money
@@ -108,32 +110,22 @@ public class GameLogic {
                         timer = 30;
                     }
                 }
-                createProjectiles();
+                createProjectile();
                 if(timestamp / 10000000 != fpstimer.get()){
                     updateLocations();
                 }
                 fpstimer.set(timestamp / 10000000);
                 secondUpdate.set(timestamp / 1000000000);
-                updateLabels(timer);
+				//updateLabels(timer);
             }
         };
         loop = timer;
         timer.start();
 	}
 	
-	private void updateLabels(int timer){
-        GameController.updateLabels(
-            Integer.toString(level) ,
-            Integer.toString(lives) ,
-            Integer.toString(money) ,
-            Integer.toString(score) ,
-            Integer.toString(timer)
-        	);
-	}
-	
 	private void updateLocations(){
-        if(!game.getMonstersAlive().isEmpty()){
-            Iterator<Monster> monsters = game.getMonstersAlive().iterator();
+        if(!getMonsterList().isEmpty()){
+            Iterator<Monster> monsters = getMonsterList().iterator();
             Monster monster;
             while(monsters.hasNext()) {
                 monster = monsters.next();
@@ -146,19 +138,10 @@ public class GameLogic {
     }
 	
 	public void spawnMonster(int health) {
-    	if(!GameLogic.getMonsterList().isEmpty()) {
-    		Iterator<base.Monster> monsters = GameLogic.getMonsterList().iterator();
-            Monster monster;
-            while(monsters.hasNext()) {
-                monster = monsters.next();
-                monster.updateLocation(1);
-                if(monster.isPathFinished()){
-                    removeMonster(monster);
-                }
-            }
-    	}
+		getMonsterList().add(new BasicMonster(health,1,1,1));
+        monsterLayer.getChildren().add(getMonsterList().get(getMonsterList().size() - 1).getView());
     }
-	
+
 	
 	
 	
@@ -241,4 +224,78 @@ public class GameLogic {
 	public static ArrayList<Monster> getMonsterList(){
 		return monsterList;
 	}
+
+	public static int getLevel() {
+		return level;
+	}
+
+	public static ArrayList<Tower> getTowerList() {
+		return towerList;
+	}
+
+	public static ArrayList<Projectile> getProjectileList() {
+		return projectileList;
+	}
+
+	public TileMap getTileMap() {
+		return tileMap;
+	}
+
+	public Group getMonsterLayer() {
+		return monsterLayer;
+	}
+
+	public Scene getGameScene() {
+		return gameScene;
+	}
+
+	public AnimationTimer getLoop() {
+		return loop;
+	}
+
+	public static void setMoney(int money) {
+		GameLogic.money = money;
+	}
+
+	public static void setLives(int lives) {
+		GameLogic.lives = lives;
+	}
+
+	public static void setLevel(int level) {
+		GameLogic.level = level;
+	}
+
+	public static void setGameOver(boolean isGameOver) {
+		GameLogic.isGameOver = isGameOver;
+	}
+
+	public static void setMonsterList(ArrayList<Monster> monsterList) {
+		GameLogic.monsterList = monsterList;
+	}
+
+	public static void setTowerList(ArrayList<Tower> towerList) {
+		GameLogic.towerList = towerList;
+	}
+
+	public static void setProjectileList(ArrayList<Projectile> projectileList) {
+		GameLogic.projectileList = projectileList;
+	}
+
+	public void setTileMap(TileMap tileMap) {
+		this.tileMap = tileMap;
+	}
+
+	public void setMonsterLayer(Group monsterLayer) {
+		this.monsterLayer = monsterLayer;
+	}
+
+	public void setGameScene(Scene gameScene) {
+		this.gameScene = gameScene;
+	}
+
+	public void setLoop(AnimationTimer loop) {
+		this.loop = loop;
+	}
+	
+	
 } 
