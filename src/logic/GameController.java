@@ -56,6 +56,7 @@ public class GameController {
 		this.timeLabel.setText(timeLabel1);
 	}
 	
+
     public void setGameManager(GameLogic gameLogic){
         this.gameLogic = gameLogic;
     }
@@ -71,5 +72,15 @@ public class GameController {
 	public void buyTower(){
         gameLogic.getGameScene().setOnMouseClicked(new buyTower());
     }
+
+	public void updateLabels(int timer){
+        GameController.updateLabels(
+            Integer.toString(GameLogic.getLevel()) ,
+            Integer.toString(GameLogic.getLives()) ,
+            Integer.toString(GameLogic.getMoney()) ,
+            Integer.toString(timer)
+        	);
+	}
+
 
 }

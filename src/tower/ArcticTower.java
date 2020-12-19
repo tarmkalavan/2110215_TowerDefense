@@ -5,24 +5,22 @@ import base.*;
 public class ArcticTower extends Tower implements Castable{
 	private final String BUFF_STAT;
 	private double buffRatio;
-	private final double RANGE_BONUS;
-	private final double RATIO_BONUS;
+	private final double UPGRADE_BONUS;
 	
 	public ArcticTower(int x, int y) {
 		super(30, 7, 5, 70, 40, 150);
 		setCoord(x, y);
 		BUFF_STAT = "speed";
 		buffRatio = 0.5;
-		RATIO_BONUS = 0.1;
-		RANGE_BONUS = 1.5;
+		UPGRADE_BONUS = 1.5;
 	}
 
 	
 	@Override
 	public void upgradeTower() {
 		// TODO Auto-generated method stub
-		setBuffRatio(buffRatio + RATIO_BONUS);
-		setRange((int) (range * RANGE_BONUS));
+		setAttackCooldown((int) (getAttackCooldown() * UPGRADE_BONUS)); 
+		setRange((int) (range * UPGRADE_BONUS));
 	}
 	
 	//SETTER//

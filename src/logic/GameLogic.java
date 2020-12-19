@@ -8,15 +8,24 @@ import application.MenuNavigator;
 import background.TileMap;
 import base.*;
 import javafx.animation.AnimationTimer;
+import javafx.animation.PathTransition;
+import javafx.application.Platform;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
 import monster.BasicMonster;
+import monster.BossMonster;
 
 public class GameLogic {
 	private static int money = 200; //200 = starting money
@@ -28,14 +37,10 @@ public class GameLogic {
 	private static ArrayList<Tower> towerList = new ArrayList<>();
 	private static ArrayList<Projectile> projectileList = new ArrayList<>();
 	private  TileMap tileMap;
-    private  Group monsterLayer;
+    private static  Group monsterLayer;
     private  Scene gameScene;
     private  AnimationTimer loop;
     private  GameController gameController;
-	
-	//method 1
-	//if monster reach the end, decrease live -->(note) no need for penalty, check if boss/basic monster
-	
 	
 	public static ArrayList<Tower> towersInRange(Tower attackingTower){
 		ArrayList<Tower> targetList = new ArrayList<>();
@@ -90,24 +95,55 @@ public class GameLogic {
 		}
     }
 	
+	public int getMonsterCount() {
+		switch(level) {
+		case 1: return 10;
+		case 2: return 10;
+		case 3: return 5;
+		case 4: return 20;
+		case 5: return 1;
+		case 6: return 5;
+		case 7: return 15;
+		default: return 0;
+		}
+	}
+	
+	public Monster getMonsterPrototype() {
+		switch(level) {
+		case 1: return new BasicMonster(50,10,2,15); //(hp, armor, speed, reward)
+		case 2: return new BasicMonster(30,10,4,25);
+		case 3: return new BasicMonster(80,15,2,50);
+		case 4: return new BasicMonster(20,0,8,20);
+		case 5: return new BossMonster(100,10,1,400,20);
+		case 6: return new BasicMonster(50,20,4,100);
+		case 7: return new BasicMonster(20,10,8,15);
+		default: return new BasicMonster(50,10,2,15);
+		}
+	}
+	
 	private void startLoop() {
 		final LongProperty secondUpdate = new SimpleLongProperty(0);
         final LongProperty fpstimer = new SimpleLongProperty(0);
+        int IDLE_TIME = 1;
+        int ROUND_TIME = 10;
+        
         final AnimationTimer timer = new AnimationTimer() {
-            int timer = 10;
-
+            int timer = IDLE_TIME;
+            
             @Override
             public void handle(long timestamp) {
-
+            	int monsterCount = getMonsterCount();
                 // Times each second
                 if (timestamp/ 1000000000 != secondUpdate.get()) {
                     timer--;
-                    if(timer > 19) {
-                        spawnMonster(3);
+                    if(timer >= (ROUND_TIME - monsterCount)) {
+                        spawnMonster();
+                        System.out.println("HP = " + getMonsterPrototype().getMaxHealth() + ", Speed = " + getMonsterPrototype().getSpeed());
                     }
                     else if(timer <= 0){
                         setLevel(level + 1);
-                        timer = 30;
+                        timer = ROUND_TIME;
+                        System.out.println(level);
                     }
                 }
                 createProjectile();
@@ -116,7 +152,15 @@ public class GameLogic {
                 }
                 fpstimer.set(timestamp / 10000000);
                 secondUpdate.set(timestamp / 1000000000);
-				updateLabels(timer);
+                if(level == 7) {
+                	System.out.println("game end");
+                	if(monsterList.isEmpty()) {
+                		this.stop();
+                		System.out.println("aaaa");
+                	}
+                	
+                }
+				//updateLabels(timer);
             }
         };
         loop = timer;
@@ -133,28 +177,33 @@ public class GameLogic {
 	}
 	
 	private void updateLocations(){
-        if(!getMonsterList().isEmpty()){
-            Iterator<Monster> monsters = getMonsterList().iterator();
-            Monster monster;
-            while(monsters.hasNext()) {
-                monster = monsters.next();
-                monster.updateLocation(2);
-                if(monster.isPathFinished()){
-                    removeMonster(monster);
-                }
-            }
-        }
+		ArrayList<Monster> copyMonsterList = monsterList;
+		for(int i = 0; i < copyMonsterList.size(); i++) {
+			Monster currentMonster = monsterList.get(i);
+			currentMonster.updateLocation(currentMonster.getSpeed());
+			if(currentMonster.isPathFinished()) {
+				removeMonster(currentMonster);
+			}
+		}
     }
 	
-	public void spawnMonster(int health) {
-		getMonsterList().add(new BasicMonster(health,1,1,1));
+
+	
+	public void spawnMonster() {
+		Monster prototypeMonster = getMonsterPrototype();
+		getMonsterList().add(prototypeMonster);
         monsterLayer.getChildren().add(getMonsterList().get(getMonsterList().size() - 1).getView());
     }
 	
     public synchronized static void removeMonster(Monster monster){
         // Punish player
         if (monster.isPathFinished()){
-            setLives((getLives()) - 1);
+        	if(monster instanceof BasicMonster) {
+        		setLives((getLives()) - 1);
+        	} else if (monster instanceof BossMonster) {
+        		setLives((getLives()) - 5);
+        	}
+            
         }
         // Reward player
         else{
@@ -175,8 +224,33 @@ public class GameLogic {
 	}
 	
 	public static void createProjectile() {
+		Path projectilePath;
+		PathTransition animation;
 		for(Projectile projectile : projectileList) {
-			//animation thingy
+			projectilePath = new Path(new MoveTo(projectile.getStartX(), projectile.getStartY()));
+			projectilePath.getElements().add(new LineTo(projectile.getTargetX(), projectile.getTargetY()));
+			animation = new PathTransition(Duration.millis(300) , projectilePath , projectile);
+			
+			animation.setOnFinished(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    PathTransition finishedAnimation = (PathTransition) actionEvent.getSource();
+                    Projectile finishedProjectile = (Projectile) finishedAnimation.getNode();
+
+                    // Hide and remove from gui
+                    finishedProjectile.setVisible(false);
+                    monsterLayer.getChildren().remove(finishedProjectile);
+
+                    // Remove monster if they are dead
+                    if(finishedProjectile.getTarget() instanceof Monster) {
+	                    if(((Monster) finishedProjectile.getTarget()).isDead()){
+	                        removeMonster((Monster) finishedProjectile.getTarget());
+	                    }
+                    }
+                }
+            });
+            monsterLayer.getChildren().add(projectile);
+            animation.play();
 		}
 		projectileList.clear();
 	}
@@ -330,4 +404,4 @@ public class GameLogic {
 	}
 	
 	
-} 
+}
