@@ -11,6 +11,7 @@ public class GameLogic {
 	private static final int TOWER_LEVEL_CAP = 3; 
 	private static ArrayList<Monster> monsterList = new ArrayList<>();
 	private static ArrayList<Tower> towerList = new ArrayList<>();
+	private static ArrayList<Projectile> projectileList = new ArrayList<>();
 	
 	//method 1
 	//if monster reach the end, decrease live -->(note) no need for penalty, check if boss/basic monster
@@ -46,11 +47,24 @@ public class GameLogic {
 		return targetList;
 	}
 	
+	public static void addProjectile(Effectable target, Tower shootingTower) {
+		projectileList.add(new Projectile(target, shootingTower.getX(), shootingTower.getY()));
+	}
+	
+	public static void createProjectile() {
+		for(Projectile projectile : projectileList) {
+			//animation thingy
+		}
+		projectileList.clear();
+	}
+	
 	//method 2
 	//check game state; playing, win, lose 
 	public boolean hasWon() {
 		return (lives > 0) && (isGameOver);
 	}
+	
+	
 	
 	public void buyTower(Tower tower) {
 		if(tower.getBuyCost() > money) return; //not enough money

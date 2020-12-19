@@ -40,10 +40,20 @@ public class ArcaneTower extends Tower implements Castable{
 	@Override
 	public void shoot() {
 		for(Effectable towerTarget : findTarget()) {
-			Tower target = (Tower) towerTarget;
-			target.effect((Castable) this);
-			//after delay
-			target.revertChange((Castable) this);			
+			Thread effectThread = new Thread(() -> {
+				try {
+					towerTarget.effect((Castable) this);
+					Thread.sleep(3000);
+					towerTarget.revertChange((Castable) this);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+			});
+			effectThread.run();
+			//Tower target = (Tower) towerTarget;
+			//target.effect((Castable) this);
+			//target.revertChange((Castable) this);			
 		}
 	}
 

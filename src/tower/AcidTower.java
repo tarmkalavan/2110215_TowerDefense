@@ -42,10 +42,20 @@ public class AcidTower extends Tower implements Castable{
 			Monster target = (Monster) monsterTarget;
 			target.takeDamage(this.getDamage());
 			if(!target.isDead()) { //if survive
-					target.effect((Castable) this);
-					//after delay
-					target.revertChange((Castable) this);
-				}			
+				Thread effectThread = new Thread(() -> {
+					try {
+						target.effect((Castable) this);
+						Thread.sleep(3000);
+						target.revertChange((Castable) this);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+				});
+				effectThread.run();
+				//target.effect((Castable) this);
+				//target.revertChange((Castable) this);
+			}			
 		}
 	}
 	//SETTER//

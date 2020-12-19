@@ -52,6 +52,17 @@ public abstract class Tower implements Effectable {
 		target.takeDamage(this.getDamage());
 		if(!target.isDead()) { //if survive
 			if(this instanceof Castable) { //if tower is a castable tower
+				Thread effectThread = new Thread(() -> {
+					try {
+						target.effect((Castable) this);
+						Thread.sleep(3000);
+						target.revertChange((Castable) this);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				});
 				target.effect((Castable) this);
 				//after delay
 				target.revertChange((Castable) this);
@@ -59,8 +70,6 @@ public abstract class Tower implements Effectable {
 			if(this instanceof BombardTower) {
 				((BombardTower) this).explode(target);
 			}
-		} else {
-			
 		}
 		//remove if monster is slained
 		//apply buff/debuff/explode
@@ -68,21 +77,21 @@ public abstract class Tower implements Effectable {
 	}
 	
 	// Effectable//
-	public int effect(Castable e) {
+	public int effect(Castable caster) {
 		int finalStat = 0;
-		if (e instanceof Tower) { // this tower buffed by tower
-			String statAffected = ((Tower) e).getBUFF_STAT();
+		if (caster instanceof Tower) { // this tower buffed by tower
+			String statAffected = ((Tower) caster).getBUFF_STAT();
 			switch (statAffected) {
 			case "damage":
-				finalStat = (int) (this.getDamage() * ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getDamage() * ((Tower) caster).getBUFF_RATIO());
 				this.setDamage(finalStat);
 				break;
 			case "range":
-				finalStat = (int) (this.getRange() * ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getRange() * ((Tower) caster).getBUFF_RATIO());
 				this.setRange(finalStat);
 				break;
 			case "attackSpeed":
-				finalStat = (int) (this.getAttackSpeed() * ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getAttackSpeed() * ((Tower) caster).getBUFF_RATIO());
 				this.setAttackSpeed(finalStat);
 				break;
 			}
@@ -90,23 +99,23 @@ public abstract class Tower implements Effectable {
 		return finalStat;
 	}
 
-	public int revertChange(Castable e) {
+	public int revertChange(Castable caster) {
 		int finalStat = 0;
 		boolean ratioIsInt = false;
-		if (e instanceof Tower) { // revert changes from (this tower buffed by tower)
-			String statAffected = ((Tower) e).getBUFF_STAT();
-			ratioIsInt = (((Tower) e).getBUFF_RATIO() == (int) ((Tower) e).getBUFF_RATIO());
+		if (caster instanceof Tower) { // revert changes from (this tower buffed by tower)
+			String statAffected = ((Tower) caster).getBUFF_STAT();
+			ratioIsInt = (((Tower) caster).getBUFF_RATIO() == (int) ((Tower) caster).getBUFF_RATIO());
 			switch (statAffected) {
 			case "damage":
-				finalStat = (int) (this.getDamage() / ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getDamage() / ((Tower) caster).getBUFF_RATIO());
 				this.setDamage(finalStat);
 				break;
 			case "range":
-				finalStat = (int) (this.getRange() / ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getRange() / ((Tower) caster).getBUFF_RATIO());
 				this.setRange(finalStat);
 				break;
 			case "attackSpeed":
-				finalStat = (int) (this.getAttackSpeed() / ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getAttackSpeed() / ((Tower) caster).getBUFF_RATIO());
 				this.setAttackSpeed(finalStat);
 				break;
 			}

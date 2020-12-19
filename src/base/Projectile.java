@@ -1,5 +1,7 @@
 package base;
 
+import javafx.scene.shape.Circle;
+
 public class Projectile {
 	private Effectable target; //can be both tower & monster
 	private final int startX;

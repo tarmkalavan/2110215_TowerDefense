@@ -24,37 +24,37 @@ public abstract class Monster implements Effectable{
 	public abstract int takeDamage(int incomingDamage);
 	
 	//Effectable//
-	public int effect(Castable e) {
+	public int effect(Castable caster) {
 		int finalStat = 0;
-		if(e instanceof Tower) { //monster debuffed by tower
-			String statAffected = ((Tower) e).getBUFF_STAT();
+		if(caster instanceof Tower) { //monster debuffed by tower
+			String statAffected = ((Tower) caster).getBUFF_STAT();
 			switch(statAffected) {
 			case "armor":
-				finalStat = (int) (this.getArmor() * ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getArmor() * ((Tower) caster).getBUFF_RATIO());
 				this.setArmor(finalStat);
 				break;
 			case "speed":
-				finalStat = (int) (this.getSpeed() * ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getSpeed() * ((Tower) caster).getBUFF_RATIO());
 				this.setSpeed(finalStat);
 				break;
 			}
 		}
 		return finalStat;
 	}
-	public int revertChange(Castable e) {
+	public int revertChange(Castable caster) {
 		int finalStat = 0;
 		boolean ratioIsInt = false;
-		if(e instanceof Tower) { //revert (monster debuffed by tower)
-			String statAffected = ((Tower) e).getBUFF_STAT();
-			ratioIsInt = (((Tower) e).getBUFF_RATIO() == (int) ((Tower) e).getBUFF_RATIO());
+		if(caster instanceof Tower) { //revert (monster debuffed by tower)
+			String statAffected = ((Tower) caster).getBUFF_STAT();
+			ratioIsInt = (((Tower) caster).getBUFF_RATIO() == (int) ((Tower) caster).getBUFF_RATIO());
 			switch(statAffected) {
 			case "armor":
-				finalStat = (int) (this.getArmor() / ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getArmor() / ((Tower) caster).getBUFF_RATIO());
 				if(!ratioIsInt) finalStat++;
 				this.setArmor(finalStat);
 				break;
 			case "speed":
-				finalStat = (int) (this.getSpeed() / ((Tower) e).getBUFF_RATIO());
+				finalStat = (int) (this.getSpeed() / ((Tower) caster).getBUFF_RATIO());
 				if(!ratioIsInt) finalStat++;
 				this.setSpeed(finalStat);
 				break;
