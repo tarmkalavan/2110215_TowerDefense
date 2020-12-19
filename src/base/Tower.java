@@ -63,6 +63,7 @@ public abstract class Tower implements Effectable {
 					}
 					
 				});
+				effectThread.start();
 				target.effect((Castable) this);
 				//after delay
 				target.revertChange((Castable) this);

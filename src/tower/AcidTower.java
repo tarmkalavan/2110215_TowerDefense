@@ -52,7 +52,7 @@ public class AcidTower extends Tower implements Castable{
 						e.printStackTrace();
 					}	
 				});
-				effectThread.run();
+				effectThread.start();
 				//target.effect((Castable) this);
 				//target.revertChange((Castable) this);
 			}			
