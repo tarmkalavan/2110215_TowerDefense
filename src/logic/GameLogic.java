@@ -149,7 +149,7 @@ public class GameLogic {
         monsterLayer.getChildren().add(getMonsterList().get(getMonsterList().size() - 1).getView());
     }
 	
-    private synchronized void removeMonster(Monster monster){
+    public synchronized static void removeMonster(Monster monster){
         // Punish player
         if (monster.isPathFinished()){
             setLives((getLives()) - 1);
