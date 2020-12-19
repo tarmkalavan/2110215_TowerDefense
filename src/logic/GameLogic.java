@@ -275,7 +275,7 @@ public class GameLogic {
         	if(t.getBuyCost() > money) return;
     		money -= t.getBuyCost();
     		addTower(t);
-            tileMap.setNewNode(xTile, yTile, 9);
+            tileMap.setNewNode(xTile, yTile, t.getSymbol());
             
         }
     }
