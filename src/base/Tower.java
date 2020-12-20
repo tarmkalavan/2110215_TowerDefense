@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import background.Coordinate;
 import logic.GameLogic;
-import monster.BasicMonster;
 import tower.BombardTower;
 
 public abstract class Tower implements Effectable {
@@ -59,7 +58,6 @@ public abstract class Tower implements Effectable {
 			 * the monster goes out of range or reach the end while the projectile is
 			 * travelling
 			 */
-			System.out.println("e");
 		}
 		return true;
 	}

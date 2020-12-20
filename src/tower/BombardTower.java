@@ -55,11 +55,8 @@ public class BombardTower extends Tower {
 	public void explode(Monster aimmedMonster) { // deal damage to monsters in splashRadius
 		if (monsterInBlast(aimmedMonster).size() == 0)
 			return;
-		System.out.println(monsterInBlast(aimmedMonster).size());
 		for (Monster affectedMonster : monsterInBlast(aimmedMonster)) {
-			System.out.println("hp1 " + affectedMonster.getCurrentHealth());
 			affectedMonster.takeDamage(splashDamage);
-			System.out.println("hp2 " + affectedMonster.getCurrentHealth());
 		}
 	}
 
