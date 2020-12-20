@@ -2,12 +2,14 @@ package logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import application.MenuNavigator;
 import background.TileMap;
 import base.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
+import javafx.application.Platform;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
@@ -19,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -28,189 +31,242 @@ import monster.BasicMonster;
 import monster.BossMonster;;
 
 public class GameLogic {
-	private static int money = 200; //200 = starting money
-	private static int lives = 20; //20 = starting lives
+	private static int money = 200; // 200 = starting money
+	private static int lives = 20; // 20 = starting lives
 	private static int level = 0;
 	private static int time = 50;
 	private static boolean isGameOver = false;
-	private static final int TOWER_LEVEL_CAP = 3; 
+	private static final int TOWER_LEVEL_CAP = 3;
 	private static ArrayList<Monster> monsterList = new ArrayList<>();
 	private static ArrayList<Tower> towerList = new ArrayList<>();
 	private static ArrayList<Projectile> projectileList = new ArrayList<>();
-	private static  TileMap tileMap;
-    private static  Group monsterLayer;
-    private  static Scene gameScene;
-    private  AnimationTimer loop;
-    private  GameController gameController;
-    
-	
-	public static ArrayList<Tower> towersInRange(Tower attackingTower){
+	private static TileMap tileMap;
+	private static Group monsterLayer;
+	private static Scene gameScene;
+	private AnimationTimer loop;
+	private GameController gameController;
+
+	public static ArrayList<Tower> towersInRange(Tower attackingTower) {
 		ArrayList<Tower> targetList = new ArrayList<>();
 		int towerMinRangeX = attackingTower.getX() - attackingTower.getRange();
 		int towerMinRangeY = attackingTower.getY() - attackingTower.getRange();
 		int towerMaxRangeX = attackingTower.getX() + attackingTower.getRange();
 		int towerMaxRangeY = attackingTower.getY() + attackingTower.getRange();
-		if(!towerList.isEmpty()) {
-			for(Tower targetTower : towerList) {
-				if(targetTower.getX() > towerMinRangeX && targetTower.getX() < towerMaxRangeX
-					&& targetTower.getY() > towerMinRangeY && targetTower.getY() < towerMaxRangeY){
-						targetList.add(targetTower);
+		if (!towerList.isEmpty()) {
+			for (Tower targetTower : towerList) {
+				if (targetTower.getX() > towerMinRangeX && targetTower.getX() < towerMaxRangeX
+						&& targetTower.getY() > towerMinRangeY && targetTower.getY() < towerMaxRangeY) {
+					targetList.add(targetTower);
 				}
 			}
 		}
 		return targetList;
 	}
-	
-	public static ArrayList<Monster> monstersInRange(Tower attackingTower){
+
+	public static ArrayList<Monster> monstersInRange(Tower attackingTower) {
 		ArrayList<Monster> targetList = new ArrayList<>();
 		int towerMinRangeX = attackingTower.getX() - attackingTower.getRange();
 		int towerMinRangeY = attackingTower.getY() - attackingTower.getRange();
 		int towerMaxRangeX = attackingTower.getX() + attackingTower.getRange();
 		int towerMaxRangeY = attackingTower.getY() + attackingTower.getRange();
-		if(!monsterList.isEmpty()) {
-			for(Monster targetMonster : monsterList) {
-				if(targetMonster.getX() > towerMinRangeX && targetMonster.getX() < towerMaxRangeX
-				&& targetMonster.getY() > towerMinRangeY && targetMonster.getY() < towerMaxRangeY){
+		if (!monsterList.isEmpty()) {
+			for (Monster targetMonster : monsterList) {
+				if (targetMonster.getX() > towerMinRangeX && targetMonster.getX() < towerMaxRangeX
+						&& targetMonster.getY() > towerMinRangeY && targetMonster.getY() < towerMaxRangeY) {
 					targetList.add(targetMonster);
 				}
 			}
 		}
 		return targetList;
 	}
-	
-	public void createGameMap() {    	
-    	try {
-    		tileMap = new TileMap(1280, 800);
+
+	public void createGameMap() {
+		try {
+			tileMap = new TileMap(1280, 800);
 			Parent towerShopAndData = FXMLLoader.load(getClass().getResource("/GameMap/TowerShopAndData.fxml"));
 			StackPane gamePane = new StackPane();
 			gamePane.setAlignment(Pos.BOTTOM_CENTER);
-            Group tilemapGroup = new Group();
-            monsterLayer = new Group();
-            monsterLayer.getChildren().add(tilemapGroup);
-            tilemapGroup.getChildren().add(tileMap);
-            gamePane.getChildren().add(monsterLayer);
-            
-            gamePane.getChildren().add(towerShopAndData);
-            gameScene = new Scene(gamePane);
-            FXMLLoader loader = new FXMLLoader((getClass().getResource("/GameMap/TowerShopAndData.fxml")));
-            gameController = loader.<GameController>getController();
-            
-            MenuNavigator.stage.setScene(gameScene);
-            Monster.setPath(tileMap.getPath());
-            startLoop();
+			Group tilemapGroup = new Group();
+			monsterLayer = new Group();
+			monsterLayer.getChildren().add(tilemapGroup);
+			tilemapGroup.getChildren().add(tileMap);
+			gamePane.getChildren().add(monsterLayer);
+
+			gamePane.getChildren().add(towerShopAndData);
+			gameScene = new Scene(gamePane);
+			FXMLLoader loader = new FXMLLoader((getClass().getResource("/GameMap/TowerShopAndData.fxml")));
+			gameController = loader.<GameController>getController();
+
+			MenuNavigator.stage.setScene(gameScene);
+			Monster.setPath(tileMap.getPath());
+			startLoop();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
-	
+	}
+
 	public int getMonsterAmount() {
-		switch(level) {
-		case 0: return 1;
-		case 1: return 5;
-		case 2: return 2;
-		case 3: return 5;
-		case 4: return 20;
-		case 5: return 1;
-		case 6: return 5;
-		case 7: return 15;
-		default: return 0;
+		switch (level) {
+		case 0:
+			return 1;
+		case 1:
+			return 5;
+		case 2:
+			return 2;
+		case 3:
+			return 5;
+		case 4:
+			return 20;
+		case 5:
+			return 1;
+		case 6:
+			return 5;
+		case 7:
+			return 15;
+		default:
+			return 0;
 		}
 	}
-	
+
 	public Monster getMonsterPrototype() {
-		switch(level) {
-		case 0: return new BasicMonster(60,20,16,15);
-		case 1: return new BossMonster(60,20,16,15,10); //(hp, armor, speed, reward)
-		case 2: return new BasicMonster(60,0,1,25);
-		case 3: return new BasicMonster(80,16,2,50);
-		case 4: return new BasicMonster(20,0,8,20);
-		case 5: return new BossMonster(100,12,1,400,20);
-		case 6: return new BasicMonster(50,20,4,100);
-		case 7: return new BasicMonster(20,12,8,15);
-		default: return new BasicMonster(50,12,2,15);
+		switch (level) {
+		case 0:
+			return new BasicMonster(60, 20, 16, 15);
+		case 1:
+			return new BossMonster(60, 20, 16, 15, 10); // (hp, armor, speed, reward)
+		case 2:
+			return new BasicMonster(60, 0, 1, 25);
+		case 3:
+			return new BasicMonster(80, 16, 2, 50);
+		case 4:
+			return new BasicMonster(20, 0, 8, 20);
+		case 5:
+			return new BossMonster(100, 12, 1, 400, 20);
+		case 6:
+			return new BasicMonster(50, 20, 4, 100);
+		case 7:
+			return new BasicMonster(20, 12, 8, 15);
+		default:
+			return new BasicMonster(50, 12, 2, 15);
 		}
 	}
-	
+
 	public void spawnMonster() {
 		Monster prototypeMonster = getMonsterPrototype();
 		getMonsterList().add(prototypeMonster);
-        monsterLayer.getChildren().add(getMonsterList().get(getMonsterList().size() - 1).getView());
-    }
-	
+		monsterLayer.getChildren().add(getMonsterList().get(getMonsterList().size() - 1).getView());
+	}
+
 	private void startLoop() {
 		final LongProperty secondUpdate = new SimpleLongProperty(0);
-        final LongProperty fpstimer = new SimpleLongProperty(0);
-        int IDLE_TIME = 3;
-        int ROUND_TIME = 30;
-        
-        final AnimationTimer timer = new AnimationTimer() {
-            int timer = IDLE_TIME;
-            
-            @Override
-            public void handle(long timestamp) {
-            	int monsterCount = getMonsterAmount();
-                // Times each second
-                if(isGameEnd()) {
-                	this.stop();
-                	System.out.println("gameend");
-                	showEndScreen();
-                }
-                if (timestamp/ 1000000000 != secondUpdate.get()) {
-                    timer--;
-                    if(timer >= (ROUND_TIME - monsterCount)) {
-                        spawnMonster();
-                        //System.out.println("HP = " + getMonsterPrototype().getMaxHealth() + ", Speed = " + getMonsterPrototype().getSpeed());
-                    }
-                    else if(timer <= 0){
-                        setLevel(level + 1);
-                        timer = ROUND_TIME;
-                        //System.out.println(level);
-                    }
-                }
-                createProjectile();
-                if(timestamp / 10000000 != fpstimer.get()){
-                    updateLocations();
-                }
-                fpstimer.set(timestamp / 10000000);
-                secondUpdate.set(timestamp / 1000000000);
-                setTime(timer);
-				//gameController.initialize();
-            }
-        };
-        loop = timer;
-        timer.start();
+		final LongProperty fpstimer = new SimpleLongProperty(0);
+		int IDLE_TIME = 3;
+		int ROUND_TIME = 30;
+
+		final AnimationTimer timer = new AnimationTimer() {
+			int timer = IDLE_TIME;
+
+			@Override
+			public void handle(long timestamp) {
+				int monsterCount = getMonsterAmount();
+				// Times each second
+				if (isGameEnd()) {
+					this.stop();
+					System.out.println("gameend");
+					showEndScreen();
+				}
+				if (timestamp / 1000000000 != secondUpdate.get()) {
+					timer--;
+					if (timer >= (ROUND_TIME - monsterCount)) {
+						spawnMonster();
+						// System.out.println("HP = " + getMonsterPrototype().getMaxHealth() + ", Speed
+						// = " + getMonsterPrototype().getSpeed());
+					} else if (timer <= 0) {
+						setLevel(level + 1);
+						timer = ROUND_TIME;
+						// System.out.println(level);
+					}
+				}
+				createProjectile();
+				if (timestamp / 10000000 != fpstimer.get()) {
+					updateLocations();
+				}
+				fpstimer.set(timestamp / 10000000);
+				secondUpdate.set(timestamp / 1000000000);
+				setTime(timer);
+				// gameController.initialize();
+			}
+		};
+		loop = timer;
+		timer.start();
 	}
-	
+
 	public boolean isGameEnd() {
 		return ((lives <= 0) || (level >= 8 && monsterList.isEmpty()));
 	}
-	
+
 	public void showEndScreen() {
-		if(lives <= 0) { //lose
+		if (lives <= 0) { // lose
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Lose Screen");
-			alert.setContentText("Your lives drop below zero! \n "
-					   		   + "Click OK to return to Main Screen");
+			alert.setContentText("Your lives drop below zero! \n " + "Click OK to return to Main Screen");
 			alert.setHeaderText("YOU LOSE");
-			alert.show();
-		} else if(level >= 8 && monsterList.isEmpty()) {
+			Thread thread = new Thread(() -> {
+				Platform.runLater(new Runnable() {
+					public void run() {
+						Optional<ButtonType> result = alert.showAndWait();
+						if (result.get() == ButtonType.OK) {
+							try {
+								Parent root = FXMLLoader.load(getClass().getResource("/MainMenu/Menu.fxml"));
+								Scene scene = new Scene(root, 1280, 800);
+								MenuNavigator.stage.setScene(scene);
+								setLives(25);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				});
+			});
+			thread.start();
+
+		} else if (level >= 8 && monsterList.isEmpty()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Win Screen");
-			alert.setContentText("Congratulations! You won! \n"
-							   + "Click OK to return to Main Screen");
+			alert.setContentText("Congratulations! You won! \n" + "Click OK to return to Main Screen");
 			alert.setHeaderText("YOU WIN");
-			alert.show();
+			Thread thread = new Thread(() -> {
+				Platform.runLater(new Runnable() {
+					public void run() {
+						Optional<ButtonType> result = alert.showAndWait();
+						if (result.get() == ButtonType.OK) {
+							Parent root;
+							try {
+								root = FXMLLoader.load(getClass().getResource("/MainMenu/Menu.fxml"));
+								Scene scene = new Scene(root, 1280, 800);
+								MenuNavigator.stage.setScene(scene);
+								setLives(25);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				});
+			});
+			thread.start();
 		}
 	}
-	
+
 	public static void addProjectile(Effectable target, Tower shootingTower) {
 		projectileList.add(new Projectile(target, shootingTower));
 	}
-	
+
 	public static void createProjectile() {
 		Path projectilePath;
 		PathTransition animation;
-		for(Projectile projectile : projectileList) {
+		for (Projectile projectile : projectileList) {
 			int startX = projectile.getStartX();
 			int startY = projectile.getStartY();
 			int endX = projectile.getTargetX();
@@ -218,89 +274,89 @@ public class GameLogic {
 			projectilePath = new Path(new MoveTo(startX, startY));
 			LineTo line = new LineTo(endX, endY);
 			projectilePath.getElements().add(line);
-			animation = new PathTransition(Duration.millis(200) , projectilePath , projectile);
+			animation = new PathTransition(Duration.millis(200), projectilePath, projectile);
 			animation.setOnFinished(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                	//System.out.println("proj hit");
-                    PathTransition finishedAnimation = (PathTransition) actionEvent.getSource();
-                    Projectile finishedProjectile = (Projectile) finishedAnimation.getNode();
+				@Override
+				public void handle(ActionEvent actionEvent) {
+					// System.out.println("proj hit");
+					PathTransition finishedAnimation = (PathTransition) actionEvent.getSource();
+					Projectile finishedProjectile = (Projectile) finishedAnimation.getNode();
 
-                    // Hide and remove from gui
-                    finishedProjectile.setVisible(false);
-                    monsterLayer.getChildren().remove(finishedProjectile);
+					// Hide and remove from gui
+					finishedProjectile.setVisible(false);
+					monsterLayer.getChildren().remove(finishedProjectile);
 
-                    //apply damage and effects
-                    projectile.getShootingTower().projectileHit(projectile.getTarget(),projectile.getShootingTower());
-                    // Remove monster if they are dead
-                    if(finishedProjectile.getTarget() instanceof Monster) {
-	                    if(((Monster) finishedProjectile.getTarget()).isDead()){
-	                        removeMonster((Monster) finishedProjectile.getTarget());
-	                    }
-                    }
-                }
-            });
-            monsterLayer.getChildren().add(projectile);
-            animation.play();
-            //System.out.println("proj shot");
+					// apply damage and effects
+					projectile.getShootingTower().projectileHit(projectile.getTarget(), projectile.getShootingTower());
+					// Remove monster if they are dead
+					if (finishedProjectile.getTarget() instanceof Monster) {
+						if (((Monster) finishedProjectile.getTarget()).isDead()) {
+							removeMonster((Monster) finishedProjectile.getTarget());
+						}
+					}
+				}
+			});
+			monsterLayer.getChildren().add(projectile);
+			animation.play();
+			// System.out.println("proj shot");
 		}
 		projectileList.clear();
 	}
-	
-	private void updateLocations(){
+
+	private void updateLocations() {
 		ArrayList<Monster> copyMonsterList = monsterList;
-		for(int i = 0; i < copyMonsterList.size(); i++) {
+		for (int i = 0; i < copyMonsterList.size(); i++) {
 			Monster currentMonster = monsterList.get(i);
 			currentMonster.updateLocation(currentMonster.getSpeed());
-			if(currentMonster.isPathFinished()) {
+			if (currentMonster.isPathFinished()) {
 				removeMonster(currentMonster);
 			}
 		}
-    }
-	
-    public synchronized static void removeMonster(Monster monster){
-        // Punish player
-    	System.out.println("live1 " + lives);
-        if (monster.isPathFinished()){
-        	if(monster instanceof BasicMonster) {
-        		setLives((getLives()) - 1);
-        	} else if (monster instanceof BossMonster) {
-        		setLives((getLives()) - 5);
-        	}   
-        	System.out.println("live2 " + lives);
-        }
-        // Reward player
-        else{
-            setMoney((getMoney()) + monster.getReward());
-        }
+	}
 
-        // Remove monsters graphic and reference
-        monster.getView().setVisible(false);
-        getMonsterList().remove(monster);
+	public synchronized static void removeMonster(Monster monster) {
+		// Punish player
+		System.out.println("live1 " + lives);
+		if (monster.isPathFinished()) {
+			if (monster instanceof BasicMonster) {
+				setLives((getLives()) - 1);
+			} else if (monster instanceof BossMonster) {
+				setLives((getLives()) - 5);
+			}
+			System.out.println("live2 " + lives);
+		}
+		// Reward player
+		else {
+			setMoney((getMoney()) + monster.getReward());
+		}
 
-    }
-	
-	public static void buyTower(double x, double y,Tower t) {
-        int xTile = (int)(x / 64);
-        int yTile = (int)(y / 64);
-        addTower(t);
-        tileMap.setNewNode(xTile, yTile, t.getSymbol());
-    }
-	
+		// Remove monsters graphic and reference
+		monster.getView().setVisible(false);
+		getMonsterList().remove(monster);
+
+	}
+
+	public static void buyTower(double x, double y, Tower t) {
+		int xTile = (int) (x / 64);
+		int yTile = (int) (y / 64);
+		addTower(t);
+		tileMap.setNewNode(xTile, yTile, t.getSymbol());
+	}
+
 	public static void sellTower(Tower tower) {
 		money += tower.getSellCost();
 		removeTower(tower);
 	}
-	
+
 	public static void upgradeTower(Tower tower) {
-		if(tower.getUpgradeCost() > money) return; //not enough money
+		if (tower.getUpgradeCost() > money)
+			return; // not enough money
 		money -= tower.getUpgradeCost();
 		tower.upgradeTower();
-		if(tower.getLevel() < TOWER_LEVEL_CAP ) tower.setLevel(tower.getLevel() + 1);
+		if (tower.getLevel() < TOWER_LEVEL_CAP)
+			tower.setLevel(tower.getLevel() + 1);
 	}
-	
-	
-	
+
 	public static void dropCoin(Monster monster) {
 		money += monster.getReward();
 	}
@@ -308,20 +364,20 @@ public class GameLogic {
 	public static boolean isGameOver() {
 		return isGameOver;
 	}
-		
+
 	public static void addMonster(Monster monster) {
 		monsterList.add(monster);
 	}
-	
+
 	public static void addTower(Tower tower) {
 		towerList.add(tower);
 	}
-	
+
 	public static void removeTower(Tower tower) {
 		towerList.remove(tower);
 	}
-	
-	//GETTER
+
+	// GETTER
 	public static int getMoney() {
 		return money;
 	}
@@ -333,8 +389,8 @@ public class GameLogic {
 	public static int getTowerLevelCap() {
 		return TOWER_LEVEL_CAP;
 	}
-	
-	public static ArrayList<Monster> getMonsterList(){
+
+	public static ArrayList<Monster> getMonsterList() {
 		return monsterList;
 	}
 
@@ -365,7 +421,6 @@ public class GameLogic {
 	public AnimationTimer getLoop() {
 		return loop;
 	}
-	
 
 	public static int getTime() {
 		return time;
@@ -380,7 +435,7 @@ public class GameLogic {
 	}
 
 	public static void setLives(int lives) {
-		GameLogic.lives = Math.max(lives,0);
+		GameLogic.lives = Math.max(lives, 0);
 	}
 
 	public static void setLevel(int level) {
@@ -422,13 +477,9 @@ public class GameLogic {
 	public GameController getGameController() {
 		return gameController;
 	}
-	
-
 
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
 	}
-		
+
 }
-	
-	

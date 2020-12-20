@@ -1,15 +1,12 @@
 package logic;
 
 import application.Main;
-import background.Coordinate;
 import background.TileMap;
 import base.Tower;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.input.MouseEvent;
 import tower.AcidTower;
 import tower.ArcaneTower;
