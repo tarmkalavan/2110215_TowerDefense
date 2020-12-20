@@ -87,7 +87,7 @@
             <Insets left="25.0" top="58.5" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="currentResources" text="0" GridPane.columnIndex="7">
+      <Label fx:id="currentLives" text="0" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets left="65.0" top="58.5" />
          </GridPane.margin></Label>
@@ -95,7 +95,7 @@
          <GridPane.margin>
             <Insets left="65.0" top="19.5" />
          </GridPane.margin></Label>
-      <Label fx:id="currentLives" text="0" GridPane.columnIndex="7">
+      <Label fx:id="currentResources" text="0" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets bottom="19.5" left="65.0" />
          </GridPane.margin></Label>

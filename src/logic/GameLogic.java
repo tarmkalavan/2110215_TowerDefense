@@ -283,11 +283,8 @@ public class GameLogic {
 	public static void buyTower(double x, double y,Tower t) {
         int xTile = (int)(x / 64);
         int yTile = (int)(y / 64);
-        if(getMoney() >= 50) {
-            addTower(t);
-            setMoney(getMoney() - 50);
-            tileMap.setNewNode(xTile, yTile, t.getSymbol());
-        }
+        addTower(t);
+        tileMap.setNewNode(xTile, yTile, t.getSymbol());
     }
 	
 	public static void sellTower(Tower tower) {

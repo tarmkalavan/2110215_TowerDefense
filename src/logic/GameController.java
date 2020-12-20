@@ -1,7 +1,9 @@
 package logic;
 
 import application.Main;
+import background.Coordinate;
 import background.TileMap;
+import base.Tower;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -58,6 +60,20 @@ public class GameController {
 	}
 	
 	public void upgradeTower() {
+		GameLogic.getGameScene().setOnMousePressed(new EventHandler<MouseEvent>() {
+    		@Override
+    		public void handle(MouseEvent t) {
+    		 
+    			int x = (int)t.getX()/64;
+        		int y = (int)t.getY()/64;
+        		
+        		for (Tower tower : GameLogic.getTowerList()) {
+        			if(tower.getXTile()== x && tower.getYTile()== y ) {
+        				tower.upgradeTower();
+        			}
+        		}
+    		}
+    	});
 		
 	}
 	
@@ -68,9 +84,10 @@ public class GameController {
     		 
     		double x = t.getX();
     		double y = t.getY();
-    		if(TileMap.isNodeOpen((int)x/64,(int)y/64) && GameLogic.getMoney() >= 50){ 
+    		if(TileMap.isNodeOpen((int)x/64,(int)y/64) && GameLogic.getMoney() >= 50){
+    			GameLogic.setMoney(GameLogic.getMoney() - 50);
     			GameLogic.buyTower(x, y,new BasicTower((int)x/64, (int)y/64));
-    		}
+    			}
     		}
     	});
     }
@@ -82,8 +99,10 @@ public class GameController {
     		 
     		double x = t.getX();
     		double y = t.getY();
-    		 
-    		GameLogic.buyTower(x, y,new AcidTower((int)x/64, (int)y/64));
+    		if(TileMap.isNodeOpen((int)x/64,(int)y/64) && GameLogic.getMoney() >= 120){
+    			GameLogic.setMoney(GameLogic.getMoney() - 120);
+    			GameLogic.buyTower(x, y,new AcidTower((int)x/64, (int)y/64));
+    		}
     		}
     	});
     }
@@ -96,7 +115,10 @@ public class GameController {
     		double x = t.getX();
     		double y = t.getY();
     		 
-    		GameLogic.buyTower(x, y,new ArcaneTower((int)x/64, (int)y/64));
+    		if(TileMap.isNodeOpen((int)x/64,(int)y/64) && GameLogic.getMoney() >= 150){
+    			GameLogic.setMoney(GameLogic.getMoney() - 150);
+    			GameLogic.buyTower(x, y,new ArcaneTower((int)x/64, (int)y/64));
+    		}
     		}
     	});
     }
@@ -108,8 +130,11 @@ public class GameController {
     		 
     		double x = t.getX();
     		double y = t.getY();
-    		 
-    		GameLogic.buyTower(x, y,new ArcticTower((int)x/64, (int)y/64));
+    		
+    		if(TileMap.isNodeOpen((int)x/64,(int)y/64) && GameLogic.getMoney() >= 70){
+    			GameLogic.setMoney(GameLogic.getMoney() - 70);
+    			GameLogic.buyTower(x, y,new ArcticTower((int)x/64, (int)y/64));
+    		}
     		}
     	});
     }
@@ -122,7 +147,11 @@ public class GameController {
     		double x = t.getX();
     		double y = t.getY();
     		 
-    		GameLogic.buyTower(x, y,new BombardTower((int)x/64, (int)y/64));
+    		
+    		if(TileMap.isNodeOpen((int)x/64,(int)y/64) && GameLogic.getMoney() >= 120){
+    			GameLogic.setMoney(GameLogic.getMoney() - 120);
+    			GameLogic.buyTower(x, y,new BombardTower((int)x/64, (int)y/64));
+    		}
     		}
     	});
     }
@@ -135,17 +164,20 @@ public class GameController {
     		double x = t.getX();
     		double y = t.getY();
     		 
-    		GameLogic.buyTower(x, y,new SniperTower((int)x/64, (int)y/64));
+    		if(TileMap.isNodeOpen((int)x/64,(int)y/64) && GameLogic.getMoney() >= 200){
+    			GameLogic.setMoney(GameLogic.getMoney() - 200);
+    			GameLogic.buyTower(x, y,new SniperTower((int)x/64, (int)y/64));
+    		}
     		}
     	});
     }
     
 	@FXML
     public void initialize() {
-					this.currentLevel.setText(Integer.toString(GameLogic.getLives()));
-			        this.currentLives.setText(Integer.toString(GameLogic.getLevel()));
-			        this.currentResources.setText(Integer.toString(GameLogic.getMoney()));
-			        this.timeLabel.setText(Integer.toString(GameLogic.getTime()));
+		this.currentLevel.setText(Integer.toString(GameLogic.getLevel()));
+		this.currentLives.setText(Integer.toString(GameLogic.getLives()));
+		this.currentResources.setText(Integer.toString(GameLogic.getMoney()));
+		this.timeLabel.setText(Integer.toString(GameLogic.getTime()));
 
     }
 
