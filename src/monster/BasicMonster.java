@@ -9,14 +9,9 @@ public class BasicMonster extends Monster{
 
 	public BasicMonster(int health, int armor, int speed, int reward) {
 		super(health,armor,speed,reward);
-	}
-	
-	public BasicMonster(int x, int y, BasicMonster prototype) {
-		super(prototype.maxHealth, prototype.armor, prototype.speed, prototype.reward);
 		this.view = new ImageView(new Image(ClassLoader.getSystemResource("GameMap/BasicMonster.png").toString()));
 		view.setX(path.get(0).getExactX()-32);
 		view.setY(path.get(0).getExactY()-32);
-		setCoords(x, y);
 	}
 	
 	public int takeDamage(int incomingDamage) {

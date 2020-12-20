@@ -16,11 +16,6 @@ public class BossMonster extends Monster{
 		view.setY(path.get(0).getExactY()-32);
 	}
 	
-	public BossMonster(int x, int y, BossMonster prototype) {
-		super(prototype.maxHealth, prototype.armor, prototype.speed, prototype.reward);
-		setCoords(x, y);
-	}
-	
 	public int takeDamage(int incomingDamage) {
 		if(barrier > 0) { //barrier must be broken before damaging the boss
 			barrier--;

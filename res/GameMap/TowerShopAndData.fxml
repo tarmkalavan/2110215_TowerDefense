@@ -66,43 +66,34 @@
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Label fx:id="resourceLabel" text="Gold: " GridPane.columnIndex="6">
+      <Label text="Gold: " GridPane.columnIndex="6">
          <GridPane.margin>
             <Insets bottom="58.5" left="89.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="levelLabel" text="Wave: " GridPane.columnIndex="6">
+      <Label text="Wave: " GridPane.columnIndex="6">
          <GridPane.margin>
             <Insets bottom="19.5" left="89.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="livesLabel" text="Lives: " GridPane.columnIndex="6">
+      <Label text="Lives: " GridPane.columnIndex="6">
          <GridPane.margin>
             <Insets left="89.0" top="19.5" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="scoreLabel" text="Score: " GridPane.columnIndex="6">
-         <GridPane.margin>
-            <Insets left="89.0" top="58.5" />
-         </GridPane.margin>
-      </Label>
-      <Label fx:id="currentResources" GridPane.columnIndex="7">
+      <Label fx:id="currentResources" text="0" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets bottom="58.5" />
          </GridPane.margin></Label>
-      <Label fx:id="currentLevel" GridPane.columnIndex="7">
+      <Label fx:id="currentLevel" text="0" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets bottom="19.5" />
          </GridPane.margin></Label>
-      <Label fx:id="currentLives" GridPane.columnIndex="7">
+      <Label fx:id="currentLives" text="0" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets top="19.5" />
          </GridPane.margin></Label>
-      <Label fx:id="currentScore" GridPane.columnIndex="7">
-         <GridPane.margin>
-            <Insets top="59.5" />
-         </GridPane.margin></Label>
-      <Label fx:id="timeLabel" GridPane.columnIndex="7">
+      <Label fx:id="timeLabel" text="10" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets left="50.0" />
          </GridPane.margin>

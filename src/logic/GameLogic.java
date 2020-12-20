@@ -2,14 +2,12 @@ package logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import application.MenuNavigator;
 import background.TileMap;
 import base.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
-import javafx.application.Platform;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
@@ -19,20 +17,19 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import monster.BasicMonster;
-import monster.BossMonster;
-import tower.BasicTower;
+import monster.BossMonster;;
 
 public class GameLogic {
 	private static int money = 200; //200 = starting money
 	private static int lives = 20; //20 = starting lives
 	private static int level = 0;
+	private static int time = 50;
 	private static boolean isGameOver = false;
 	private static final int TOWER_LEVEL_CAP = 3; 
 	private static ArrayList<Monster> monsterList = new ArrayList<>();
@@ -43,14 +40,7 @@ public class GameLogic {
     private  static Scene gameScene;
     private  AnimationTimer loop;
     private  GameController gameController;
-    private static Button selectedButton;
     
-    public static void setSelectedButton(Button selectedButton) {
-		GameLogic.selectedButton = selectedButton;
-	}
-    public static Button getSelectedButton() {
-		return selectedButton;
-	}
 	
 	public static ArrayList<Tower> towersInRange(Tower attackingTower){
 		ArrayList<Tower> targetList = new ArrayList<>();
@@ -84,6 +74,9 @@ public class GameLogic {
 	
 	public void createGameMap() {    	
     	try {
+    		setMoney(500);
+    		setLives(20);
+    		setLevel(1);
     		tileMap = new TileMap(1280, 800);
 			Parent towerShopAndData = FXMLLoader.load(getClass().getResource("/GameMap/TowerShopAndData.fxml"));
 			StackPane gamePane = new StackPane();
@@ -96,6 +89,8 @@ public class GameLogic {
             
             gamePane.getChildren().add(towerShopAndData);
             gameScene = new Scene(gamePane);
+            FXMLLoader loader = new FXMLLoader((getClass().getResource("/GameMap/TowerShopAndData.fxml")));
+            gameController = loader.<GameController>getController();
             
             MenuNavigator.stage.setScene(gameScene);
             Monster.setPath(tileMap.getPath());
@@ -170,16 +165,14 @@ public class GameLogic {
                 	}
                 	
                 }
-				//updateLabels(timer);
+                setTime(timer);
+				gameController.initialize();
             }
         };
         loop = timer;
         timer.start();
 	}
-	
-	public void updateLabels(int timer){
-        gameController.updateLabels(timer);
-	}
+
 	
 	private void updateLocations(){
 		ArrayList<Monster> copyMonsterList = monsterList;
@@ -365,6 +358,15 @@ public class GameLogic {
 	public AnimationTimer getLoop() {
 		return loop;
 	}
+	
+
+	public static int getTime() {
+		return time;
+	}
+
+	public static void setTime(int time) {
+		GameLogic.time = time;
+	}
 
 	public static void setMoney(int money) {
 		GameLogic.money = money;
@@ -408,6 +410,16 @@ public class GameLogic {
 
 	public void setLoop(AnimationTimer loop) {
 		this.loop = loop;
+	}
+
+	public GameController getGameController() {
+		return gameController;
+	}
+	
+
+
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
 	}
 
 	public static void buyTower(double x, double y,Tower t) {

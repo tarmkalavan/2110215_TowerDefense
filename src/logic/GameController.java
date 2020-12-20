@@ -1,7 +1,6 @@
 package logic;
 
 import application.Main;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -33,13 +32,13 @@ public class GameController {
 	@FXML
 	private Button exit;
 	@FXML
-	private Label currentResources;
+	private Label currentResources = new Label("");
 	@FXML
-	private Label currentLevel;
+	private Label currentLevel= new Label("");
 	@FXML
-	private Label currentLives;
+	private Label currentLives= new Label("");
 	@FXML
-	private Label timeLabel;
+	private Label timeLabel= new Label("");
 	
 	public void muteSound() {
 		if (Main.sound.isPlaying()) {
@@ -51,13 +50,6 @@ public class GameController {
 
 	public void exitTheGame() {
 		System.exit(1);
-	}
-
-	public void updateLabels(int timer) {
-		this.currentLevel.setText(Integer.toString(GameLogic.getLevel()));
-		this.currentLives.setText(Integer.toString(GameLogic.getLives()));
-		this.currentResources.setText(Integer.toString(GameLogic.getMoney()));
-		this.timeLabel.setText(Integer.toString(timer));
 	}
 	
     public void buyBasicTower(){
@@ -136,6 +128,14 @@ public class GameController {
     		GameLogic.buyTower(x, y,new SniperTower((int)x/64, (int)y/64));
     		}
     	});
+    }
+    
+	@FXML
+    public void initialize() {
+        this.currentLevel.setText(Integer.toString(GameLogic.getLevel()));
+        this.currentLives.setText(Integer.toString(GameLogic.getLives()));
+        this.currentResources.setText(Integer.toString(GameLogic.getMoney()));
+        this.timeLabel.setText(Integer.toString(GameLogic.getTime()));
     }
 
 }
