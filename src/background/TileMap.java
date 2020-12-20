@@ -44,26 +44,26 @@ public class TileMap extends ImageView {
 
 	private int[][] generateMapArray() {
 		int[][] map = new int[][] { 
-			{0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 5 , 1 , 1 , 1 , 1 , 1 , 1 , 1 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 5 , 1 , 1 , 6 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 2 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {1 , 1 , 1 , 1 , 1 , 1 , 3 , 0 , 0 , 4 , 1 , 1 , 3 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
-            {0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 }
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 1, 1, 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 2, 0, 0, 0, 5, 1, 1, 1, 6, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 5, 1, 1, 6, 0 },
+			{ 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 4, 1 },
+			{ 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 4, 1, 1, 1, 3, 0, 0, 0, 0 },
+			{ 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 4, 1, 1, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 			};
 		return map;
 	}
 
 	public void repaint() {
 
-		Image tileMap = new Image(ClassLoader.getSystemResource("GameMap/Dirt-Grass-Path-64bit.png").toString());
+		Image tileMap = new Image(ClassLoader.getSystemResource("GameMap/Dirt-Grass-Path-Tower-64bit.png").toString());
 		byte[] buffer = new byte[64 * 64 * 4];
 		WritablePixelFormat<ByteBuffer> picFormat = WritablePixelFormat.getByteBgraInstance();
 		WritableImage paintedMap = new WritableImage(RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
@@ -79,37 +79,37 @@ public class TileMap extends ImageView {
 					tileMap.getPixelReader().getPixels(64, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 2:
-					tileMap.getPixelReader().getPixels(128, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(192, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 3:
-					tileMap.getPixelReader().getPixels(192, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(384, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 4:
 					tileMap.getPixelReader().getPixels(256, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 5:
-					tileMap.getPixelReader().getPixels(320, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 6:
-					tileMap.getPixelReader().getPixels(384, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(128, 0, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 7: // BasicTower
-					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(0, 64, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 8: // AcidTower
-					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(64, 64, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 9: // ArcaneTower
-					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(128, 64, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 10: // ArcticTower
-					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(192, 64, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 11: //BombardTower
-					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(256, 64, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				case 12: //SniperTower
-					tileMap.getPixelReader().getPixels(448, 0, 64, 64, picFormat, buffer, 0, 256);
+					tileMap.getPixelReader().getPixels(320, 64, 64, 64, picFormat, buffer, 0, 256);
 					break;
 				}
 

@@ -1,6 +1,8 @@
 package monster;
 
 import base.Monster;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import logic.GameLogic;
 
 public class BossMonster extends Monster{
@@ -9,6 +11,9 @@ public class BossMonster extends Monster{
 	public BossMonster(int maxHealth, int armor, int speed, int reward, int barrier) {
 		super(maxHealth,armor,speed,reward);
 		setBarrier(barrier);
+		this.view = new ImageView(new Image(ClassLoader.getSystemResource("GameMap/BossMonster.png").toString()));
+		view.setX(path.get(0).getExactX()-32);
+		view.setY(path.get(0).getExactY()-32);
 	}
 	
 	public BossMonster(int x, int y, BossMonster prototype) {

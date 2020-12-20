@@ -237,12 +237,7 @@ public class GameLogic {
 	}
 	
 	public void updateLabels(int timer){
-        gameController.updateLabels(
-            Integer.toString(GameLogic.getLevel()) ,
-            Integer.toString(GameLogic.getLives()) ,
-            Integer.toString(GameLogic.getMoney()) ,
-            Integer.toString(timer)
-        	);
+        gameController.updateLabels(timer);
 	}
 	
 	private void updateLocations(){
@@ -414,7 +409,7 @@ public class GameLogic {
 	}
 
 	public void setTileMap(TileMap tileMap) {
-		this.tileMap = tileMap;
+		GameLogic.tileMap = tileMap;
 	}
 
 	public void setMonsterLayer(Group monsterLayer) {
@@ -429,17 +424,15 @@ public class GameLogic {
 		this.loop = loop;
 	}
 
-	public static void buyTower(double x, double y) {
+	public static void buyTower(double x, double y,Tower t) {
         int xTile = (int)(x / 64);
         int yTile = (int)(y / 64);
 
-        // Verify the node is not occupied
         if(tileMap.isNodeOpen(xTile,yTile)){
-            // Verify the user can afford the tower
             if(getMoney() > 0) {
-                addTower(new BasicTower(xTile, yTile));
+                addTower(t);
                 setMoney(getMoney() - 0);
-                tileMap.setNewNode(xTile, yTile, 7);
+                tileMap.setNewNode(xTile, yTile, t.getSymbol());
             }
         }
     }

@@ -26,32 +26,32 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button fx:id="acid" mnemonicParsing="false" onAction="#buyBasicTower" prefHeight="78.0" prefWidth="78.0" text="Acid">
+      <Button fx:id="acid" mnemonicParsing="false" onAction="#buyAcidTower" prefHeight="78.0" prefWidth="78.0" text="Acid">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="arcane" mnemonicParsing="false" onAction="#buyBasicTower" prefHeight="78.0" prefWidth="78.0" text="Arcane" GridPane.columnIndex="1">
+      <Button fx:id="arcane" mnemonicParsing="false" onAction="#buyArcaneTower" prefHeight="78.0" prefWidth="78.0" text="Arcane" GridPane.columnIndex="1">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="arctic" mnemonicParsing="false" onAction="#buyBasicTower" prefHeight="78.0" prefWidth="78.0" text="Arctic" GridPane.columnIndex="2">
+      <Button fx:id="arctic" mnemonicParsing="false" onAction="#buyArcticTower" prefHeight="78.0" prefWidth="78.0" text="Arctic" GridPane.columnIndex="2">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="bombard" mnemonicParsing="false" onAction="#buyBasicTower" prefHeight="78.0" prefWidth="78.0" text="Bombard" GridPane.columnIndex="3">
+      <Button fx:id="bombard" mnemonicParsing="false" onAction="#buyBombardTower" prefHeight="78.0" prefWidth="78.0" text="Bombard" GridPane.columnIndex="3">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="sniper" mnemonicParsing="false" onAction="#buyBasicTower" prefHeight="78.0" prefWidth="78.0" text="Sniper" GridPane.columnIndex="4">
+      <Button fx:id="sniper" mnemonicParsing="false" onAction="#buySniperTower" prefHeight="78.0" prefWidth="78.0" text="Sniper" GridPane.columnIndex="4">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="basic" mnemonicParsing="false" onMouseClicked="#buyBasicTower" prefHeight="78.0" prefWidth="78.0" text="Basic" GridPane.columnIndex="5">
+      <Button fx:id="basic" mnemonicParsing="false" onAction="#buyBasicTower" prefHeight="78.0" prefWidth="78.0" text="Basic" GridPane.columnIndex="5">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
