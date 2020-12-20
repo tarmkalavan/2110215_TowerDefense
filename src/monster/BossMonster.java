@@ -25,7 +25,6 @@ public class BossMonster extends Monster {
 		setCurrentHealth(getCurrentHealth() - damageTaken);
 		if (getCurrentHealth() == 0) { 
 			setDead(true);
-			GameLogic.dropCoin(this);
 			GameLogic.removeMonster(this);
 		}
 		return damageTaken;

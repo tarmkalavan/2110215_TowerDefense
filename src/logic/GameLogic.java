@@ -31,8 +31,8 @@ import monster.BasicMonster;
 import monster.BossMonster;;
 
 public class GameLogic {
-	private static int money = 200; // 200 = starting money
-	private static int lives = 20; // 20 = starting lives
+	private static int money = 200; // starting money
+	private static int lives = 20; // starting lives
 	private static int level = 0;
 	private static int time = 50;
 	public static final int TOWER_LEVEL_CAP = 3;
@@ -131,9 +131,9 @@ public class GameLogic {
 	public Monster getMonsterPrototype() {
 		switch (level) {
 		case 0:
-			return new BasicMonster(60, 20, 16, 15);
+			return new BasicMonster(1, 0, 16, 15); // (hp, armor, speed, reward)
 		case 1:
-			return new BasicMonster(50, 10, 2, 30); // (hp, armor, speed, reward)
+			return new BasicMonster(50, 10, 2, 30); 
 		case 2:
 			return new BasicMonster(30, 0, 8, 35);
 		case 3:
@@ -160,8 +160,8 @@ public class GameLogic {
 	private void startLoop() {
 		final LongProperty secondUpdate = new SimpleLongProperty(0);
 		final LongProperty fpstimer = new SimpleLongProperty(0);
-		int IDLE_TIME = 1;
-		int ROUND_TIME = 10;
+		int IDLE_TIME = 5;
+		int ROUND_TIME = 30;
 
 		final AnimationTimer timer = new AnimationTimer() {
 			int timer = IDLE_TIME;
@@ -187,6 +187,7 @@ public class GameLogic {
 						}
 					}
 				}
+				System.out.println("Current Money: " + money);
 				createProjectile();
 				if (timestamp / 10000000 != fpstimer.get()) {
 					updateLocations();
@@ -242,7 +243,7 @@ public class GameLogic {
 				});
 			});
 			thread.start();
-		} else if ((isLastRound && monsterList.isEmpty())) {
+		} else if ((isLastRound && monsterList.isEmpty())) { //win
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Win Screen");
 			alert.setContentText("Congratulations! You won! \n" + "Click OK to return to Main Screen");
@@ -291,7 +292,6 @@ public class GameLogic {
 			animation.setOnFinished(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent actionEvent) {
-					// System.out.println("proj hit");
 					PathTransition finishedAnimation = (PathTransition) actionEvent.getSource();
 					Projectile finishedProjectile = (Projectile) finishedAnimation.getNode();
 
@@ -301,6 +301,7 @@ public class GameLogic {
 
 					// apply damage and effects
 					projectile.getShootingTower().projectileHit(projectile.getTarget(), projectile.getShootingTower());
+					
 					// Remove monster if they are dead
 					if (finishedProjectile.getTarget() instanceof Monster) {
 						if (((Monster) finishedProjectile.getTarget()).isDead()) {
@@ -334,10 +335,10 @@ public class GameLogic {
 			} else if (monster instanceof BossMonster) {
 				setLives((getLives()) - 5);
 			}
-		}
-		// Reward player
-		else {
+			System.out.println("Current Lives: " + lives);
+		} else {// Reward player
 			setMoney((getMoney()) + monster.getReward());
+			//System.out.println("Current Money: " + money);
 		}
 		// Remove monsters graphic and reference
 		monster.getView().setVisible(false);
@@ -350,20 +351,6 @@ public class GameLogic {
 		int yTile = (int) (y / 64);
 		addTower(t);
 		tileMap.setNewNode(xTile, yTile, t.getSymbol());
-	}
-
-	public static void sellTower(Tower tower) {
-		money += tower.getSellCost();
-		removeTower(tower);
-	}
-
-	public static void upgradeTower(Tower tower) {
-		if (tower.getUpgradeCost() > money)
-			return; // not enough money
-		money -= tower.getUpgradeCost();
-		tower.upgradeTower();
-		if (tower.getLevel() < TOWER_LEVEL_CAP)
-			tower.setLevel(tower.getLevel() + 1);
 	}
 
 	public static void dropCoin(Monster monster) {
@@ -430,7 +417,12 @@ public class GameLogic {
 	public static int getTime() {
 		return time;
 	}
+	
+	public GameController getGameController() {
+		return gameController;
+	}
 
+	// SETTER
 	public static void setTime(int time) {
 		GameLogic.time = time;
 	}
@@ -473,10 +465,6 @@ public class GameLogic {
 
 	public void setLoop(AnimationTimer loop) {
 		this.loop = loop;
-	}
-
-	public GameController getGameController() {
-		return gameController;
 	}
 
 	public void setGameController(GameController gameController) {
