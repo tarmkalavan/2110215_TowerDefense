@@ -14,7 +14,7 @@ public abstract class Monster implements Effectable{
 	protected int reward;
 	protected int armor;
 	protected boolean isDead;
-	protected Coordinate coords;
+	//protected Coordinate coords;
 	protected boolean pathFinished;
 	protected boolean moveX;
 	protected int nodeDirection;
@@ -22,7 +22,7 @@ public abstract class Monster implements Effectable{
 	protected ImageView view;
 
 	public Monster(int maxHealth, int armor, int speed, int reward) {
-		setCoords(0,0);
+		//setCoords(0,0);
 		setCurrentHealth(maxHealth);
 		setMaxHealth(maxHealth);
 		setReward(reward);
@@ -145,14 +145,7 @@ public abstract class Monster implements Effectable{
 	public void setArmor(int armor) {
 		this.armor = Math.max(0,armor);
 	}
-	
-	public void setCoords(int x, int y) {
-		this.coords = new Coordinate(x,y);
-	}
-	
-	public void setCoords(Coordinate coords) {
-		this.coords = coords;
-	}
+
 	public void setPathFinished(boolean pathFinished) {
 		this.pathFinished = pathFinished;
 	}
@@ -193,16 +186,13 @@ public abstract class Monster implements Effectable{
 	}
 	
 	public int getX() {
-		return coords.getExactX();
-	}
-
-	public int getY() {
-		return coords.getExactY();
+		return (int) ((view.getX()) + 32);
 	}
 	
-	public Coordinate getCoords() {
-		return coords;
+	public int getY() {
+		return (int) ((view.getY()) + 32);
 	}
+	
 	public boolean isPathFinished() {
 		return pathFinished;
 	}

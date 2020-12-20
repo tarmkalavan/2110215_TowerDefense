@@ -13,7 +13,7 @@ public class BossMonster extends Monster{
 	
 	public BossMonster(int x, int y, BossMonster prototype) {
 		super(prototype.maxHealth, prototype.armor, prototype.speed, prototype.reward);
-		setCoords(x, y);
+		//setCoords(x, y);
 	}
 	
 	public int takeDamage(int incomingDamage) {
