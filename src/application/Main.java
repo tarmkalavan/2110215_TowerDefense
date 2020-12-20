@@ -1,10 +1,12 @@
 package application;
 
+import base.Tower;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import logic.GameLogic;
 import javafx.scene.media.AudioClip;
 
 public class Main extends Application {
@@ -26,12 +28,19 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static void main(String[] args) {
 		launch(args);
-
+		System.exit(0);
+	}
+	
+	@Override
+	public void stop() throws Exception{
+		for(Tower tower : GameLogic.getTowerList()) {
+			tower.stopTowerAttack();
+		}
+		sound.stop();
 	}
 
 }

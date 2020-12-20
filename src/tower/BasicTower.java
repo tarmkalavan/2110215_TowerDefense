@@ -7,20 +7,20 @@ public class BasicTower extends Tower {
 	private final double UPGRADE_BONUS;
 
 	public BasicTower(int xTile, int yTile) {
-		super(20, 2, 200, 50, 30, 100);
+		super(20, 500, 200, 50, 30, 100);
 		setCoord(xTile, yTile);
-		//System.out.println("x:" + this.getX() + " y:" + this.getY());
-		// damage, attack speed, range, buyCost, sellCost, 
-		//upgradeCost, upgradeBonus
 		UPGRADE_BONUS = 1.5;
 		towerAttack = new Thread(() -> {
 			while(true) {
 				try {
-					shoot();
-					Thread.sleep(500);
+					boolean isShot = shoot();
+					if(isShot) {
+						Thread.sleep(getAttackCooldown());
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
+					break;
 				}
 			}
 		});

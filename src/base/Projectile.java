@@ -27,7 +27,6 @@ public class Projectile extends Circle{
 	}
 	public int getTargetX() {
 		if (target instanceof Monster) {
-			System.out.println("here");
 			return ((Monster) target).getX();
 		}
 		if (target instanceof Tower) {

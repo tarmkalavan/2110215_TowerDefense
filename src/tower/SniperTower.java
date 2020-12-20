@@ -6,18 +6,21 @@ import logic.Sprites;
 public class SniperTower extends Tower{
 	private final double UPGRADE_BONUS;
 	
-	public SniperTower(int x, int y) {
-		super(100,8,700,200,100,300);
-		setCoord(x, y);
+	public SniperTower(int xTile, int yTile) {
+		super(100,3000,700,200,100,300);
+		setCoord(xTile, yTile);
 		UPGRADE_BONUS = 2.0;
 		towerAttack = new Thread(() -> {
 			while(true) {
 				try {
-					shoot();
-					Thread.sleep(500);
+					boolean isShot = shoot();
+					if(isShot) {
+						Thread.sleep(getAttackCooldown());
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
+					break;
 				}
 			}
 		});

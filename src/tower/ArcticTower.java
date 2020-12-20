@@ -9,7 +9,7 @@ public class ArcticTower extends Tower implements Castable{
 	private final double UPGRADE_BONUS;
 	
 	public ArcticTower(int x, int y) {
-		super(30, 7, 200, 70, 40, 150);
+		super(30, 1500, 200, 70, 40, 150);
 		setCoord(x, y);
 		BUFF_STAT = "speed";
 		buffRatio = 0.5;
@@ -17,8 +17,12 @@ public class ArcticTower extends Tower implements Castable{
 		towerAttack = new Thread(() -> {
 			while(true) {
 				try {
-					shoot();
-					Thread.sleep(500);
+					boolean isShot = shoot();
+					//System.out.println("shot");
+					if(isShot) {
+						Thread.sleep(getAttackCooldown());
+					}
+					//System.out.println("woke");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -37,7 +41,7 @@ public class ArcticTower extends Tower implements Castable{
 	@Override
 	public void upgradeTower() {
 		// TODO Auto-generated method stub
-		setAttackCooldown((int) (getAttackCooldown() * UPGRADE_BONUS)); 
+		setAttackCooldown((int) (getAttackCooldown() / UPGRADE_BONUS)); 
 		setRange((int) (range * UPGRADE_BONUS));
 	}
 	

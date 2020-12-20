@@ -12,7 +12,7 @@ public class AcidTower extends Tower implements Castable{
 	private final double UPGRADE_BONUS;
 	
 	public AcidTower(int x, int y) {
-		super(10,3,200,120,100,300);
+		super(10,1500,200,120,100,300);
 		setCoord(x, y);
 		BUFF_STAT = "armor";
 		buffRatio = 0.8;
@@ -20,11 +20,14 @@ public class AcidTower extends Tower implements Castable{
 		towerAttack = new Thread(() -> {
 			while(true) {
 				try {
-					shoot();
-					Thread.sleep(500);
+					boolean isShot = shoot();
+					if(isShot) {
+						Thread.sleep(getAttackCooldown());
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
+					break;
 				}
 			}
 		});
@@ -49,34 +52,14 @@ public class AcidTower extends Tower implements Castable{
 	public ArrayList<Effectable> findTarget(){
 		ArrayList<Effectable> targetList = new ArrayList<>();
 		ArrayList<Monster> monsterInRange = GameLogic.monstersInRange(this);
-		for(Monster monster : monsterInRange) {
-			targetList.add(monster);
+		if(!monsterInRange.isEmpty()) {
+			for(Monster monster : monsterInRange) {
+				targetList.add(monster);
+			}
 		}
 		return targetList;
 	}
-	
-	@Override
-	public void shoot() {
-		for(Effectable monsterTarget : findTarget()) {
-			Monster target = (Monster) monsterTarget;
-			target.takeDamage(this.getDamage());
-			if(!target.isDead()) { //if survive
-				Thread effectThread = new Thread(() -> {
-					try {
-						target.effect((Castable) this);
-						Thread.sleep(3000);
-						target.revertChange((Castable) this);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}	
-				});
-				effectThread.start();
-				//target.effect((Castable) this);
-				//target.revertChange((Castable) this);
-			}			
-		}
-	}
+
 	//SETTER//
 	public void setBuffRatio(double buffRatio) {
 		this.buffRatio = Math.max(buffRatio,0.0);
