@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class TileMap extends ImageView {
 
-	private int[][] map;
+	private static int[][] map;
 	private final int RESOLUTION_WIDTH;
 	private final int RESOLUTION_HEIGHT;
 	private final int TILE_LENGTH_X;
@@ -124,7 +124,7 @@ public class TileMap extends ImageView {
 		this.setImage(paintedMap);
 	}
 
-	public boolean isNodeOpen(int x, int y) {
+	public static boolean isNodeOpen(int x, int y) {
 		if (map[y][x] != 0) {
 			return false;
 		}
