@@ -174,7 +174,7 @@ public class GameLogic {
                 	
                 }
                 setTime(timer);
-				gameController.initialize();
+				//gameController.initialize();
             }
         };
         loop = timer;
@@ -274,22 +274,16 @@ public class GameLogic {
 		return (lives > 0) && (isGameOver);
 	}
 	
-	
-	
-	public static void buyTower(Tower tower) {
-		if(tower.getBuyCost() > money) return; //not enough money
-		money -= tower.getBuyCost();
-		addTower(tower);
-	}
-	
-	public void buyTower(int xTile , int yTile,Tower t){
+	public static void buyTower(double x, double y,Tower t) {
+        int xTile = (int)(x / 64);
+        int yTile = (int)(y / 64);
 
         if(tileMap.isNodeOpen(xTile,yTile)){
-        	if(t.getBuyCost() > money) return;
-    		money -= t.getBuyCost();
-    		addTower(t);
-            tileMap.setNewNode(xTile, yTile, t.getSymbol());
-            
+            if(getMoney() > t.getBuyCost()) {
+                addTower(t);
+                setMoney(getMoney() - t.getBuyCost());
+                tileMap.setNewNode(xTile, yTile, t.getSymbol());
+            }
         }
     }
 	
@@ -434,19 +428,6 @@ public class GameLogic {
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
 	}
-
-	public static void buyTower(double x, double y,Tower t) {
-        int xTile = (int)(x / 64);
-        int yTile = (int)(y / 64);
-
-        if(tileMap.isNodeOpen(xTile,yTile)){
-            if(getMoney() > 0) {
-                addTower(t);
-                setMoney(getMoney() - 0);
-                tileMap.setNewNode(xTile, yTile, t.getSymbol());
-            }
-        }
-    }
 		
 }
 	
