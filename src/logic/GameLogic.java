@@ -174,7 +174,7 @@ public class GameLogic {
                 	
                 }
                 setTime(timer);
-				gameController.initialize();
+				//gameController.initialize();
             }
         };
         loop = timer;
