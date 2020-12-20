@@ -75,9 +75,6 @@ public class GameLogic {
 	
 	public void createGameMap() {    	
     	try {
-    		setMoney(500);
-    		setLives(20);
-    		setLevel(1);
     		tileMap = new TileMap(1280, 800);
 			Parent towerShopAndData = FXMLLoader.load(getClass().getResource("/GameMap/TowerShopAndData.fxml"));
 			StackPane gamePane = new StackPane();
@@ -96,7 +93,6 @@ public class GameLogic {
             MenuNavigator.stage.setScene(gameScene);
             Monster.setPath(tileMap.getPath());
             startLoop();
-            System.out.println("aaa");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -277,13 +273,10 @@ public class GameLogic {
 	public static void buyTower(double x, double y,Tower t) {
         int xTile = (int)(x / 64);
         int yTile = (int)(y / 64);
-
-        if(tileMap.isNodeOpen(xTile,yTile)){
-            if(getMoney() > t.getBuyCost()) {
-                addTower(t);
-                setMoney(getMoney() - t.getBuyCost());
-                tileMap.setNewNode(xTile, yTile, t.getSymbol());
-            }
+        if(getMoney() >= 50) {
+            addTower(t);
+            setMoney(getMoney() - 50);
+            tileMap.setNewNode(xTile, yTile, t.getSymbol());
         }
     }
 	

@@ -1,10 +1,13 @@
 package logic;
 
 import application.Main;
+import background.TileMap;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.input.MouseEvent;
 import tower.AcidTower;
 import tower.ArcaneTower;
@@ -27,6 +30,8 @@ public class GameController {
 	private Button sniper;
 	@FXML
 	private Button basic;
+	@FXML
+	private Button upgrade;
 	@FXML
 	private Button mute;
 	@FXML
@@ -52,6 +57,10 @@ public class GameController {
 		System.exit(1);
 	}
 	
+	public void upgradeTower() {
+		
+	}
+	
     public void buyBasicTower(){
     	GameLogic.getGameScene().setOnMousePressed(new EventHandler<MouseEvent>() {
     		@Override
@@ -59,8 +68,9 @@ public class GameController {
     		 
     		double x = t.getX();
     		double y = t.getY();
-    		 
-    		GameLogic.buyTower(x, y,new BasicTower((int)x/64, (int)y/64));
+    		if(TileMap.isNodeOpen((int)x/64,(int)y/64) && GameLogic.getMoney() >= 50){ 
+    			GameLogic.buyTower(x, y,new BasicTower((int)x/64, (int)y/64));
+    		}
     		}
     	});
     }
@@ -132,10 +142,11 @@ public class GameController {
     
 	@FXML
     public void initialize() {
-        this.currentLevel.setText(Integer.toString(GameLogic.getLevel()));
-        this.currentLives.setText(Integer.toString(GameLogic.getLives()));
-        this.currentResources.setText(Integer.toString(GameLogic.getMoney()));
-        this.timeLabel.setText(Integer.toString(GameLogic.getTime()));
+					this.currentLevel.setText(Integer.toString(GameLogic.getLives()));
+			        this.currentLives.setText(Integer.toString(GameLogic.getLevel()));
+			        this.currentResources.setText(Integer.toString(GameLogic.getMoney()));
+			        this.timeLabel.setText(Integer.toString(GameLogic.getTime()));
+
     }
 
 }
