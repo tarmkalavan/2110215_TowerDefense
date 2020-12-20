@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import background.Coordinate;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class Monster implements Effectable{
@@ -15,7 +14,6 @@ public abstract class Monster implements Effectable{
 	protected int reward;
 	protected int armor;
 	protected boolean isDead;
-	//protected Coordinate coords;
 	protected boolean pathFinished;
 	protected boolean moveX;
 	protected int nodeDirection;
@@ -23,7 +21,6 @@ public abstract class Monster implements Effectable{
 	protected ImageView view;
 
 	public Monster(int maxHealth, int armor, int speed, int reward) {
-		//setCoords(0,0);
 		setCurrentHealth(maxHealth);
 		setMaxHealth(maxHealth);
 		setReward(reward);
@@ -33,9 +30,6 @@ public abstract class Monster implements Effectable{
 		pathFinished = false;
         moveX = true;
         nodeDirection = 1;
-        this.view = new ImageView(new Image(ClassLoader.getSystemResource("GameMap/BasicMonster.png").toString()));
-		view.setX(path.get(0).getExactX()-32);
-		view.setY(path.get(0).getExactY()-32);
 	}
 	public abstract int takeDamage(int incomingDamage);
 	

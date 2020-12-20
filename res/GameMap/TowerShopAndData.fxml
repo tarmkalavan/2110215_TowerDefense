@@ -26,83 +26,80 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button fx:id="acid" mnemonicParsing="false" onAction="#buyAcidTower" prefHeight="78.0" prefWidth="78.0" text="Acid">
+      <Button fx:id="acid" mnemonicParsing="false" onAction="#buyAcidTower" prefHeight="78.0" prefWidth="78.0" style="-fx-background-image: url('/GameMap/Acid.png');" text="Acid">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="arcane" mnemonicParsing="false" onAction="#buyArcaneTower" prefHeight="78.0" prefWidth="78.0" text="Arcane" GridPane.columnIndex="1">
+      <Button fx:id="arcane" mnemonicParsing="false" onAction="#buyArcaneTower" prefHeight="78.0" prefWidth="78.0" style="-fx-background-image: url('/GameMap/Arcane.png');" text="Arcane" GridPane.columnIndex="1">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="arctic" mnemonicParsing="false" onAction="#buyArcticTower" prefHeight="78.0" prefWidth="78.0" text="Arctic" GridPane.columnIndex="2">
+      <Button fx:id="arctic" mnemonicParsing="false" onAction="#buyArcticTower" prefHeight="78.0" prefWidth="78.0" style="-fx-background-image: url('/GameMap/Arctic.png');" text="Arctic" GridPane.columnIndex="2">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="bombard" mnemonicParsing="false" onAction="#buyBombardTower" prefHeight="78.0" prefWidth="78.0" text="Bombard" GridPane.columnIndex="3">
+      <Button fx:id="bombard" mnemonicParsing="false" onAction="#buyBombardTower" prefHeight="78.0" prefWidth="78.0" style="-fx-background-image: url('/GameMap/Bombard.png');" text="Bombard" GridPane.columnIndex="3">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="sniper" mnemonicParsing="false" onAction="#buySniperTower" prefHeight="78.0" prefWidth="78.0" text="Sniper" GridPane.columnIndex="4">
+      <Button fx:id="sniper" mnemonicParsing="false" onAction="#buySniperTower" prefHeight="78.0" prefWidth="78.0" style="-fx-background-image: url('/GameMap/Sniper.png');" text="Sniper" GridPane.columnIndex="4">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="basic" mnemonicParsing="false" onAction="#buyBasicTower" prefHeight="78.0" prefWidth="78.0" text="Basic" GridPane.columnIndex="5">
+      <Button fx:id="basic" mnemonicParsing="false" onAction="#buyBasicTower" prefHeight="78.0" prefWidth="78.0" style="-fx-background-image: url('/GameMap/Basic.png');" text="Basic" GridPane.columnIndex="5">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="mute" mnemonicParsing="false" onAction="#muteSound" prefHeight="78.0" prefWidth="78.0" text="Mute" GridPane.columnIndex="8">
+      <Button fx:id="mute" mnemonicParsing="false" onAction="#muteSound" prefHeight="78.0" prefWidth="78.0" style="-fx-background-image: url('/GameMap/Mute.png');" GridPane.columnIndex="8">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
       </Button>
-      <Button fx:id="exit" mnemonicParsing="false" onAction="#exitTheGame" prefHeight="78.0" prefWidth="78.0" text="Exit" GridPane.columnIndex="9">
+      <Button fx:id="exit" mnemonicParsing="false" onAction="#exitTheGame" prefHeight="78.0" prefWidth="78.0" style="-fx-background-image: url('/GameMap/Exit.png');" GridPane.columnIndex="9">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
       </Button>
-      <Label fx:id="resourceLabel" text="Gold: " GridPane.columnIndex="6">
+      <Label text="Gold: " GridPane.columnIndex="6">
          <GridPane.margin>
             <Insets bottom="58.5" left="89.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="levelLabel" text="Wave: " GridPane.columnIndex="6">
+      <Label text="Wave: " GridPane.columnIndex="6">
          <GridPane.margin>
             <Insets bottom="19.5" left="89.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="livesLabel" text="Lives: " GridPane.columnIndex="6">
+      <Label text="Lives: " GridPane.columnIndex="6">
          <GridPane.margin>
             <Insets left="89.0" top="19.5" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="scoreLabel" text="Score: " GridPane.columnIndex="6">
-         <GridPane.margin>
-            <Insets left="89.0" top="58.5" />
-         </GridPane.margin>
-      </Label>
-      <Label fx:id="currentResources" GridPane.columnIndex="7">
+      <Label fx:id="currentResources" text="0" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets bottom="58.5" />
          </GridPane.margin></Label>
-      <Label fx:id="currentLevel" GridPane.columnIndex="7">
+      <Label fx:id="currentLevel" text="0" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets bottom="19.5" />
          </GridPane.margin></Label>
-      <Label fx:id="currentLives" GridPane.columnIndex="7">
+      <Label fx:id="currentLives" text="0" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets top="19.5" />
          </GridPane.margin></Label>
-      <Label fx:id="currentScore" GridPane.columnIndex="7">
-         <GridPane.margin>
-            <Insets top="59.5" />
-         </GridPane.margin></Label>
-      <Label fx:id="timeLabel" GridPane.columnIndex="7">
+      <Label fx:id="timeLabel" text="10" GridPane.columnIndex="7">
          <GridPane.margin>
             <Insets left="50.0" />
          </GridPane.margin>
