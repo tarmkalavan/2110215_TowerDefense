@@ -12,11 +12,23 @@ public class BombardTower extends Tower{
 	private final double UPGRADE_BONUS;
 	
 	public BombardTower(int x, int y) {
-		super(40,3,10,120,50,250);
+		super(40,3,400,120,50,250);
 		setCoord(x, y);
 		setSplashDamage((int) (damage/3));
 		setSplashRadius(1);
 		UPGRADE_BONUS = 1.5;
+		towerAttack = new Thread(() -> {
+			while(true) {
+				try {
+					shoot();
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		towerAttack.start();
 	}
 	
 	public ArrayList<Monster> monsterInBlast(Monster aimmedMonster){

@@ -7,9 +7,21 @@ public class SniperTower extends Tower{
 	private final double UPGRADE_BONUS;
 	
 	public SniperTower(int x, int y) {
-		super(100,8,15,200,100,300);
+		super(100,8,700,200,100,300);
 		setCoord(x, y);
 		UPGRADE_BONUS = 2.0;
+		towerAttack = new Thread(() -> {
+			while(true) {
+				try {
+					shoot();
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		towerAttack.start();
 	}
 	
 	@Override

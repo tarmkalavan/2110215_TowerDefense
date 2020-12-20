@@ -12,11 +12,23 @@ public class AcidTower extends Tower implements Castable{
 	private final double UPGRADE_BONUS;
 	
 	public AcidTower(int x, int y) {
-		super(10,3,8,120,100,300);
+		super(10,3,200,120,100,300);
 		setCoord(x, y);
 		BUFF_STAT = "armor";
 		buffRatio = 0.8;
 		UPGRADE_BONUS = 2;
+		towerAttack = new Thread(() -> {
+			while(true) {
+				try {
+					shoot();
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		towerAttack.start();
 	}
 
 	@Override

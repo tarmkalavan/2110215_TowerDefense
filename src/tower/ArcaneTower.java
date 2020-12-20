@@ -13,12 +13,24 @@ public class ArcaneTower extends Tower implements Castable{
 	private final double RATIO_BONUS;
 	
 	public ArcaneTower(int x, int y) {
-		super(0,3,10,150,50,340);
+		super(0,3,300,150,50,340);
 		setCoord(x, y);
 		BUFF_STAT = "damage";
 		buffRatio = 1.2;
 		RANGE_BONUS = 2;
 		RATIO_BONUS = 0.15;
+		towerAttack = new Thread(() -> {
+			while(true) {
+				try {
+					shoot();
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		towerAttack.start();
 	}
 
 	@Override

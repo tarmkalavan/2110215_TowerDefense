@@ -9,11 +9,23 @@ public class ArcticTower extends Tower implements Castable{
 	private final double UPGRADE_BONUS;
 	
 	public ArcticTower(int x, int y) {
-		super(30, 7, 5, 70, 40, 150);
+		super(30, 7, 200, 70, 40, 150);
 		setCoord(x, y);
 		BUFF_STAT = "speed";
 		buffRatio = 0.5;
 		UPGRADE_BONUS = 1.5;
+		towerAttack = new Thread(() -> {
+			while(true) {
+				try {
+					shoot();
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		towerAttack.start();
 	}
 
 	@Override
