@@ -31,130 +31,99 @@ public abstract class Tower implements Effectable {
 		setSellCost(sellCost);
 		setLevel(1);
 		setCoord(0, 0);
-		//System.out.println("here");
 	}
 
 	public abstract int getSymbol();
 	
 	public abstract void upgradeTower();
 	
-//	public void addProjectile(Effectable target) {
-//		shotProjectile.add(new Projectile(target, this));
-//	}
-	
-//	public ArrayList<Projectile> getShotProjectile(){
-//		return shotProjectile;
-//	}
-	
 	public ArrayList<Effectable> findTarget(){
 		//add only the first monster to targetList
 		ArrayList<Effectable> targetList = new ArrayList<>();
-		if(GameLogic.monstersInRange(this).size() != 0 )targetList.add(GameLogic.monstersInRange(this).get(0)); //only the first monster
+		if(!GameLogic.monstersInRange(this).isEmpty())targetList.add(GameLogic.monstersInRange(this).get(0)); //only the first monster
 		return targetList;
 	}
 	
-	public void shoot() { 
-		if (findTarget().size() == 0) return;
-		Monster target = (Monster) findTarget().get(0);
-		//addProjectile(target);
-		GameLogic.addProjectile(target, this);
-		/*
-		target.takeDamage(this.getDamage());
-		if(!target.isDead()) { //if survive
-			if(this instanceof Castable) { //if tower is a castable tower
-				Thread effectThread = new Thread(() -> {
-					try {
-						target.effect((Castable) this);
-						Thread.sleep(3000);
-						target.revertChange((Castable) this);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				});
-				effectThread.start();
-			}
-			if(this instanceof BombardTower) {
-				((BombardTower) this).explode(target);
-			}
+	public boolean shoot() { 
+		if (findTarget().isEmpty()) {
+			return false;
 		}
-		*/
-		
+		for(Effectable monsterTarget : findTarget()) {
+			Monster target = (Monster) monsterTarget;
+			GameLogic.addProjectile(target, this);			
+		}
+		return true;
 	}
 	
 	public void projectileHit(Effectable target, Tower shootingTower) {
-		
-		((Monster) target).takeDamage(this.getDamage());
-		if(!((Monster) target).isDead()) { //if survive
-			if(this instanceof Castable) { //if tower is a castable tower
-				Thread effectThread = new Thread(() -> {
-					try {
-						target.effect((Castable) this);
-						Thread.sleep(3000);
-						target.revertChange((Castable) this);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				});
-				effectThread.start();
+		if(target instanceof Monster) {
+			((Monster) target).takeDamage(this.getDamage());
+			if(!((Monster) target).isDead()) { //if survive
+				if(this instanceof BombardTower) {
+					((BombardTower) this).explode((Monster) target);
+				}
+				if(this instanceof Castable) { //if tower is a castable tower
+					Thread effectThread = new Thread(() -> {
+						try {
+							int originalStat = target.effect((Castable) this);
+							Thread.sleep(2000);
+							target.revertChange((Castable) this, originalStat);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					});
+					effectThread.start();
+				}
 			}
-			if(this instanceof BombardTower) {
-				((BombardTower) this).explode((Monster) target);
-			}
+		} else if(target instanceof Tower) {
+			Thread effectThread = new Thread(() -> {
+				try {
+					int originalStat = ((Tower) target).effect((Castable) this);
+					Thread.sleep(1000);
+					target.revertChange((Castable) this, originalStat);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			});
+			effectThread.start();
 		}
+	}
+	
+	public void stopTowerAttack() {
+		towerAttack.interrupt();
 	}
 	
 	// Effectable//
 	public int effect(Castable caster) {
-		int finalStat = 0;
+		int originalStat = 0;
 		if (caster instanceof Tower) { // this tower buffed by tower
 			String statAffected = ((Tower) caster).getBUFF_STAT();
 			switch (statAffected) {
 			case "damage":
-				finalStat = (int) (this.getDamage() * ((Tower) caster).getBUFF_RATIO());
-				this.setDamage(finalStat);
-				break;
-			case "range":
-				finalStat = (int) (this.getRange() * ((Tower) caster).getBUFF_RATIO());
-				this.setRange(finalStat);
-				break;
-			case "attackCooldown":
-				finalStat = (int) (this.getAttackCooldown() * ((Tower) caster).getBUFF_RATIO());
-				this.setAttackCooldown(finalStat);
+				System.out.println("dam " + this.getDamage());
+				originalStat = this.getDamage();
+				this.setDamage((int) (this.getDamage() * ((Tower) caster).getBuffRatio()));
+				System.out.println("dam2 " + this.getDamage());
 				break;
 			}
 		}
-		return finalStat;
+		return originalStat;
 	}
 
-	public int revertChange(Castable caster) {
-		int finalStat = 0;
-		boolean ratioIsInt = false;
+	public void revertChange(Castable caster, int originalStat) {
 		if (caster instanceof Tower) { // revert changes from (this tower buffed by tower)
 			String statAffected = ((Tower) caster).getBUFF_STAT();
-			ratioIsInt = (((Tower) caster).getBUFF_RATIO() == (int) ((Tower) caster).getBUFF_RATIO());
 			switch (statAffected) {
 			case "damage":
-				finalStat = (int) (this.getDamage() / ((Tower) caster).getBUFF_RATIO());
-				this.setDamage(finalStat);
+				System.out.println("dam3 " + this.getDamage());
+				this.setDamage(originalStat);
+				System.out.println("dam4 " + this.getDamage());
 				break;
-			case "range":
-				finalStat = (int) (this.getRange() / ((Tower) caster).getBUFF_RATIO());
-				this.setRange(finalStat);
-				break;
-			case "attackCooldown":
-				finalStat = (int) (this.getAttackCooldown() / ((Tower) caster).getBUFF_RATIO());
-				this.setAttackCooldown(finalStat);
-				break;
-			}
-			if(!ratioIsInt) {
-				finalStat++;
 			}
 		}
-		return finalStat;
 	}
 
 	// SETTER//
@@ -190,17 +159,6 @@ public abstract class Tower implements Effectable {
 		this.coords = new Coordinate(x,y);
 	}
 
-//	public void setUpgradeBonus(double upgradeBonus) {
-//		this.upgradeBonus = Math.max(upgradeBonus, 0.0);
-//	}
-
-//	public void setAmmo(Ammo ammo) {
-//		this.ammo.setDamage(ammo.getDamage());
-//		this.ammo.setBuffRatio(ammo.getBuffRatio());
-//		this.ammo.setBuffStat(ammo.getBuffStat());
-	// this.ammo.setSplashRadius(ammo.getSplashRadius());
-//	}
-
 	// GETTER//
 	public int getDamage() {
 		return damage;
@@ -234,7 +192,7 @@ public abstract class Tower implements Effectable {
 		return "";
 	}
 	
-	public double getBUFF_RATIO() {
+	public double getBuffRatio() {
 		return 1.0;
 	}
 	
@@ -253,13 +211,5 @@ public abstract class Tower implements Effectable {
 	public int getYTile() {
 		return coords.getY();
 	}
-//	public double getUpgradeBonus() {
-//		return upgradeBonus;
-//	}
-
-
-//	public Ammo getAmmo() {
-//		return ammo;
-//	}
 
 }

@@ -71,42 +71,35 @@ public abstract class Monster implements Effectable{
 	
 	//Effectable//
 	public int effect(Castable caster) {
-		int finalStat = 0;
+		int originalStat = 0;
 		if(caster instanceof Tower) { //monster debuffed by tower
 			String statAffected = ((Tower) caster).getBUFF_STAT();
 			switch(statAffected) {
 			case "armor":
-				finalStat = (int) (this.getArmor() * ((Tower) caster).getBUFF_RATIO());
-				this.setArmor(finalStat);
+				originalStat = this.getArmor();
+				this.setArmor((int) (this.getArmor() * ((Tower) caster).getBuffRatio()));
 				break;
 			case "speed":
-				finalStat = (int) (this.getSpeed() * ((Tower) caster).getBUFF_RATIO());
-				this.setSpeed(finalStat);
+				originalStat = this.getSpeed();
+				this.setSpeed((int) (this.getSpeed() * ((Tower) caster).getBuffRatio()));
 				break;
 			}
 		}
-		return finalStat;
+		return originalStat;
 	}
-	public int revertChange(Castable caster) {
-		int finalStat = 0;
-		boolean ratioIsInt = false;
+	
+	public void revertChange(Castable caster, int originalStat) {
 		if(caster instanceof Tower) { //revert (monster debuffed by tower)
 			String statAffected = ((Tower) caster).getBUFF_STAT();
-			ratioIsInt = (((Tower) caster).getBUFF_RATIO() == (int) ((Tower) caster).getBUFF_RATIO());
 			switch(statAffected) {
 			case "armor":
-				finalStat = (int) (this.getArmor() / ((Tower) caster).getBUFF_RATIO());
-				if(!ratioIsInt) finalStat++;
-				this.setArmor(finalStat);
+				this.setArmor(originalStat);
 				break;
 			case "speed":
-				finalStat = (int) (this.getSpeed() / ((Tower) caster).getBUFF_RATIO());
-				if(!ratioIsInt) finalStat++;
-				this.setSpeed(finalStat);
+				//do nothing
 				break;
 			}
 		}
-		return finalStat;
 	}
 	
 	//SETTER//

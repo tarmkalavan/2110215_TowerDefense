@@ -13,12 +13,27 @@ public class ArcaneTower extends Tower implements Castable{
 	private final double RATIO_BONUS;
 	
 	public ArcaneTower(int x, int y) {
-		super(0,3,10,150,50,340);
+		super(0,2500,300,150,50,340);
 		setCoord(x, y);
 		BUFF_STAT = "damage";
 		buffRatio = 1.2;
 		RANGE_BONUS = 2;
 		RATIO_BONUS = 0.15;
+		towerAttack = new Thread(() -> {
+			while(true) {
+				try {
+					boolean isShot = shoot();
+					if(isShot) {
+						Thread.sleep(getAttackCooldown());
+					}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					//e.printStackTrace();
+					break;
+				}
+			}
+		});
+		towerAttack.start();
 	}
 
 	@Override
@@ -38,30 +53,26 @@ public class ArcaneTower extends Tower implements Castable{
 	public ArrayList<Effectable> findTarget(){
 		ArrayList<Effectable> targetList = new ArrayList<>();
 		ArrayList<Tower> towerInRange = GameLogic.towersInRange(this);
-		for(Tower tower : towerInRange) {
-			targetList.add(tower);
+		if(!towerInRange.isEmpty()) {
+			for(Tower tower : towerInRange) {
+				if(!(tower instanceof ArcaneTower)) {
+					targetList.add(tower);
+				}
+			}
 		}
 		return targetList;
 	}
 	
 	@Override
-	public void shoot() {
-		for(Effectable towerTarget : findTarget()) {
-			Thread effectThread = new Thread(() -> {
-				try {
-					towerTarget.effect((Castable) this);
-					Thread.sleep(3000);
-					towerTarget.revertChange((Castable) this);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-			});
-			effectThread.start();
-			//Tower target = (Tower) towerTarget;
-			//target.effect((Castable) this);
-			//target.revertChange((Castable) this);			
+	public boolean shoot() {
+		if(findTarget().isEmpty()) {
+			return false;
 		}
+		for(Effectable towerTarget : findTarget()) {
+			Tower target = (Tower) towerTarget;
+			GameLogic.addProjectile(target, this);			
+		}
+		return true;
 	}
 
 	//SETTER//

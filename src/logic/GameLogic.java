@@ -48,36 +48,36 @@ public class GameLogic {
 		int towerMinRangeY = attackingTower.getY() - attackingTower.getRange();
 		int towerMaxRangeX = attackingTower.getX() + attackingTower.getRange();
 		int towerMaxRangeY = attackingTower.getY() + attackingTower.getRange();
-		for(Tower targetMonster : towerList) {
-			if(targetMonster.getX() > towerMinRangeX && targetMonster.getX() < towerMaxRangeX
-				&& targetMonster.getY() > towerMinRangeY && targetMonster.getY() < towerMaxRangeY){
-					targetList.add(targetMonster);
+		if(!towerList.isEmpty()) {
+			for(Tower targetTower : towerList) {
+				if(targetTower.getX() > towerMinRangeX && targetTower.getX() < towerMaxRangeX
+					&& targetTower.getY() > towerMinRangeY && targetTower.getY() < towerMaxRangeY){
+						targetList.add(targetTower);
 				}
+			}
 		}
 		return targetList;
 	}
 	
 	public static ArrayList<Monster> monstersInRange(Tower attackingTower){
-		
 		ArrayList<Monster> targetList = new ArrayList<>();
 		int towerMinRangeX = attackingTower.getX() - attackingTower.getRange();
 		int towerMinRangeY = attackingTower.getY() - attackingTower.getRange();
 		int towerMaxRangeX = attackingTower.getX() + attackingTower.getRange();
 		int towerMaxRangeY = attackingTower.getY() + attackingTower.getRange();
-		for(Monster targetMonster : monsterList) {
-			if(targetMonster.getX() > towerMinRangeX && targetMonster.getX() < towerMaxRangeX
-					&& targetMonster.getY() > towerMinRangeY && targetMonster.getY() < towerMaxRangeY){
-						targetList.add(targetMonster);
-					}
+		if(!monsterList.isEmpty()) {
+			for(Monster targetMonster : monsterList) {
+				if(targetMonster.getX() > towerMinRangeX && targetMonster.getX() < towerMaxRangeX
+				&& targetMonster.getY() > towerMinRangeY && targetMonster.getY() < towerMaxRangeY){
+					targetList.add(targetMonster);
+				}
 			}
+		}
 		return targetList;
 	}
 	
 	public void createGameMap() {    	
     	try {
-    		setMoney(500);
-    		setLives(20);
-    		setLevel(1);
     		tileMap = new TileMap(1280, 800);
 			Parent towerShopAndData = FXMLLoader.load(getClass().getResource("/GameMap/TowerShopAndData.fxml"));
 			StackPane gamePane = new StackPane();
@@ -96,7 +96,6 @@ public class GameLogic {
             MenuNavigator.stage.setScene(gameScene);
             Monster.setPath(tileMap.getPath());
             startLoop();
-            System.out.println("aaa");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -117,14 +116,15 @@ public class GameLogic {
 	
 	public Monster getMonsterPrototype() {
 		switch(level) {
-		case 1: return new BasicMonster(50,10,1,15); //(hp, armor, speed, reward)
-		case 2: return new BasicMonster(30,10,4,25);
-		case 3: return new BasicMonster(80,15,2,50);
+		//every monster armor = 4n
+		case 1: return new BasicMonster(60,20,4,15); //(hp, armor, speed, reward)
+		case 2: return new BasicMonster(60,0,1,25);
+		case 3: return new BasicMonster(80,16,2,50);
 		case 4: return new BasicMonster(20,0,8,20);
-		case 5: return new BossMonster(100,10,1,400,20);
+		case 5: return new BossMonster(100,12,1,400,20);
 		case 6: return new BasicMonster(50,20,4,100);
-		case 7: return new BasicMonster(20,10,8,15);
-		default: return new BasicMonster(50,10,2,15);
+		case 7: return new BasicMonster(20,12,8,15);
+		default: return new BasicMonster(50,12,2,15);
 		}
 	}
 	
@@ -137,8 +137,8 @@ public class GameLogic {
 	private void startLoop() {
 		final LongProperty secondUpdate = new SimpleLongProperty(0);
         final LongProperty fpstimer = new SimpleLongProperty(0);
-        int IDLE_TIME = 1;
-        int ROUND_TIME = 10;
+        int IDLE_TIME = 3;
+        int ROUND_TIME = 30;
         
         final AnimationTimer timer = new AnimationTimer() {
             int timer = IDLE_TIME;
@@ -188,22 +188,15 @@ public class GameLogic {
 	public static void createProjectile() {
 		Path projectilePath;
 		PathTransition animation;
-		//System.out.println("here");
-		//System.out.println("a"+projectileList.size());
 		for(Projectile projectile : projectileList) {
-		//for(Tower tower : towerList) {
-			//for(Projectile projectile : tower.getShotProjectile()) {
 			int startX = projectile.getStartX();
 			int startY = projectile.getStartY();
 			int endX = projectile.getTargetX();
 			int endY = projectile.getTargetY();
-			System.out.println("start x " + startX+ ", start y " + startY);
-			System.out.println("target x " + endX+ ", target y " + endY);
 			projectilePath = new Path(new MoveTo(startX, startY));
 			LineTo line = new LineTo(endX, endY);
 			projectilePath.getElements().add(line);
-			animation = new PathTransition(Duration.millis(100) , projectilePath , projectile);
-			
+			animation = new PathTransition(Duration.millis(200) , projectilePath , projectile);
 			animation.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
@@ -243,10 +236,6 @@ public class GameLogic {
 		}
     }
 	
-
-	
-
-	
     public synchronized static void removeMonster(Monster monster){
         // Punish player
         if (monster.isPathFinished()){
@@ -274,22 +263,13 @@ public class GameLogic {
 		return (lives > 0) && (isGameOver);
 	}
 	
-	
-	
-	public static void buyTower(Tower tower) {
-		if(tower.getBuyCost() > money) return; //not enough money
-		money -= tower.getBuyCost();
-		addTower(tower);
-	}
-	
-	public void buyTower(int xTile , int yTile,Tower t){
-
-        if(tileMap.isNodeOpen(xTile,yTile)){
-        	if(t.getBuyCost() > money) return;
-    		money -= t.getBuyCost();
-    		addTower(t);
+	public static void buyTower(double x, double y,Tower t) {
+        int xTile = (int)(x / 64);
+        int yTile = (int)(y / 64);
+        if(getMoney() >= 50) {
+            addTower(t);
+            setMoney(getMoney() - 50);
             tileMap.setNewNode(xTile, yTile, t.getSymbol());
-            
         }
     }
 	
@@ -434,19 +414,6 @@ public class GameLogic {
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
 	}
-
-	public static void buyTower(double x, double y,Tower t) {
-        int xTile = (int)(x / 64);
-        int yTile = (int)(y / 64);
-
-        if(tileMap.isNodeOpen(xTile,yTile)){
-            if(getMoney() > 0) {
-                addTower(t);
-                setMoney(getMoney() - 0);
-                tileMap.setNewNode(xTile, yTile, t.getSymbol());
-            }
-        }
-    }
 		
 }
 	
