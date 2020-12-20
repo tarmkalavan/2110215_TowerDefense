@@ -44,13 +44,21 @@ public abstract class Tower implements Effectable {
 		return targetList;
 	}
 	
-	public boolean shoot() { 
-		if (findTarget().isEmpty()) {
-			return false;
-		}
-		for(Effectable monsterTarget : findTarget()) {
-			Monster target = (Monster) monsterTarget;
-			GameLogic.addProjectile(target, this);			
+	public boolean shoot() {
+		try {
+			if (findTarget().isEmpty()) {
+				return false;
+			}
+			for(Effectable monsterTarget : findTarget()) {
+				Monster target = (Monster) monsterTarget;
+				GameLogic.addProjectile(target, this);			
+			}
+		} catch(Exception e) {
+			//do nothing
+			/*
+			ConcurrentModificationException or NoSuchElementException may be thrown 
+			when the monster goes out of range or reach the end while the projectile is travelling
+			*/
 		}
 		return true;
 	}
@@ -103,10 +111,8 @@ public abstract class Tower implements Effectable {
 			String statAffected = ((Tower) caster).getBUFF_STAT();
 			switch (statAffected) {
 			case "damage":
-				System.out.println("dam " + this.getDamage());
 				originalStat = this.getDamage();
 				this.setDamage((int) (this.getDamage() * ((Tower) caster).getBuffRatio()));
-				System.out.println("dam2 " + this.getDamage());
 				break;
 			}
 		}
@@ -118,9 +124,7 @@ public abstract class Tower implements Effectable {
 			String statAffected = ((Tower) caster).getBUFF_STAT();
 			switch (statAffected) {
 			case "damage":
-				System.out.println("dam3 " + this.getDamage());
 				this.setDamage(originalStat);
-				System.out.println("dam4 " + this.getDamage());
 				break;
 			}
 		}

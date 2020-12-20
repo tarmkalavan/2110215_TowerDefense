@@ -17,6 +17,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -103,8 +105,9 @@ public class GameLogic {
 	
 	public int getMonsterAmount() {
 		switch(level) {
-		case 1: return 10;
-		case 2: return 10;
+		case 0: return 1;
+		case 1: return 5;
+		case 2: return 2;
 		case 3: return 5;
 		case 4: return 20;
 		case 5: return 1;
@@ -116,8 +119,8 @@ public class GameLogic {
 	
 	public Monster getMonsterPrototype() {
 		switch(level) {
-		//every monster armor = 4n
-		case 1: return new BasicMonster(60,20,4,15); //(hp, armor, speed, reward)
+		case 0: return new BasicMonster(60,20,16,15);
+		case 1: return new BossMonster(60,20,16,15,10); //(hp, armor, speed, reward)
 		case 2: return new BasicMonster(60,0,1,25);
 		case 3: return new BasicMonster(80,16,2,50);
 		case 4: return new BasicMonster(20,0,8,20);
@@ -147,6 +150,11 @@ public class GameLogic {
             public void handle(long timestamp) {
             	int monsterCount = getMonsterAmount();
                 // Times each second
+                if(isGameEnd()) {
+                	this.stop();
+                	System.out.println("gameend");
+                	showEndScreen();
+                }
                 if (timestamp/ 1000000000 != secondUpdate.get()) {
                     timer--;
                     if(timer >= (ROUND_TIME - monsterCount)) {
@@ -165,20 +173,34 @@ public class GameLogic {
                 }
                 fpstimer.set(timestamp / 10000000);
                 secondUpdate.set(timestamp / 1000000000);
-                if(level == 8) {
-                	System.out.println("game end");
-                	if(monsterList.isEmpty()) {
-                		this.stop();
-                		System.out.println("aaaa");
-                	}
-                	
-                }
                 setTime(timer);
 				//gameController.initialize();
             }
         };
         loop = timer;
         timer.start();
+	}
+	
+	public boolean isGameEnd() {
+		return ((lives <= 0) || (level >= 8 && monsterList.isEmpty()));
+	}
+	
+	public void showEndScreen() {
+		if(lives <= 0) { //lose
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Lose Screen");
+			alert.setContentText("Your lives drop below zero! \n "
+					   		   + "Click OK to return to Main Screen");
+			alert.setHeaderText("YOU LOSE");
+			alert.show();
+		} else if(level >= 8 && monsterList.isEmpty()) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Win Screen");
+			alert.setContentText("Congratulations! You won! \n"
+							   + "Click OK to return to Main Screen");
+			alert.setHeaderText("YOU WIN");
+			alert.show();
+		}
 	}
 	
 	public static void addProjectile(Effectable target, Tower shootingTower) {
@@ -238,13 +260,14 @@ public class GameLogic {
 	
     public synchronized static void removeMonster(Monster monster){
         // Punish player
+    	System.out.println("live1 " + lives);
         if (monster.isPathFinished()){
         	if(monster instanceof BasicMonster) {
         		setLives((getLives()) - 1);
         	} else if (monster instanceof BossMonster) {
         		setLives((getLives()) - 5);
-        	}
-            
+        	}   
+        	System.out.println("live2 " + lives);
         }
         // Reward player
         else{
@@ -256,12 +279,6 @@ public class GameLogic {
         getMonsterList().remove(monster);
 
     }
-	
-	//method 2
-	//check game state; playing, win, lose 
-	public boolean hasWon() {
-		return (lives > 0) && (isGameOver);
-	}
 	
 	public static void buyTower(double x, double y,Tower t) {
         int xTile = (int)(x / 64);
@@ -366,7 +383,7 @@ public class GameLogic {
 	}
 
 	public static void setLives(int lives) {
-		GameLogic.lives = lives;
+		GameLogic.lives = Math.max(lives,0);
 	}
 
 	public static void setLevel(int level) {
