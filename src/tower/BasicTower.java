@@ -7,19 +7,18 @@ public class BasicTower extends Tower {
 	private final double UPGRADE_BONUS;
 
 	public BasicTower(int xTile, int yTile) {
-		super(20, 500, 200, 50, 30, 100);
+		super(20, 700, 200, 50, 30, 100);
 		setCoord(xTile, yTile);
 		UPGRADE_BONUS = 1.5;
 		towerAttack = new Thread(() -> {
-			while(true) {
+			while (true) {
 				try {
 					boolean isShot = shoot();
-					if(isShot) {
+					if (isShot) {
 						Thread.sleep(getAttackCooldown());
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					//e.printStackTrace();
 					break;
 				}
 			}
@@ -27,8 +26,6 @@ public class BasicTower extends Tower {
 		towerAttack.start();
 	}
 
-	
-	
 	@Override
 	public int getSymbol() {
 		// TODO Auto-generated method stub

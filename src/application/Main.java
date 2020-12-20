@@ -11,7 +11,8 @@ import javafx.scene.media.AudioClip;
 
 public class Main extends Application {
 
-	public static AudioClip sound = new AudioClip(ClassLoader.getSystemResource("MainMenu/Wild Boar's Inn.mp3").toString());
+	public static AudioClip sound = new AudioClip(
+			ClassLoader.getSystemResource("MainMenu/Wild Boar's Inn.mp3").toString());
 
 	@Override
 	public void start(Stage stage) {
@@ -34,10 +35,10 @@ public class Main extends Application {
 		launch(args);
 		System.exit(0);
 	}
-	
+
 	@Override
-	public void stop() throws Exception{
-		for(Tower tower : GameLogic.getTowerList()) {
+	public void stop() throws Exception {
+		for (Tower tower : GameLogic.getTowerList()) {
 			tower.stopTowerAttack();
 		}
 		sound.stop();

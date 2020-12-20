@@ -5,19 +5,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 
-public class Projectile extends Circle{
-	private Effectable target; //can be both tower & monster
+public class Projectile extends Circle {
+	private Effectable target; // can be both tower & monster
 	private Tower shootingTower;
-	//private ImageView view;
-	
+
 	public Projectile(Effectable target, Tower shootingTower) {
-		super(shootingTower.getX(), shootingTower.getY(), 5,Color.BLACK);
-		//System.out.println("x:" + shootingTower.getX() + " y: " + shootingTower.getY());
+		super(shootingTower.getX(), shootingTower.getY(), 5, Color.BLACK);
 		this.target = target;
 		this.shootingTower = shootingTower;
-		//view = new ImageView("MainMenu/Shield.png");
 	}
-	
+
 	public Effectable getTarget() {
 		return target;
 	}
@@ -25,6 +22,7 @@ public class Projectile extends Circle{
 	public Tower getShootingTower() {
 		return shootingTower;
 	}
+
 	public int getTargetX() {
 		if (target instanceof Monster) {
 			return ((Monster) target).getX();

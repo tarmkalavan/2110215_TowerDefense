@@ -14,20 +14,20 @@ public class MainMenuController {
 
 	@FXML
 	private Button exitButton;
-	
+
 	@FXML
 	private Button muteButton;
-	
+
 	@FXML
 	private Button creditsButton;
-	
+
 	@FXML
 	private Button startButton;
 
 	public void exitTheGame() {
 		System.exit(1);
 	}
-	
+
 	public void muteSound() {
 		if (Main.sound.isPlaying()) {
 			Main.sound.stop();
@@ -42,14 +42,14 @@ public class MainMenuController {
 			Parent root1 = (Parent) loader.load();
 			Stage stage = new Stage();
 			stage.setTitle("Credits");
-			stage.setScene(new Scene(root1));  
+			stage.setScene(new Scene(root1));
 			stage.setResizable(false);
 			stage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void startGame() {
 		GameLogic manager = new GameLogic();
 		manager.createGameMap();
