@@ -64,7 +64,7 @@ public class GameController {
     		}
     	});
     }
-	
+
     public void buyAcidTower(){
         GameLogic.getGameScene().setOnMousePressed(new EventHandler<MouseEvent>() {
     		@Override

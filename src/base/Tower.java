@@ -9,8 +9,7 @@ import tower.BombardTower;
 
 public abstract class Tower implements Effectable {
 
-	protected Coordinate coords;
-	
+
 	protected int damage;
 	protected int attackCooldown;
 	protected int range;
@@ -18,7 +17,11 @@ public abstract class Tower implements Effectable {
 	protected int sellCost;
 	protected int buyCost;
 	protected int level;
-
+	
+	protected Coordinate coords;
+	protected Thread towerAttack;
+	protected ArrayList<Projectile> shotProjectile = new ArrayList<>();
+	
 	public Tower(int damage, int attackCooldown, int range, int buyCost, int sellCost, int upgradeCost) {
 		setDamage(damage);
 		setAttackCooldown(attackCooldown);
@@ -28,22 +31,33 @@ public abstract class Tower implements Effectable {
 		setSellCost(sellCost);
 		setLevel(1);
 		setCoord(0, 0);
+		//System.out.println("here");
 	}
 
 	public abstract int getSymbol();
 	
 	public abstract void upgradeTower();
 	
+//	public void addProjectile(Effectable target) {
+//		shotProjectile.add(new Projectile(target, this));
+//	}
+	
+//	public ArrayList<Projectile> getShotProjectile(){
+//		return shotProjectile;
+//	}
+	
 	public ArrayList<Effectable> findTarget(){
 		//add only the first monster to targetList
 		ArrayList<Effectable> targetList = new ArrayList<>();
-		targetList.add(GameLogic.monstersInRange(this).get(0)); //only the first monster
+		if(GameLogic.monstersInRange(this).size() != 0 )targetList.add(GameLogic.monstersInRange(this).get(0)); //only the first monster
 		return targetList;
 	}
 	
 	public void shoot() { 
+		if (findTarget().size() == 0) return;
 		Monster target = (Monster) findTarget().get(0);
-		GameLogic.addProjectile(target,this);
+		//addProjectile(target);
+		GameLogic.addProjectile(target, this);
 		/*
 		target.takeDamage(this.getDamage());
 		if(!target.isDead()) { //if survive
@@ -66,6 +80,7 @@ public abstract class Tower implements Effectable {
 			}
 		}
 		*/
+		
 	}
 	
 	public void projectileHit(Effectable target, Tower shootingTower) {
@@ -171,7 +186,7 @@ public abstract class Tower implements Effectable {
 		this.level = Math.max(level, 0);
 	}
 	
-	public void setCoord(double x, double y) {
+	public void setCoord(int x, int y) {
 		this.coords = new Coordinate(x,y);
 	}
 
@@ -229,6 +244,14 @@ public abstract class Tower implements Effectable {
 	
 	public int getY() {
 		return coords.getExactY();
+	}
+	
+	public int getXTile() {
+		return coords.getX();
+	}
+	
+	public int getYTile() {
+		return coords.getY();
 	}
 //	public double getUpgradeBonus() {
 //		return upgradeBonus;

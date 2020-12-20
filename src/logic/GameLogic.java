@@ -58,6 +58,7 @@ public class GameLogic {
 	}
 	
 	public static ArrayList<Monster> monstersInRange(Tower attackingTower){
+		
 		ArrayList<Monster> targetList = new ArrayList<>();
 		int towerMinRangeX = attackingTower.getX() - attackingTower.getRange();
 		int towerMinRangeY = attackingTower.getY() - attackingTower.getRange();
@@ -95,12 +96,13 @@ public class GameLogic {
             MenuNavigator.stage.setScene(gameScene);
             Monster.setPath(tileMap.getPath());
             startLoop();
+            System.out.println("aaa");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
     }
 	
-	public int getMonsterCount() {
+	public int getMonsterAmount() {
 		switch(level) {
 		case 1: return 10;
 		case 2: return 10;
@@ -115,7 +117,7 @@ public class GameLogic {
 	
 	public Monster getMonsterPrototype() {
 		switch(level) {
-		case 1: return new BasicMonster(50,10,2,15); //(hp, armor, speed, reward)
+		case 1: return new BasicMonster(50,10,1,15); //(hp, armor, speed, reward)
 		case 2: return new BasicMonster(30,10,4,25);
 		case 3: return new BasicMonster(80,15,2,50);
 		case 4: return new BasicMonster(20,0,8,20);
@@ -125,6 +127,12 @@ public class GameLogic {
 		default: return new BasicMonster(50,10,2,15);
 		}
 	}
+	
+	public void spawnMonster() {
+		Monster prototypeMonster = getMonsterPrototype();
+		getMonsterList().add(prototypeMonster);
+        monsterLayer.getChildren().add(getMonsterList().get(getMonsterList().size() - 1).getView());
+    }
 	
 	private void startLoop() {
 		final LongProperty secondUpdate = new SimpleLongProperty(0);
@@ -137,18 +145,18 @@ public class GameLogic {
             
             @Override
             public void handle(long timestamp) {
-            	int monsterCount = getMonsterCount();
+            	int monsterCount = getMonsterAmount();
                 // Times each second
                 if (timestamp/ 1000000000 != secondUpdate.get()) {
                     timer--;
                     if(timer >= (ROUND_TIME - monsterCount)) {
                         spawnMonster();
-                        System.out.println("HP = " + getMonsterPrototype().getMaxHealth() + ", Speed = " + getMonsterPrototype().getSpeed());
+                        //System.out.println("HP = " + getMonsterPrototype().getMaxHealth() + ", Speed = " + getMonsterPrototype().getSpeed());
                     }
                     else if(timer <= 0){
                         setLevel(level + 1);
                         timer = ROUND_TIME;
-                        System.out.println(level);
+                        //System.out.println(level);
                     }
                 }
                 createProjectile();
@@ -157,7 +165,7 @@ public class GameLogic {
                 }
                 fpstimer.set(timestamp / 10000000);
                 secondUpdate.set(timestamp / 1000000000);
-                if(level == 7) {
+                if(level == 8) {
                 	System.out.println("game end");
                 	if(monsterList.isEmpty()) {
                 		this.stop();
@@ -172,7 +180,57 @@ public class GameLogic {
         loop = timer;
         timer.start();
 	}
+	
+	public static void addProjectile(Effectable target, Tower shootingTower) {
+		projectileList.add(new Projectile(target, shootingTower));
+	}
+	
+	public static void createProjectile() {
+		Path projectilePath;
+		PathTransition animation;
+		//System.out.println("here");
+		//System.out.println("a"+projectileList.size());
+		for(Projectile projectile : projectileList) {
+		//for(Tower tower : towerList) {
+			//for(Projectile projectile : tower.getShotProjectile()) {
+			int startX = projectile.getStartX();
+			int startY = projectile.getStartY();
+			int endX = projectile.getTargetX();
+			int endY = projectile.getTargetY();
+			System.out.println("start x " + startX+ ", start y " + startY);
+			System.out.println("target x " + endX+ ", target y " + endY);
+			projectilePath = new Path(new MoveTo(startX, startY));
+			LineTo line = new LineTo(endX, endY);
+			projectilePath.getElements().add(line);
+			animation = new PathTransition(Duration.millis(100) , projectilePath , projectile);
+			
+			animation.setOnFinished(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                	//System.out.println("proj hit");
+                    PathTransition finishedAnimation = (PathTransition) actionEvent.getSource();
+                    Projectile finishedProjectile = (Projectile) finishedAnimation.getNode();
 
+                    // Hide and remove from gui
+                    finishedProjectile.setVisible(false);
+                    monsterLayer.getChildren().remove(finishedProjectile);
+
+                    //apply damage and effects
+                    projectile.getShootingTower().projectileHit(projectile.getTarget(),projectile.getShootingTower());
+                    // Remove monster if they are dead
+                    if(finishedProjectile.getTarget() instanceof Monster) {
+	                    if(((Monster) finishedProjectile.getTarget()).isDead()){
+	                        removeMonster((Monster) finishedProjectile.getTarget());
+	                    }
+                    }
+                }
+            });
+            monsterLayer.getChildren().add(projectile);
+            animation.play();
+            //System.out.println("proj shot");
+		}
+		projectileList.clear();
+	}
 	
 	private void updateLocations(){
 		ArrayList<Monster> copyMonsterList = monsterList;
@@ -187,11 +245,7 @@ public class GameLogic {
 	
 
 	
-	public void spawnMonster() {
-		Monster prototypeMonster = getMonsterPrototype();
-		getMonsterList().add(prototypeMonster);
-        monsterLayer.getChildren().add(getMonsterList().get(getMonsterList().size() - 1).getView());
-    }
+
 	
     public synchronized static void removeMonster(Monster monster){
         // Punish player
@@ -213,47 +267,6 @@ public class GameLogic {
         getMonsterList().remove(monster);
 
     }
-
-	
-	
-	
-	public static void addProjectile(Effectable target, Tower shootingTower) {
-		projectileList.add(new Projectile(target, shootingTower));
-	}
-	
-	public static void createProjectile() {
-		Path projectilePath;
-		PathTransition animation;
-		for(Projectile projectile : projectileList) {
-			projectilePath = new Path(new MoveTo(projectile.getStartX(), projectile.getStartY()));
-			projectilePath.getElements().add(new LineTo(projectile.getTargetX(), projectile.getTargetY()));
-			animation = new PathTransition(Duration.millis(300) , projectilePath , projectile);
-			
-			animation.setOnFinished(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    PathTransition finishedAnimation = (PathTransition) actionEvent.getSource();
-                    Projectile finishedProjectile = (Projectile) finishedAnimation.getNode();
-
-                    // Hide and remove from gui
-                    finishedProjectile.setVisible(false);
-                    monsterLayer.getChildren().remove(finishedProjectile);
-
-                    //apply damage and effects
-                    
-                    // Remove monster if they are dead
-                    if(finishedProjectile.getTarget() instanceof Monster) {
-	                    if(((Monster) finishedProjectile.getTarget()).isDead()){
-	                        removeMonster((Monster) finishedProjectile.getTarget());
-	                    }
-                    }
-                }
-            });
-            monsterLayer.getChildren().add(projectile);
-            animation.play();
-		}
-		projectileList.clear();
-	}
 	
 	//method 2
 	//check game state; playing, win, lose 
