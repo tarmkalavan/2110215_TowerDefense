@@ -53,11 +53,11 @@ public class GameController {
 		System.exit(1);
 	}
 
-	public void updateLabels(String currentLevel1, String currentLives1, String currentResources1, String timeLabel1) {
-		this.currentLevel.setText(currentLevel1);
-		this.currentLives.setText(currentLives1);
-		this.currentResources.setText(currentResources1);
-		this.timeLabel.setText(timeLabel1);
+	public void updateLabels(int timer) {
+		this.currentLevel.setText(Integer.toString(GameLogic.getLevel()));
+		this.currentLives.setText(Integer.toString(GameLogic.getLives()));
+		this.currentResources.setText(Integer.toString(GameLogic.getMoney()));
+		this.timeLabel.setText(Integer.toString(timer));
 	}
 	
     public void buyBasicTower(){
@@ -68,76 +68,74 @@ public class GameController {
     		double x = t.getX();
     		double y = t.getY();
     		 
-    		GameLogic.buyTower(x, y);
+    		GameLogic.buyTower(x, y,new BasicTower((int)x/64, (int)y/64));
     		}
     	});
     }
-/*	
+	
     public void buyAcidTower(){
-        gameLogic.getGameScene().setOnMouseClicked(new acidTower());
-    }
-	class acidTower implements EventHandler<MouseEvent> {
-        public void handle(MouseEvent me) {
-        	int xTile = (int)(me.getX() / 64);
-            int yTile = (int)(me.getY() / 64);
-            gameLogic.buyTower(xTile,yTile,new AcidTower(xTile,yTile));
-            }
+        GameLogic.getGameScene().setOnMousePressed(new EventHandler<MouseEvent>() {
+    		@Override
+    		public void handle(MouseEvent t) {
+    		 
+    		double x = t.getX();
+    		double y = t.getY();
+    		 
+    		GameLogic.buyTower(x, y,new AcidTower((int)x/64, (int)y/64));
+    		}
+    	});
     }
 	
     public void buyArcaneTower(){
-        gameLogic.getGameScene().setOnMouseClicked(new basicTower());
-    }
-	class arcaneTower implements EventHandler<MouseEvent> {
-        public void handle(MouseEvent me) {
-        	int xTile = (int)(me.getX() / 64);
-            int yTile = (int)(me.getY() / 64);
-            gameLogic.buyTower(xTile,yTile,new ArcaneTower(xTile,yTile));
-            }
+    	GameLogic.getGameScene().setOnMousePressed(new EventHandler<MouseEvent>() {
+    		@Override
+    		public void handle(MouseEvent t) {
+    		 
+    		double x = t.getX();
+    		double y = t.getY();
+    		 
+    		GameLogic.buyTower(x, y,new ArcaneTower((int)x/64, (int)y/64));
+    		}
+    	});
     }
 	
     public void buyArcticTower(){
-        gameLogic.getGameScene().setOnMouseClicked(new basicTower());
-    }
-	class arcticTower implements EventHandler<MouseEvent> {
-        public void handle(MouseEvent me) {
-        	int xTile = (int)(me.getX() / 64);
-            int yTile = (int)(me.getY() / 64);
-            gameLogic.buyTower(xTile,yTile,new ArcticTower(xTile,yTile));
-            }
+    	GameLogic.getGameScene().setOnMousePressed(new EventHandler<MouseEvent>() {
+    		@Override
+    		public void handle(MouseEvent t) {
+    		 
+    		double x = t.getX();
+    		double y = t.getY();
+    		 
+    		GameLogic.buyTower(x, y,new ArcticTower((int)x/64, (int)y/64));
+    		}
+    	});
     }
 	
     public void buyBombardTower(){
-        gameLogic.getGameScene().setOnMouseClicked(new basicTower());
-    }
-	class bombardTower implements EventHandler<MouseEvent> {
-        public void handle(MouseEvent me) {
-        	int xTile = (int)(me.getX() / 64);
-            int yTile = (int)(me.getY() / 64);
-            gameLogic.buyTower(xTile,yTile,new BombardTower(xTile,yTile));
-            }
+    	GameLogic.getGameScene().setOnMousePressed(new EventHandler<MouseEvent>() {
+    		@Override
+    		public void handle(MouseEvent t) {
+    		 
+    		double x = t.getX();
+    		double y = t.getY();
+    		 
+    		GameLogic.buyTower(x, y,new BombardTower((int)x/64, (int)y/64));
+    		}
+    	});
     }
 	
     public void buySniperTower(){
-        gameLogic.getGameScene().setOnMouseClicked(new basicTower());
+    	GameLogic.getGameScene().setOnMousePressed(new EventHandler<MouseEvent>() {
+    		@Override
+    		public void handle(MouseEvent t) {
+    		 
+    		double x = t.getX();
+    		double y = t.getY();
+    		 
+    		GameLogic.buyTower(x, y,new SniperTower((int)x/64, (int)y/64));
+    		}
+    	});
     }
-	class sniperTower implements EventHandler<MouseEvent> {
-        public void handle(MouseEvent me) {
-        	int xTile = (int)(me.getX() / 64);
-            int yTile = (int)(me.getY() / 64);
-            gameLogic.buyTower(xTile,yTile,new SniperTower(xTile,yTile));
-            }
-    }
-	
-	
-*/
-/*	public void updateLabels(int timer){
-        GameController.updateLabels(
-            Integer.toString(GameLogic.getLevel()) ,
-            Integer.toString(GameLogic.getLives()) ,
-            Integer.toString(GameLogic.getMoney()) ,
-            Integer.toString(timer)
-        	);
-	}
-*/
 
 }

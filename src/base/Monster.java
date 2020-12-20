@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import background.Coordinate;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class Monster implements Effectable{
@@ -32,10 +33,9 @@ public abstract class Monster implements Effectable{
 		pathFinished = false;
         moveX = true;
         nodeDirection = 1;
-		this.view = new ImageView("MainMenu/Shield.png");
+        this.view = new ImageView(new Image(ClassLoader.getSystemResource("GameMap/BasicMonster.png").toString()));
 		view.setX(path.get(0).getExactX()-32);
 		view.setY(path.get(0).getExactY()-32);
-
 	}
 	public abstract int takeDamage(int incomingDamage);
 	
