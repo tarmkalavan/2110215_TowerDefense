@@ -2,12 +2,14 @@ package logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import application.MenuNavigator;
 import background.TileMap;
 import base.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
+import javafx.application.Platform;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
@@ -19,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -32,8 +35,8 @@ public class GameLogic {
 	private static int lives = 20; //20 = starting lives
 	private static int level = 0;
 	private static int time = 50;
-	private static boolean isGameOver = false;
-	private static final int TOWER_LEVEL_CAP = 3; 
+	private static final int TOWER_LEVEL_CAP = 2; 
+	private static boolean isLastRound = false;
 	private static ArrayList<Monster> monsterList = new ArrayList<>();
 	private static ArrayList<Tower> towerList = new ArrayList<>();
 	private static ArrayList<Projectile> projectileList = new ArrayList<>();
@@ -106,8 +109,8 @@ public class GameLogic {
 	public int getMonsterAmount() {
 		switch(level) {
 		case 0: return 1;
-		case 1: return 5;
-		case 2: return 2;
+		case 1: return 3;
+		case 2: return 7;
 		case 3: return 5;
 		case 4: return 20;
 		case 5: return 1;
@@ -120,8 +123,8 @@ public class GameLogic {
 	public Monster getMonsterPrototype() {
 		switch(level) {
 		case 0: return new BasicMonster(60,20,16,15);
-		case 1: return new BossMonster(60,20,16,15,10); //(hp, armor, speed, reward)
-		case 2: return new BasicMonster(60,0,1,25);
+		case 1: return new BossMonster(10,0,16,15,2); //(hp, armor, speed, reward)
+		case 2: return new BasicMonster(10,0,16,25);
 		case 3: return new BasicMonster(80,16,2,50);
 		case 4: return new BasicMonster(20,0,8,20);
 		case 5: return new BossMonster(100,12,1,400,20);
@@ -140,8 +143,8 @@ public class GameLogic {
 	private void startLoop() {
 		final LongProperty secondUpdate = new SimpleLongProperty(0);
         final LongProperty fpstimer = new SimpleLongProperty(0);
-        int IDLE_TIME = 3;
-        int ROUND_TIME = 30;
+        int IDLE_TIME = 1;
+        int ROUND_TIME = 10;
         
         final AnimationTimer timer = new AnimationTimer() {
             int timer = IDLE_TIME;
@@ -150,11 +153,6 @@ public class GameLogic {
             public void handle(long timestamp) {
             	int monsterCount = getMonsterAmount();
                 // Times each second
-                if(isGameEnd()) {
-                	this.stop();
-                	System.out.println("gameend");
-                	showEndScreen();
-                }
                 if (timestamp/ 1000000000 != secondUpdate.get()) {
                     timer--;
                     if(timer >= (ROUND_TIME - monsterCount)) {
@@ -163,8 +161,18 @@ public class GameLogic {
                     }
                     else if(timer <= 0){
                         setLevel(level + 1);
+                        if(level == 2) {
+                        	isLastRound = true;
+                        }
                         timer = ROUND_TIME;
-                        //System.out.println(level);
+                        System.out.println(level);
+                    }
+                    else if(timer > 0 && timer < (ROUND_TIME - monsterCount)) {
+                    	if(isGameEnd()) {
+                        	this.stop();
+                        	System.out.println("gameend");
+                        	showEndScreen();
+                    	}
                     }
                 }
                 createProjectile();
@@ -181,8 +189,18 @@ public class GameLogic {
         timer.start();
 	}
 	
+	public int aliveMonster() {
+		int count = 0;
+		if(!monsterList.isEmpty()) {
+			for(Monster monster : monsterList) {
+				if(!monster.isDead()) count++;
+			}
+		}
+		return count;
+	}
+	
 	public boolean isGameEnd() {
-		return ((lives <= 0) || (level >= 8 && monsterList.isEmpty()));
+		return ((lives <= 0) || (isLastRound && monsterList.isEmpty()));
 	}
 	
 	public void showEndScreen() {
@@ -192,14 +210,35 @@ public class GameLogic {
 			alert.setContentText("Your lives drop below zero! \n "
 					   		   + "Click OK to return to Main Screen");
 			alert.setHeaderText("YOU LOSE");
-			alert.show();
-		} else if(level >= 8 && monsterList.isEmpty()) {
+			Thread thread = new Thread(() -> {
+				Platform.runLater(new Runnable() {
+					public void run() {
+						Optional<ButtonType> result = alert.showAndWait();
+			            if (result.get() == ButtonType.OK){
+			                System.out.println("ok");
+			            }
+					}
+				});
+			});
+			thread.start();
+
+		} else if(level >= 2 && monsterList.isEmpty()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Win Screen");
 			alert.setContentText("Congratulations! You won! \n"
 							   + "Click OK to return to Main Screen");
 			alert.setHeaderText("YOU WIN");
-			alert.show();
+			Thread thread = new Thread(() -> {
+				Platform.runLater(new Runnable() {
+					public void run() {
+						Optional<ButtonType> result = alert.showAndWait();
+			            if (result.get() == ButtonType.OK){
+			                System.out.println("ok");
+			            }
+					}
+				});
+			});
+			thread.start();
 		}
 	}
 	
@@ -307,10 +346,6 @@ public class GameLogic {
 	public static void dropCoin(Monster monster) {
 		money += monster.getReward();
 	}
-
-	public static boolean isGameOver() {
-		return isGameOver;
-	}
 		
 	public static void addMonster(Monster monster) {
 		monsterList.add(monster);
@@ -388,10 +423,6 @@ public class GameLogic {
 
 	public static void setLevel(int level) {
 		GameLogic.level = level;
-	}
-
-	public static void setGameOver(boolean isGameOver) {
-		GameLogic.isGameOver = isGameOver;
 	}
 
 	public static void setMonsterList(ArrayList<Monster> monsterList) {

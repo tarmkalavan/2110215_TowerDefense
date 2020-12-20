@@ -59,6 +59,7 @@ public abstract class Tower implements Effectable {
 			ConcurrentModificationException or NoSuchElementException may be thrown 
 			when the monster goes out of range or reach the end while the projectile is travelling
 			*/
+			System.out.println("e");
 		}
 		return true;
 	}
