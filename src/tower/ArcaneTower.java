@@ -44,14 +44,10 @@ public class ArcaneTower extends Tower implements Castable {
 	@Override
 	public void upgradeTower() {
 		// TODO Auto-generated method stub
-		System.out.println("br " + buffRatio);
-		System.out.println("r " + range);
 		double newBuffRatio = buffRatio * RATIO_BONUS;
 		newBuffRatio = Math.round(newBuffRatio * 100.0) / 100.0; // round to 2dp.
 		setBuffRatio(newBuffRatio);
 		setRange((int) (range * RANGE_BONUS));
-		System.out.println("br2 " + buffRatio);
-		System.out.println("r2 " + range);
 	}
 
 	@Override

@@ -131,23 +131,23 @@ public class GameLogic {
 	public Monster getMonsterPrototype() {
 		switch (level) {
 		case 0:
-			return new BasicMonster(1, 0, 16, 15); // (hp, armor, speed, reward)
+			return new BasicMonster(1, 0, 1, 1); // (hp, armor, speed, reward)
 		case 1:
-			return new BasicMonster(50, 10, 2, 30); 
+			return new BasicMonster(50, 10, 2, 15); 
 		case 2:
-			return new BasicMonster(30, 0, 8, 35);
+			return new BasicMonster(40, 5, 8, 20);
 		case 3:
-			return new BasicMonster(30, 20, 2, 75);
+			return new BasicMonster(40, 25, 2, 40);
 		case 4:
-			return new BasicMonster(40, 10, 4, 75);
+			return new BasicMonster(50, 15, 4, 40);
 		case 5:
-			return new BossMonster(100, 15, 1, 400, 20);
+			return new BossMonster(110, 20, 1, 230, 20);
 		case 6:
-			return new BasicMonster(50, 20, 2, 120);
+			return new BasicMonster(60, 20, 2, 55);
 		case 7:
-			return new BasicMonster(40, 10, 8, 200);
+			return new BasicMonster(50, 15, 8, 60);
 		default:
-			return new BasicMonster(50, 12, 2, 15);
+			return new BasicMonster(1, 0, 1, 1);
 		}
 	}
 
@@ -160,7 +160,7 @@ public class GameLogic {
 	private void startLoop() {
 		final LongProperty secondUpdate = new SimpleLongProperty(0);
 		final LongProperty fpstimer = new SimpleLongProperty(0);
-		int IDLE_TIME = 5;
+		int IDLE_TIME = 0;
 		int ROUND_TIME = 30;
 
 		final AnimationTimer timer = new AnimationTimer() {
@@ -186,8 +186,8 @@ public class GameLogic {
 							showEndScreen();
 						}
 					}
+					if (timer % 3 == 0) System.out.println("Current Money: " + money + "\t|\t" + "Current Lives: " + lives );
 				}
-				System.out.println("Current Money: " + money);
 				createProjectile();
 				if (timestamp / 10000000 != fpstimer.get()) {
 					updateLocations();
@@ -319,10 +319,9 @@ public class GameLogic {
 	private void updateLocations() {
 		ArrayList<Monster> copyMonsterList = monsterList;
 		for (int i = 0; i < copyMonsterList.size(); i++) {
-			Monster currentMonster = monsterList.get(i);
-			currentMonster.updateLocation(currentMonster.getSpeed());
-			if (currentMonster.isPathFinished()) {
-				removeMonster(currentMonster);
+			monsterList.get(i).updateLocation(monsterList.get(i).getSpeed());
+			if (monsterList.get(i).isPathFinished()) {
+				removeMonster(monsterList.get(i));
 			}
 		}
 	}
@@ -343,7 +342,6 @@ public class GameLogic {
 		// Remove monsters graphic and reference
 		monster.getView().setVisible(false);
 		getMonsterList().remove(monster);
-
 	}
 
 	public static void buyTower(double x, double y, Tower t) {
@@ -351,10 +349,6 @@ public class GameLogic {
 		int yTile = (int) (y / 64);
 		addTower(t);
 		tileMap.setNewNode(xTile, yTile, t.getSymbol());
-	}
-
-	public static void dropCoin(Monster monster) {
-		money += monster.getReward();
 	}
 
 	public static void addMonster(Monster monster) {
@@ -428,7 +422,7 @@ public class GameLogic {
 	}
 
 	public static void setMoney(int money) {
-		GameLogic.money = money;
+		GameLogic.money = Math.max(money, 0);
 	}
 
 	public static void setLives(int lives) {

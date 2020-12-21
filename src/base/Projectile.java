@@ -1,8 +1,6 @@
 package base;
 
 import javafx.scene.paint.Color;
-
-import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 
 public class Projectile extends Circle {

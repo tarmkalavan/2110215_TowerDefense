@@ -152,7 +152,7 @@ public class GameController {
 				double x = t.getX();
 				double y = t.getY();
 
-				if (TileMap.isNodeOpen((int) x / 64, (int) y / 64) && GameLogic.getMoney() >= 120) {
+				if (TileMap.isNodeOpen((int) x / 64, (int) y / 64) && GameLogic.getMoney() >= 150) {
 					GameLogic.setMoney(GameLogic.getMoney() - 150);
 					System.out.println("Remaining Money: " + GameLogic.getMoney());
 					GameLogic.buyTower(x, y, new BombardTower((int) x / 64, (int) y / 64));
@@ -169,7 +169,7 @@ public class GameController {
 				double x = t.getX();
 				double y = t.getY();
 
-				if (TileMap.isNodeOpen((int) x / 64, (int) y / 64) && GameLogic.getMoney() >= 200) {
+				if (TileMap.isNodeOpen((int) x / 64, (int) y / 64) && GameLogic.getMoney() >= 300) {
 					GameLogic.setMoney(GameLogic.getMoney() - 300);
 					System.out.println("Remaining Money: " + GameLogic.getMoney());
 					GameLogic.buyTower(x, y, new SniperTower((int) x / 64, (int) y / 64));

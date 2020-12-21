@@ -3,7 +3,6 @@ package monster;
 import base.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import logic.GameLogic;
 
 public class BasicMonster extends Monster {
 
@@ -19,7 +18,6 @@ public class BasicMonster extends Monster {
 		setCurrentHealth(getCurrentHealth() - damageTaken);
 		if (getCurrentHealth() == 0) { 
 			setDead(true);
-			GameLogic.removeMonster(this);
 		}
 		return damageTaken;
 	}
